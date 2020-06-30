@@ -1,0 +1,16 @@
+server:
+  port: 8088
+spring:
+  datasource:
+    username: root
+    password: 19990217
+    url: jdbc:mysql://127.0.0.1:3306/springdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=CTT
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+mybatis:
+  mapper-locations: classpath:mappers/*Mapper.xml
+  type-aliases-package: com.neusoft.backend.Model
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl    #打出来mybatis的log
