@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     username: root
-    password: 19990217
+    password: root
     url: jdbc:mysql://127.0.0.1:3306/springdb?useUnicode=true&characterEncoding=utf-8&serverTimezone=CTT
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:

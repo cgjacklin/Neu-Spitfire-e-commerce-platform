@@ -1,7 +1,3 @@
-
-.DS_Store
-ecommerceFrontEnd/node_modules
-
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -30,3 +26,6 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
+
+### VS Code ###
+.vscode/
