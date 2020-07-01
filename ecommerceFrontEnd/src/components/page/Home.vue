@@ -1,5 +1,8 @@
 <template>
-  <div>首页</div>
+  <div>首页
+
+    <el-input></el-input>
+  </div>
 </template>
 
 <script>
