@@ -32,33 +32,53 @@ public class UserController extends BaseController {
     AuthService authService;
 
     @PostMapping("/addUser")
-    public BaseModel addUser(@Validated({InsertGroup.class}) @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw BusinessException.INSERT_FAIL.newInstance(this.getErrorResponse(bindingResult),
-                    new Object[]{user.toString()});
+    public BaseModel addUser(@RequestBody User user, BindingResult bindingResult) {
+        User checkName = userService.getByUserName(user.getUsername());
+        if(checkName!=null){
+            throw BusinessException.DUPLICATE_USERNAME;
+        }
+
+        BaseModel result = new BaseModel();
+        int i = userService.insert(user);
+
+        if (i == 1) {
+            result.code = 200;
+            return result;
         } else {
-            BaseModel result = new BaseModel();
-            int i = userService.insert(user);
-            if (i == 1) {
-                result.code = 200;
-                return result;
-            } else {
-                throw BusinessException.INSERT_FAIL;
-            }
+            throw BusinessException.INSERT_FAIL;
         }
     }
 
+    @PostMapping("/checkUsername")
+    public BaseModel checkUsername(@RequestBody User user){
+        User checkName = userService.getByUserName(user.getUsername());
+        if(checkName!=null){
+            throw BusinessException.DUPLICATE_USERNAME;
+        }
+        BaseModel result = new BaseModel();
+        result.code = 200;
+        return result;
+    }
+
     @PostMapping("/checkUser")
-    public BaseModel getAllByFilter(@RequestBody User user) {
+    public  BaseModelJson<Map<String, String>> getAllByFilter(@RequestBody User user) {
         Map<String, Object> map = new HashMap<>();
         map.put("username", user.getUsername());
         map.put("password", user.getPassword());
+        User checkName = userService.getByUserName(user.getUsername());
+        if(checkName==null){
+            throw BusinessException.USERNAME_NOT_EXISTS;
+        }
         List<User> users = userService.getAllByFilter(map);
         if (users.size() == 0) {
-            throw BusinessException.USERNAME_NOT_EXISTS;
+            throw BusinessException.PASSWORD_WRONG;
         } else {
-            BaseModel result = new BaseModel();
-            result.message = authService.login(user);
+            BaseModelJson<Map<String, String>> result = new BaseModelJson();
+            HashMap<String, String> res = new HashMap<>();
+            res.put("jwt", authService.login(user));
+            res.put("user_id", checkName.getUser_id()+"");
+//            result.message = authService.login(user);
+            result.data = res;
             result.code = 200;
             return result;
         }
@@ -114,6 +134,19 @@ public class UserController extends BaseController {
         return result;
     }
 
+    @PostMapping("/userAuth")
+    public BaseModelJson<String[]> getAuth(@RequestBody Map<String, String> param){
+        int uid = Integer.parseInt(param.get("user_id"));
+//        int uid = user.getId();
+        User user = userService.getById(uid);
+//        System.out.println(user.getUsername());
 
+        BaseModelJson<String[]> result = new BaseModelJson<>();
+        result.code = 200;
+        result.data = userService.getRights(user);
+//        System.out.println(user.getId());
+//        BaseModelJson<Map<String, List<String>>> result = new BaseModelJson<>();
+        return result;
+    }
 
 }

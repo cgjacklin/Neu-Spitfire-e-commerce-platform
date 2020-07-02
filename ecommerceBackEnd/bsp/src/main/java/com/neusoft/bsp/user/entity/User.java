@@ -8,9 +8,9 @@ import com.neusoft.bsp.common.validationGroup.UpdateGroup;
 
 import javax.validation.constraints.NotNull;
 
-public class User implements BaseEntity<String> {
+public class User implements BaseEntity<Integer> {
     @NotNull(message = "The userid shouldn't be null",groups = {InsertGroup.class, UpdateGroup.class, SelectGroup.class})  //addUser  user_id shouldn't be null updateuser selectsuer deleteuser
-    String user_id;
+    int user_id;
     @NotNull(message = "The username shouldn't be null",groups = {InsertGroup.class, UpdateGroup.class})
     String username;
     String password;
@@ -27,11 +27,11 @@ public class User implements BaseEntity<String> {
     String phone;
     int man_buyer_id;
 
-    public String getUser_id() {
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(String user_id) {
+    public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
 
@@ -148,8 +148,8 @@ public class User implements BaseEntity<String> {
     }
 
     @Override
-    public String getId() {
-        return this.user_id ;
+    public Integer getId() {
+        return null;
     }
 
     @Override

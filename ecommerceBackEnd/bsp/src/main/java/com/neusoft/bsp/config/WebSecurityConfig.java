@@ -42,8 +42,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
+                //允许访问登录和注册api
                 .authorizeRequests()
                 .antMatchers("/user/checkUser").permitAll()
+                .antMatchers("/user/addUser").permitAll()
+                .antMatchers("/user/checkUsername").permitAll()
+                .antMatchers("api/user/checkUser").permitAll()
+                .antMatchers("api/user/addUser").permitAll()
 
                 // 允许对于网站静态资源的无授权访问
                 .antMatchers(

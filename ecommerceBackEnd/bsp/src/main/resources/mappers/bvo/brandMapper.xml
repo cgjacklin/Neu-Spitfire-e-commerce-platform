@@ -2,11 +2,11 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.neusoft.bsp.user.mapper.UserMapper">
+<mapper namespace="com.neusoft.bsp.bvoinfor.mapper.BrandMapper">
 
-<!--    <select id="insert" parameterType="User">-->
-<!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
-<!--    </select>-->
+    <!--    <select id="insert" parameterType="User">-->
+    <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
+    <!--    </select>-->
 
     <insert id="insert" parameterType="User"  useGeneratedKeys="true" keyProperty="user_id">
         insert into sys_user values(null,#{username},#{password},#{name},#{rights},#{role_id},#{last_login}

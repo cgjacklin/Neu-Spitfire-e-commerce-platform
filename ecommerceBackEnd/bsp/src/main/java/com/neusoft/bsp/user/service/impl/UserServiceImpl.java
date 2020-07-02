@@ -2,6 +2,7 @@ package com.neusoft.bsp.user.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.neusoft.bsp.common.exception.BusinessException;
 import com.neusoft.bsp.user.entity.User;
 import com.neusoft.bsp.user.mapper.UserMapper;
 import com.neusoft.bsp.user.service.UserService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int insert(User user) {
+        setDefaultRights(user);
         return userMapper.insert(user);
     }
 
@@ -28,12 +31,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int delete(String userid) {
+    public int delete(int userid) {
         return userMapper.delete(userid);
     }
 
     @Override
-    public User getById(String userid) {
+    public User getById(int userid) {
         return userMapper.getById(userid);
     }
 
@@ -63,5 +66,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUserName(String userName) {
         return userMapper.getByUsername(userName);
+    }
+
+    @Override
+    public void setDefaultRights(User user) {
+        if(user.getRole_id().equals("mvo")){
+            user.setRights(MVODEFAULT);
+        }
+        else if(user.getRole_id().equals("bvo")){
+            user.setRights(BVODEFAULT);
+        }
+    }
+
+    @Override
+    public void setRights(User user, List<String> rights) {
+        StringBuffer newRights = new StringBuffer("");
+        for(String right:rights){
+            newRights.append(right+",");
+        }
+        newRights.deleteCharAt(newRights.length()-1);
+        user.setRights(newRights.toString());
+        update(user);
+    }
+
+    @Override
+    public String[] getRights(User user) {
+        String[] rights = user.getRights().split(",");
+        return rights;
     }
 }
