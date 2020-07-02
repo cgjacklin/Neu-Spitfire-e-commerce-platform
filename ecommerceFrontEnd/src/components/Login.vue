@@ -33,12 +33,18 @@
           show-password
         ></el-input>
         <el-button class="btn" type="danger" @click="login">Login</el-button>
-        <el-link class="register" type="danger" :underline="false" @click="change" icon="el-icon-right">register</el-link>
+        <el-link
+          class="register"
+          type="danger"
+          :underline="false"
+          @click="change"
+          icon="el-icon-right"
+        >register</el-link>
       </div>
     </transition>
 
     <transition name="el-zoom-in-left">
-      <div v-show="showRegister" class="box">
+      <div v-show="showRegister" class="box-register">
         <h2 class="title">Register</h2>
         <el-input
           style="width:24rem"
@@ -50,50 +56,189 @@
         <el-input
           style="width:24rem"
           class="input"
+          v-model="nickname"
+          placeholder="Please enter the nick name."
+          prefix-icon="el-icon-user"
+        ></el-input>
+        <el-input
+          style="width:24rem"
+          class="input"
           v-model="password"
           placeholder="Please enter your password."
           prefix-icon="el-icon-lock"
           show-password
         ></el-input>
-        <el-button class="btn" type="danger" @click="login">Register</el-button>
-        <el-link class="register" type="danger" :underline="false" @click="change" icon="el-icon-back">login</el-link>
+        <el-input
+          style="width:24rem"
+          class="input"
+          v-model="passwordSure"
+          placeholder="Please enter password again."
+          prefix-icon="el-icon-lock"
+          show-password
+        ></el-input>
+        <el-input
+          style="width:24rem"
+          class="input"
+          v-model="phone"
+          placeholder="Please enter your phone."
+          prefix-icon="el-icon-phone"
+        ></el-input>
+        <el-input
+          style="width:24rem"
+          class="input"
+          v-model="email"
+          placeholder="Please enter your e-mail."
+          prefix-icon="el-icon-message"
+        ></el-input>
+        <div class="radio">
+          <el-radio v-model="role_id" label="1">Brand-seller</el-radio>
+          <el-radio v-model="role_id" label="2">Borrow-seller</el-radio>
+        </div>
+        <el-button class="btn" type="danger" @click="register">Register</el-button>
+        <el-link
+          class="register"
+          type="danger"
+          :underline="false"
+          @click="change"
+          icon="el-icon-back"
+        >login</el-link>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+let _ = require("lodash");
 export default {
   data() {
     return {
       showlogin: true,
       showRegister: false,
       username: "",
-      password: ""
+      nickname: "",
+      password: "",
+      passwordSure: "",
+      phone: "",
+      email: "",
+      role_id: "1"
     };
+  },
+  watch: {
+    passwordSure: function() {
+      this.debouncedPassword();
+    },
+    username: function() {
+      if(this.showRegister == true){
+        this.debouncedUsername();
+      }
+    }
+  },
+  created() {
+    // `_.debounce` 通过 Lodash 等待输入完毕后，再进行验证
+    this.debouncedPassword = _.debounce(this.passwordSureInput, 900);
+    this.debouncedUsername = _.debounce(this.usernameInput,900)
   },
   methods: {
     change() {
       if (this.showlogin == true) {
         this.showlogin = false;
+        this.clearString();
         setTimeout(() => {
           this.showRegister = true;
         }, "350");
       } else {
         this.showRegister = false;
+        this.clearString();
         setTimeout(() => {
           this.showlogin = true;
         }, "350");
       }
     },
-    a() {
-      this.showRegister = true;
+    clearString() {
+      this.username = "";
+      this.password = "";
+      this.nickname = "";
+      this.passwordSure = "";
+      this.phone = "";
+      this.email = "";
+      this.role_id = "1";
+    },
+    usernameInput() {
+      if(this.username == 'aaa'){
+        this.$notify({
+          title: "Warning",
+          message: `The user name '${this.username}' already exists, please enter a new name`,
+          position: "bottom-left",
+          type: "warning"
+        });
+        this.username = ''
+      }else{
+        this.$notify({
+          title: "Wonderfull",
+          message: "The user name is available",
+          position: "bottom-left",
+          type: "success"
+        });
+      }
+    },
+    passwordSureInput() {
+      if (this.password == this.passwordSure && this.passwordSure != "") {
+        this.$notify({
+          title: "Wonderfull",
+          message: "Two passwords are the same",
+          position: "bottom-left",
+          type: "success"
+        });
+        return;
+      }
+      if (this.passwordSure == "") {
+        return;
+      }
+      this.$notify({
+        title: "Warning",
+        message: "Two passwords are not the same，please re-enter",
+        position: "bottom-left",
+        type: "warning"
+      });
+    },
+    register() {
+      if (this.username == "") {
+        this.$message.error("Please enter the username");
+        return;
+      }
+      if (this.nickname == "") {
+        this.$message.error("Please enter the nickname");
+        return;
+      }
+      if (this.Rpassword == "") {
+        this.$message.error("Please enter the password");
+        return;
+      }
+      if (this.passwordSure == "") {
+        this.$message.error("Please enter the password again");
+        return;
+      }
+      if (this.phone == "") {
+        this.$message.error("Please enter the phone");
+        return;
+      }
+      if (this.email == "") {
+        this.$message.error("Please enter the email");
+        return;
+      }
+      if (this.password != this.passwordSure) {
+        this.$message.error("Two passwords are not the same，please re-enter");
+        return;
+      }
+
+      this.change();
+      this.$message.success("Registered successfully, now jump to login");
     },
     login() {
       if (this.username == "") {
-        this.$message.error("请输入用户名~");
+        this.$message.error("请输入用户名");
       } else if (this.password == "") {
-        this.$message.error("请输入密码～");
+        this.$message.error("请输入密码");
       } else {
         //无后端演示登录
         if (this.username == "admin" && this.password == "admin888") {
@@ -138,11 +283,26 @@ export default {
   justify-content: space-evenly;
   height: 25rem;
 }
-.title{
+.box-register {
+  margin-top: 5rem;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 40rem;
+}
+.title {
   width: 35rem;
 }
 .input >>> .el-input__inner {
   height: 50px !important;
+}
+.radio >>> .el-radio__input.is-checked .el-radio__inner {
+  border-color: #f46774;
+  background: #f46774;
+}
+.radio >>> .el-radio__input.is-checked + .el-radio__label {
+  color: #f46774;
 }
 .btn {
   width: 15rem;

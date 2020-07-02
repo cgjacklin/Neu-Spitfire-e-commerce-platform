@@ -29,6 +29,14 @@ export default new Router({
           path: '/subpage',
           component: resolve => require(['../components/page/SubPage.vue'], resolve)
         },
+        {
+          path: '/company',
+          component: resolve => require(['../components/page/Company.vue'], resolve)
+        },
+        {
+          path: '/goods',
+          component: resolve => require(['../components/page/Goods.vue'], resolve)
+        },
       ]
     }
   ]
