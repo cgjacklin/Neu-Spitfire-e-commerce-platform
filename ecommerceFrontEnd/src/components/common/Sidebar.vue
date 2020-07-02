@@ -50,6 +50,16 @@ export default {
                     }
                 ]
             },
+            {
+                icon: 'el-icon-s-home',
+                index: '/company',
+                title: '公司信息',
+            },
+            {
+                icon: 'el-icon-s-home',
+                index: '/goods',
+                title: '商品信息',
+            },
         ]
       };
     },
