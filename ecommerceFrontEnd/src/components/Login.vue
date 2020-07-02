@@ -125,12 +125,18 @@ export default {
   },
   watch: {
     passwordSure: function() {
-      this.debounced();
+      this.debouncedPassword();
+    },
+    username: function() {
+      if(this.showRegister == true){
+        this.debouncedUsername();
+      }
     }
   },
   created() {
     // `_.debounce` 通过 Lodash 等待输入完毕后，再进行验证
-    this.debounced = _.debounce(this.passwordSureInput, 900);
+    this.debouncedPassword = _.debounce(this.passwordSureInput, 900);
+    this.debouncedUsername = _.debounce(this.usernameInput,900)
   },
   methods: {
     change() {
@@ -157,7 +163,24 @@ export default {
       this.email = "";
       this.role_id = "1";
     },
-    usernameInput() {},
+    usernameInput() {
+      if(this.username == 'aaa'){
+        this.$notify({
+          title: "Warning",
+          message: `The user name '${this.username}' already exists, please enter a new name`,
+          position: "bottom-left",
+          type: "warning"
+        });
+        this.username = ''
+      }else{
+        this.$notify({
+          title: "Wonderfull",
+          message: "The user name is available",
+          position: "bottom-left",
+          type: "success"
+        });
+      }
+    },
     passwordSureInput() {
       if (this.password == this.passwordSure && this.passwordSure != "") {
         this.$notify({
