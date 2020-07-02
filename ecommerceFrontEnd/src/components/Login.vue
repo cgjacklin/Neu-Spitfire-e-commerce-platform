@@ -50,7 +50,6 @@
           style="width:24rem"
           class="input"
           v-model="username"
-          @input="usernameInput"
           placeholder="Please enter the user name."
           prefix-icon="el-icon-user-solid"
         ></el-input>
@@ -73,7 +72,6 @@
           style="width:24rem"
           class="input"
           v-model="passwordSure"
-          @input="passwordSureInput"
           placeholder="Please enter password again."
           prefix-icon="el-icon-lock"
           show-password
@@ -110,6 +108,7 @@
 </template>
 
 <script>
+let _ = require("lodash");
 export default {
   data() {
     return {
@@ -124,50 +123,60 @@ export default {
       role_id: "1"
     };
   },
+  watch: {
+    passwordSure: function() {
+      this.debounced();
+    }
+  },
+  created() {
+    // `_.debounce` 通过 Lodash 等待输入完毕后，再进行验证
+    this.debounced = _.debounce(this.passwordSureInput, 900);
+  },
   methods: {
     change() {
       if (this.showlogin == true) {
         this.showlogin = false;
-        this.clearString()
+        this.clearString();
         setTimeout(() => {
           this.showRegister = true;
         }, "350");
       } else {
         this.showRegister = false;
-        this.clearString()
+        this.clearString();
         setTimeout(() => {
           this.showlogin = true;
         }, "350");
       }
     },
-    clearString(){
-        this.username = "";
-        this.password = "";
-        this.nickname = "";
-        this.passwordSure = "";
-        this.phone = "";
-        this.email = "";
-        this.role_id = "1";
+    clearString() {
+      this.username = "";
+      this.password = "";
+      this.nickname = "";
+      this.passwordSure = "";
+      this.phone = "";
+      this.email = "";
+      this.role_id = "1";
     },
-    usernameInput(){
-
-    },
-    passwordSureInput(){
-      if(this.password == this.passwordSure){
+    usernameInput() {},
+    passwordSureInput() {
+      if (this.password == this.passwordSure && this.passwordSure != "") {
         this.$notify({
-          title: 'Wonderfull',
-          message: 'Two passwords are the same',
-          position: 'bottom-right',
-          type:'success'
+          title: "Wonderfull",
+          message: "Two passwords are the same",
+          position: "bottom-left",
+          type: "success"
         });
-      }else{
-        this.$notify({
-          title: 'Warning',
-          message: 'Two passwords are not the same',
-          position: 'bottom-right',
-          type:'warning'
-        });
+        return;
       }
+      if (this.passwordSure == "") {
+        return;
+      }
+      this.$notify({
+        title: "Warning",
+        message: "Two passwords are not the same，please re-enter",
+        position: "bottom-left",
+        type: "warning"
+      });
     },
     register() {
       if (this.username == "") {
@@ -194,7 +203,11 @@ export default {
         this.$message.error("Please enter the email");
         return;
       }
-      
+      if (this.password != this.passwordSure) {
+        this.$message.error("Two passwords are not the same，please re-enter");
+        return;
+      }
+
       this.change();
       this.$message.success("Registered successfully, now jump to login");
     },
