@@ -9,35 +9,10 @@
     <!--    </select>-->
 
     <insert id="insert" parameterType="Manufacturer"  useGeneratedKeys="true" keyProperty="man_id">
-        insert into man_manufacturer values(null,#{name_en},#{name_en},#{name_cn},#{gmc_report_type},#{gmc_report_url},#{description}
+        insert into man_manufacturer values(null,#{name_en},#{name_cn},#{gmc_report_type},#{gmc_report_url},#{description}
             ,#{created_by},#{creation_date},#{last_update_by},#{last_update_date},#{remark},#{sts_cd})
     </insert>
 
 
-    <update id="update" parameterType="User">
-        update sys_user set username = #{username},password = #{password},name = #{name},rights = #{rights},role_id = #{role_id},
-         last_login= #{last_login} ,ip = #{ip},status = #{status},bz = #{bz},skin = #{skin},email = #{email}
-          ,number = #{number},phone = #{phone} ,man_buyer_id = #{man_buyer_id} where user_id = #{user_id}
-    </update>
-
-    <delete id="delete" parameterType="java.lang.Integer">
-        delete from sys_user where user_id = #{user_id}
-    </delete>
-
-    <select id="getById" parameterType="java.lang.Integer" resultType="User" >
-        select * from sys_user where user_id = #{userid}
-    </select>
-
-    <select id="getAll" resultType="User">
-        select * from sys_user
-    </select>
-
-    <select id="getAllByFilter" parameterType="java.util.Map" resultType="User">
-        select * from sys_user where username = #{username} and password = #{password}
-    </select>
-
-    <select id="getByUsername" parameterType="java.lang.String" resultType="User">
-        select * from sys_user where username = #{username}
-    </select>
 
 </mapper>
