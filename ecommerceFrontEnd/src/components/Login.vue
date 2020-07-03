@@ -32,6 +32,21 @@
           prefix-icon="el-icon-lock"
           show-password
         ></el-input>
+        <div>
+          <el-input
+            style="width:18rem"
+            class="input"
+            v-model="checkCode"
+            placeholder="Please enter the code."
+            prefix-icon="el-icon-edit"
+          ></el-input>
+          <el-button
+            style="width:5.5rem;height: 50px"
+            type="danger"
+            plain
+            @click="createCode"
+          >{{Code}}</el-button>
+        </div>
         <el-button class="btn" type="danger" @click="login">Login</el-button>
         <el-link
           class="register"
@@ -114,6 +129,8 @@ export default {
     return {
       showlogin: true,
       showRegister: false,
+      checkCode: "",
+      Code: "",
       username: "",
       nickname: "",
       password: "",
@@ -128,17 +145,68 @@ export default {
       this.debouncedPassword();
     },
     username: function() {
-      if(this.showRegister == true){
+      if (this.showRegister == true) {
         this.debouncedUsername();
       }
     }
   },
+  mounted() {
+    this.createCode();
+  },
   created() {
     // `_.debounce` 通过 Lodash 等待输入完毕后，再进行验证
     this.debouncedPassword = _.debounce(this.passwordSureInput, 900);
-    this.debouncedUsername = _.debounce(this.usernameInput,900)
+    this.debouncedUsername = _.debounce(this.usernameInput, 900);
   },
   methods: {
+    createCode() {
+      let code = "";
+      let codeLength = 4; //验证码的长度
+      let random = new Array(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      ); //随机数
+      for (let i = 0; i < codeLength; i++) {
+        //循环操作
+        let index = Math.floor(Math.random() * 36); //取得随机数的索引（0~35）
+        code += random[index]; //根据索引取得随机数加到code上
+      }
+      this.Code = code; //把code值赋给验证码
+    },
     change() {
       if (this.showlogin == true) {
         this.showlogin = false;
@@ -164,15 +232,15 @@ export default {
       this.role_id = "1";
     },
     usernameInput() {
-      if(this.username == 'aaa'){
+      if (this.username == "aaa") {
         this.$notify({
           title: "Warning",
           message: `The user name '${this.username}' already exists, please enter a new name`,
           position: "bottom-left",
           type: "warning"
         });
-        this.username = ''
-      }else{
+        this.username = "";
+      } else {
         this.$notify({
           title: "Wonderfull",
           message: "The user name is available",
@@ -236,32 +304,42 @@ export default {
     },
     login() {
       if (this.username == "") {
-        this.$message.error("请输入用户名");
-      } else if (this.password == "") {
-        this.$message.error("请输入密码");
-      } else {
-        //无后端演示登录
-        if (this.username == "admin" && this.password == "admin888") {
-          this.$message.success("演示页面登录成功");
-          this.$router.push("/main");
-          return;
-        }
-        //请求
-        this.$post("/api/admin/login", {
-          username: this.username,
-          password: this.password
-        }).then(res => {
-          //处理response
-          if (res == "用户名错误") {
-            this.$message.warning("用户名错误");
-          } else if (res == "密码错误") {
-            this.$message.warning("密码错误");
-          } else {
-            this.$message.success("登录成功");
-            this.$router.push("/main");
-          }
-        });
+        this.$message.error("Please enter the user name");
+        return;
       }
+      if (this.password == "") {
+        this.$message.error("Please enter the password");
+        return;
+      }
+      if (this.checkCode == ""){
+        this.$message.error("Please enter the verification code")
+        return
+      }
+      if(this.checkCode != this.Code){
+        this.$message.warning("The verification code is error")
+        return
+      }
+      //无后端演示登录
+      if (this.username == "admin" && this.password == "admin888") {
+        this.$message.success("演示页面登录成功");
+        this.$router.push("/main");
+        return;
+      }
+      //请求
+      this.$post("/api/admin/login", {
+        username: this.username,
+        password: this.password
+      }).then(res => {
+        //处理response
+        if (res == "用户名错误") {
+          this.$message.warning("用户名错误");
+        } else if (res == "密码错误") {
+          this.$message.warning("密码错误");
+        } else {
+          this.$message.success("登录成功");
+          this.$router.push("/main");
+        }
+      });
     }
   }
 };
@@ -281,7 +359,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  height: 25rem;
+  height: 30rem;
 }
 .box-register {
   margin-top: 5rem;
