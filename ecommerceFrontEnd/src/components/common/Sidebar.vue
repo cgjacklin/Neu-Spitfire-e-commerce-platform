@@ -8,6 +8,7 @@
       active-text-color="#F67E7E"
       class="el-menu-vertical-demo"
       router
+      unique-opened
       :collapse="sharedState.state.isCollapse"
     >
       <!-- 如果有子菜单 -->
@@ -59,6 +60,21 @@ export default {
               index: "/user",
               title: "User management"
             },
+            {
+              icon: "el-icon-notebook-2",
+              index: "/param",
+              title: "Parameter management"
+            },
+            {
+              icon: "el-icon-user",
+              index: "/data",
+              title: "Data dictionary"
+            },
+            {
+              icon: "el-icon-user",
+              index: "/check",
+              title: "Fund check"
+            },
           ]
         },
         {
@@ -80,6 +96,11 @@ export default {
               icon: "el-icon-s-order",
               index: "/order",
               title: "Order management"
+            },
+            {
+              icon: "el-icon-s-order",
+              index: "/wallet",
+              title: "Wallet"
             }
           ]
         },
@@ -102,6 +123,16 @@ export default {
               icon: "el-icon-star-off",
               index: "/wishlist",
               title: "Wish list"
+            },
+            {
+              icon: "el-icon-s-order",
+              index: "/order",
+              title: "Order management"
+            },
+            {
+              icon: "el-icon-s-order",
+              index: "/wallet",
+              title: "Wallet"
             }
           ]
         }

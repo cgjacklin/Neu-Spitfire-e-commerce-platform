@@ -39,7 +39,11 @@ export default new Router({
         },
         {
           path: '/order',
-          component: resolve => require(['../components/page/MVO/Order.vue'], resolve)
+          component: resolve => require(['../components/page/Same/Order.vue'], resolve)
+        },
+        {
+          path: '/wallet',
+          component: resolve => require(['../components/page/Same/Wallet.vue'], resolve)
         },
         {
           path: '/store',
@@ -60,6 +64,18 @@ export default new Router({
         {
           path: '/user',
           component: resolve => require(['../components/page/Admin/User.vue'], resolve)
+        },
+        {
+          path: '/param',
+          component: resolve => require(['../components/page/Admin/Param.vue'], resolve)
+        },
+        {
+          path: '/data',
+          component: resolve => require(['../components/page/Admin/Data.vue'], resolve)
+        },
+        {
+          path: '/check',
+          component: resolve => require(['../components/page/Admin/Check.vue'], resolve)
         },
       ]
     }
