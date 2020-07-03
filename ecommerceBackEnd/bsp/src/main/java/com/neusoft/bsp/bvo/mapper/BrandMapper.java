@@ -1,7 +1,7 @@
-package com.neusoft.bsp.bvoinfor.mapper;
+package com.neusoft.bsp.bvo.mapper;
 
 import com.neusoft.bsp.common.base.BaseMapper;
-import com.neusoft.bsp.bvoinfor.entity.*;
+import com.neusoft.bsp.bvo.entity.*;
 import org.springframework.stereotype.Repository;
 
 @Repository
