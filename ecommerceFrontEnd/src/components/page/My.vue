@@ -1,5 +1,5 @@
 <template>
-  <div>子页面</div>
+  <div>个人中心</div>
 </template>
 
 <script>

@@ -1,8 +1,7 @@
 <template>
-  <div>首页
-
-    <el-input></el-input>
-  </div>
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/main' }">Home</el-breadcrumb-item>
+    </el-breadcrumb>
 </template>
 
 <script>
