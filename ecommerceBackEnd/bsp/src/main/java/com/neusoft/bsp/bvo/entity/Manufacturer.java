@@ -1,9 +1,10 @@
-package com.neusoft.bsp.bvoinfor.entity;
+package com.neusoft.bsp.bvo.entity;
 
 import com.neusoft.bsp.common.base.BaseEntity;
 
 import java.sql.Date;
 
+//公司、品牌商信息
 public class Manufacturer implements BaseEntity<Integer> {
     int man_id;
     String name_en;
@@ -13,12 +14,21 @@ public class Manufacturer implements BaseEntity<Integer> {
     String description;
     String created_by;
     Date creation_date;
-    Date last_update_date;
     String last_update_by;
+    Date last_update_date;
+    int call_cnt;
     String remark;
     String sts_cd;
 
-    public Manufacturer(int man_id, String name_en, String name_cn, String gmc_report_type, String gmc_report_url, String description, String created_by, Date creation_date, Date last_update_date, String last_update_by, String remark, String sts_cd) {
+    public Manufacturer( String name_en, String name_cn, String gmc_report_type, String gmc_report_url, String description) {
+        this.name_en = name_en;
+        this.name_cn = name_cn;
+        this.gmc_report_type = gmc_report_type;
+        this.gmc_report_url = gmc_report_url;
+        this.description = description;
+    }
+
+    public Manufacturer(int man_id, String name_en, String name_cn, String gmc_report_type, String gmc_report_url, String description, String created_by, Date creation_date, String last_update_by, Date last_update_date, int call_cnt, String remark, String sts_cd) {
         this.man_id = man_id;
         this.name_en = name_en;
         this.name_cn = name_cn;
@@ -27,18 +37,11 @@ public class Manufacturer implements BaseEntity<Integer> {
         this.description = description;
         this.created_by = created_by;
         this.creation_date = creation_date;
-        this.last_update_date = last_update_date;
         this.last_update_by = last_update_by;
+        this.last_update_date = last_update_date;
+        this.call_cnt = call_cnt;
         this.remark = remark;
         this.sts_cd = sts_cd;
-    }
-
-    public Date getLast_update_date() {
-        return last_update_date;
-    }
-
-    public void setLast_update_date(Date last_update_date) {
-        this.last_update_date = last_update_date;
     }
 
     public int getMan_id() {
@@ -105,12 +108,28 @@ public class Manufacturer implements BaseEntity<Integer> {
         this.creation_date = creation_date;
     }
 
+    public Date getLast_update_date() {
+        return last_update_date;
+    }
+
+    public void setLast_update_date(Date last_update_date) {
+        this.last_update_date = last_update_date;
+    }
+
     public String getLast_update_by() {
         return last_update_by;
     }
 
     public void setLast_update_by(String last_update_by) {
         this.last_update_by = last_update_by;
+    }
+
+    public int getCall_cnt() {
+        return call_cnt;
+    }
+
+    public void setCall_cnt(int call_cnt) {
+        this.call_cnt = call_cnt;
     }
 
     public String getRemark() {

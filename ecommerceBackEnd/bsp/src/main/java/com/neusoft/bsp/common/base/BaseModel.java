@@ -1,5 +1,6 @@
 package com.neusoft.bsp.common.base;
 
+
 public class BaseModel {
 
     public Integer code = 200;

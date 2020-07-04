@@ -11,9 +11,9 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException NO_PRODUCT = new BusinessException(601, "No product");
 
     public static final BusinessException INSERT_FAIL = new BusinessException(504, "Add operation failed", new Object[0]);
-    public static final BusinessException DELETE_FAIL = new BusinessException(504, "Add operation failed", new Object[0]);
+    public static final BusinessException DELETE_FAIL = new BusinessException(504, "Delete operation failed", new Object[0]);
     public static final BusinessException UPDATE_FAIL = new BusinessException(504, "Update operation failed", new Object[0]);
-    public static final BusinessException USERID_NULL_ERROR = new BusinessException(504, "Update operation failed", new Object[0]);
+    public static final BusinessException USERID_NULL_ERROR = new BusinessException(504, "User null error", new Object[0]);
 
     int code;
     String msg;

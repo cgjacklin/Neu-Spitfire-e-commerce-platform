@@ -7,7 +7,8 @@
             <el-dropdown trigger="click" @command="handleCommand">
                 <el-avatar :src="imgSrc"></el-avatar>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                    <el-dropdown-item command="my">My Information</el-dropdown-item>
+                    <el-dropdown-item command="login">Log out</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
             
@@ -34,7 +35,8 @@
                 }
             },
             handleCommand(command) {
-                this.$router.push('/login');
+                console.log(command)
+                this.$router.push(`/${command}`);
             }
         }
     }

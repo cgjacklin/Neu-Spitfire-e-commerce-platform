@@ -1,9 +1,9 @@
-package com.neusoft.bsp.bvoinfor.entity;
+package com.neusoft.bsp.bvo.entity;
 
 import com.neusoft.bsp.common.base.BaseEntity;
 
 import java.sql.Date;
-
+//品牌信息，一个公司（品牌商）可有多个品牌
 public class Brand implements BaseEntity<Integer> {
     int brd_id;
     int man_id;
