@@ -271,52 +271,52 @@ export default {
     },
     register() {
       if (this.username == "") {
-        this.$message.error("Please enter the username");
+        this.$notify.error("Please enter the username");
         return;
       }
       if (this.nickname == "") {
-        this.$message.error("Please enter the nickname");
+        this.$notify.error("Please enter the nickname");
         return;
       }
       if (this.Rpassword == "") {
-        this.$message.error("Please enter the password");
+        this.$notify.error("Please enter the password");
         return;
       }
       if (this.passwordSure == "") {
-        this.$message.error("Please enter the password again");
+        this.$notify.error("Please enter the password again");
         return;
       }
       if (this.phone == "") {
-        this.$message.error("Please enter the phone");
+        this.$notify.error("Please enter the phone");
         return;
       }
       if (this.email == "") {
-        this.$message.error("Please enter the email");
+        this.$notify.error("Please enter the email");
         return;
       }
       if (this.password != this.passwordSure) {
-        this.$message.error("Two passwords are not the same，please re-enter");
+        this.$notify.error("Two passwords are not the same，please re-enter");
         return;
       }
 
       this.change();
-      this.$message.success("Registered successfully, now jump to login");
+      this.$notify.success("Registered successfully, now jump to login");
     },
     login() {
       if (this.username == "") {
-        this.$message.error("Please enter the user name");
+        this.$notify.error("Please enter the user name");
         return;
       }
       if (this.password == "") {
-        this.$message.error("Please enter the password");
+        this.$notify.error("Please enter the password");
         return;
       }
       if (this.checkCode == ""){
-        this.$message.error("Please enter the verification code")
+        this.$notify.error("Please enter the verification code")
         return
       }
       if(this.checkCode != this.Code){
-        this.$message.warning("The verification code is error")
+        this.$notify.warning("The verification code is error")
         return
       }
       //无后端演示登录
@@ -332,11 +332,11 @@ export default {
       }).then(res => {
         //处理response
         if (res == "用户名错误") {
-          this.$message.warning("用户名错误");
+          this.$notify.warning("用户名错误");
         } else if (res == "密码错误") {
-          this.$message.warning("密码错误");
+          this.$notify.warning("密码错误");
         } else {
-          this.$message.success("登录成功");
+          this.$notify.success("登录成功");
           this.$router.push("/main");
         }
       });
