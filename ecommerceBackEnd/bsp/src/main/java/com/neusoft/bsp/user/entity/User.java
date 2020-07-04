@@ -147,10 +147,10 @@ public class User implements BaseEntity<Integer> {
         this.man_buyer_id = man_buyer_id;
     }
 
-    @Override
-    public Integer getId() {
-        return null;
-    }
+//    @Override
+//    public Integer getId() {
+//        return null;
+//    }
 
     @Override
     public String toString() {

@@ -44,11 +44,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 //允许访问登录和注册api
                 .authorizeRequests()
-                .antMatchers("/user/checkUser").permitAll()
-                .antMatchers("/user/addUser").permitAll()
+                .antMatchers("/user/login").permitAll()
+                .antMatchers("/user/register").permitAll()
                 .antMatchers("/user/checkUsername").permitAll()
-                .antMatchers("api/user/checkUser").permitAll()
-                .antMatchers("api/user/addUser").permitAll()
+                .antMatchers("api/user/login").permitAll()
+                .antMatchers("api/user/register").permitAll()
 
                 // 允许对于网站静态资源的无授权访问
                 .antMatchers(

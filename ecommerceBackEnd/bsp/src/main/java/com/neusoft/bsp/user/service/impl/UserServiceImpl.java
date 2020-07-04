@@ -3,6 +3,7 @@ package com.neusoft.bsp.user.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neusoft.bsp.common.exception.BusinessException;
+import com.neusoft.bsp.common.security.service.AuthService;
 import com.neusoft.bsp.user.entity.User;
 import com.neusoft.bsp.user.mapper.UserMapper;
 import com.neusoft.bsp.user.service.UserService;
@@ -19,10 +20,39 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    AuthService authService;
+
     @Override
     public int insert(User user) {
         setDefaultRights(user);
         return userMapper.insert(user);
+    }
+
+    @Override
+    public int register(User user) {
+        User checkName = getByUserName(user.getUsername());
+        if(checkName!=null){
+            throw BusinessException.DUPLICATE_USERNAME;
+        }
+        return insert(user);
+    }
+
+    @Override
+    public int login(User user) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", user.getUsername());
+        map.put("password", user.getPassword());
+        User checkName = getByUserName(user.getUsername());
+        if(checkName==null){
+            throw BusinessException.USERNAME_NOT_EXISTS;
+        }
+        List<User> users = getAllByFilter(map);
+        if (users.size() == 0) {
+            throw BusinessException.PASSWORD_WRONG;
+        } else {
+            return 1;
+        }
     }
 
     @Override

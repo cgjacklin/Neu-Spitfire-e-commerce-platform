@@ -109,8 +109,8 @@ public class Brand implements BaseEntity<Integer> {
         this.sts_cd = sts_cd;
     }
 
-    @Override
-    public Integer getId() {
-        return null;
-    }
+//    @Override
+//    public Integer getId() {
+//        return null;
+//    }
 }

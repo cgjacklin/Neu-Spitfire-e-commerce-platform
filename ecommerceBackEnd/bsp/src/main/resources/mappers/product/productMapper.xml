@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.product.mapper.ProductMapper">
+
+    <!--    <select id="insert" parameterType="User">-->
+    <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
+    <!--    </select>-->
+
+    <insert id="insert" parameterType="Product"  useGeneratedKeys="true" keyProperty="pro_id">
+        insert into pro_product values(null,#{sku_cd},#{brd_id},#{man_id},#{title},#{upc}
+            ,#{ean},#{model},#{warranty_day},#{retail_price},#{created_by}
+            ,#{creation_date},#{last_update_by},#{last_update_date}, #{call_cnt},#{remark},#{sts_cd},#{mininum_retail_price}
+            ,#{replenishment_period},#{key_words}, #{warranty}, #{time_unit}, #{stockseting}, #{uri})
+    </insert>
+
+    <update id="update" parameterType="Product">
+        update pro_product set sku_cd = #{sku_cd},brd_id = #{brd_id},man_id = #{man_id},title = #{title},upc = #{upc},
+         ean= #{ean} ,model = #{model},warranty_day = #{warranty_day},retail_price = #{retail_price},
+         created_by = #{created_by},creation_date = #{creation_date}
+          ,last_update_by = #{last_update_by},last_update_date = #{last_update_date} ,
+          remark = #{remark} ,sts_cd = #{sts_cd},mininum_retail_price = #{mininum_retail_price},
+          replenishment_period = #{replenishment_period},key_words = #{key_words}, warrantly = #{warrantly},
+          time_unit = #{time_unit}, stocksetting = #{stocksetting}, uri = #{uri}
+          where pro_id = #{pro_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from pro_product where pro_id = #{pro_id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="Product" >
+        select * from pro_product where pro_id = #{pro_id}
+    </select>
+
+    <select id="getAll" resultType="User">
+        select * from pro_product
+    </select>
+
+    <select id="getAllByFilter" parameterType="java.util.Map" resultType="Product">
+        select * from pro_product where man_id = #{man_id}
+    </select>
+
+
+
+
+</mapper>

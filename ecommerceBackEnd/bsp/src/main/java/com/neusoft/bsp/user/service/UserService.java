@@ -40,6 +40,8 @@ public interface UserService {
 
     User getByUserName(String userName);
 
+    int register(User user);
 
+    int login(User user);
 
 }

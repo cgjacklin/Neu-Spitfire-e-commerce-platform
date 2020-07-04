@@ -31,57 +31,46 @@ public class UserController extends BaseController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/addUser")
-    public BaseModel addUser(@RequestBody User user, BindingResult bindingResult) {
-        User checkName = userService.getByUserName(user.getUsername());
-        if(checkName!=null){
-            throw BusinessException.DUPLICATE_USERNAME;
-        }
-
-        BaseModel result = new BaseModel();
-        int i = userService.insert(user);
-
-        if (i == 1) {
-            result.code = 200;
-            return result;
+    @PostMapping("/register")
+    public BaseModel register(@RequestBody User user) {
+        BaseModel response = new BaseModel();
+        int result = userService.register(user);
+        if (result == 1) {
+            response.setSuccess();
         } else {
             throw BusinessException.INSERT_FAIL;
         }
+        return response;
     }
 
     @PostMapping("/checkUsername")
     public BaseModel checkUsername(@RequestBody User user){
-        User checkName = userService.getByUserName(user.getUsername());
-        if(checkName!=null){
-            throw BusinessException.DUPLICATE_USERNAME;
-        }
-        BaseModel result = new BaseModel();
-        result.code = 200;
-        return result;
-    }
-
-    @PostMapping("/checkUser")
-    public  BaseModelJson<Map<String, String>> getAllByFilter(@RequestBody User user) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", user.getUsername());
-        map.put("password", user.getPassword());
+        BaseModel response = new BaseModel();
         User checkName = userService.getByUserName(user.getUsername());
         if(checkName==null){
-            throw BusinessException.USERNAME_NOT_EXISTS;
+            response.setSuccess();
+        }else {
+            throw BusinessException.DUPLICATE_USERNAME;
         }
-        List<User> users = userService.getAllByFilter(map);
-        if (users.size() == 0) {
-            throw BusinessException.PASSWORD_WRONG;
-        } else {
-            BaseModelJson<Map<String, String>> result = new BaseModelJson();
+        return response;
+    }
+
+    @PostMapping("/login")
+    public  BaseModelJson<Map<String, String>> getAllByFilter(@RequestBody User user) {
+        int result = userService.login(user);
+        BaseModelJson<Map<String, String>> response = new BaseModelJson();
+        if(result == 1){
+            response.setSuccess();
             HashMap<String, String> res = new HashMap<>();
             res.put("jwt", authService.login(user));
-            res.put("user_id", checkName.getUser_id()+"");
-//            result.message = authService.login(user);
-            result.data = res;
-            result.code = 200;
-            return result;
+            res.put("user_id", user.getUser_id()+"");
+            response.data = res;
         }
+        else{
+            response.setFailure();
+        }
+        return response;
+
     }
 
     @PostMapping("/deleteUser")
@@ -91,7 +80,7 @@ public class UserController extends BaseController {
                     new Object[]{user.toString()});
         } else {
             BaseModel result = new BaseModel();
-            int i = userService.delete(user.getId());
+            int i = userService.delete(user.getUser_id());
             if (i == 1) {
                 result.code = 200;
                 return result;
@@ -102,19 +91,14 @@ public class UserController extends BaseController {
     }
     @PostMapping("/updateUser")
     public BaseModel updateUser(@Validated({UpdateGroup.class}) @RequestBody User user, BindingResult bindingResult) {  //bindingResult用于获得validate的反馈信息
-        if (bindingResult.hasErrors()) {
-            throw BusinessException.USERID_NULL_ERROR.newInstance(this.getErrorResponse(bindingResult),
-                    new Object[]{user.toString()});
-        } else {
-            BaseModel result = new BaseModel();
-            int i =userService.update(user);
-            if(i==1){
-                result.code = 200;
-                return result;
-            }else{
-                throw BusinessException.UPDATE_FAIL;
-            }
+        BaseModel response = new BaseModel();
+        int i =userService.update(user);
+        if(i==1){
+            response.setSuccess();
+        }else{
+            throw BusinessException.UPDATE_FAIL;
         }
+        return response;
     }
 
     @PostMapping("/userlist")
@@ -135,9 +119,10 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/userAuth")
-    public BaseModelJson<String[]> getAuth(@RequestBody Map<String, String> param){
-        int uid = Integer.parseInt(param.get("user_id"));
-//        int uid = user.getId();
+    public BaseModelJson<String[]> getAuth(@RequestBody User user1){
+//        int uid = Integer.parseInt(param.get("user_id"));
+        int uid = user1.getUser_id();
+//        System.out.println(uid);
         User user = userService.getById(uid);
 //        System.out.println(user.getUsername());
 
