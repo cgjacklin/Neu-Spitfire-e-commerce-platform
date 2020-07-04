@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="card-body">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/main' }">Home</el-breadcrumb-item>
     </el-breadcrumb>
@@ -115,8 +115,8 @@ export default {
 };
 </script>
 
-<style>
-.el-card__body {
+<style scoped>
+.card-body >>>.el-card__body {
   padding: 0px;
 }
 .top-box {

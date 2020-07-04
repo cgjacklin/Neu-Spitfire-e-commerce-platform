@@ -11,7 +11,7 @@
         <el-avatar :src="imgSrc"></el-avatar>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item disabled icon="el-icon-s-custom">{{nickname}}</el-dropdown-item>
-          <el-dropdown-item command="my">My Information</el-dropdown-item>
+          <el-dropdown-item command="my">My Info</el-dropdown-item>
           <el-dropdown-item command="login">Log out</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
