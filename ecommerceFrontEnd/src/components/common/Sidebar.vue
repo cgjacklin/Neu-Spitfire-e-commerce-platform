@@ -3,7 +3,7 @@
     <div class="logo" :class="{'collapse-logo': sharedState.state.isCollapse}">LOGO</div>
 
     <el-menu
-      default-active="/"
+      default-active="/main"
       background-color="#FAF3EA"
       active-text-color="#F67E7E"
       class="el-menu-vertical-demo"
@@ -42,7 +42,7 @@ export default {
       items: [
         {
           icon: "el-icon-s-home",
-          index: "/main/",
+          index: "/main",
           title: "Home"
         },
         {
@@ -61,17 +61,17 @@ export default {
               title: "User management"
             },
             {
-              icon: "el-icon-notebook-2",
+              icon: "el-icon-notebook-1",
               index: "/param",
               title: "Parameter management"
             },
             {
-              icon: "el-icon-user",
+              icon: "el-icon-collection",
               index: "/data",
               title: "Data dictionary"
             },
             {
-              icon: "el-icon-user",
+              icon: "el-icon-document-checked",
               index: "/check",
               title: "Fund check"
             },
@@ -98,7 +98,7 @@ export default {
               title: "Order management"
             },
             {
-              icon: "el-icon-s-order",
+              icon: "el-icon-wallet",
               index: "/wallet",
               title: "Wallet"
             }
@@ -130,7 +130,7 @@ export default {
               title: "Order management"
             },
             {
-              icon: "el-icon-s-order",
+              icon: "el-icon-wallet",
               index: "/wallet",
               title: "Wallet"
             }
@@ -138,11 +138,6 @@ export default {
         }
       ]
     };
-  },
-  computed: {
-    onRoutes() {
-      return this.$route.path.replace("/", "");
-    }
   },
   methods: {}
 };
