@@ -15,7 +15,7 @@
       </li>
     </ul>
     <transition name="el-zoom-in-left">
-      <div v-if="showlogin" class="box">
+      <div v-show="showlogin" class="box">
         <h2 class="title">Cross-border e-commerce borrow-sell platform</h2>
         <el-input
           style="width:24rem"

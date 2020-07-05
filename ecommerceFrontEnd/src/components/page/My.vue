@@ -7,7 +7,9 @@
     <div class="info-box">
       <el-card class="fix-info-card">
         <div slot="header">
-          <span><i class="el-icon-s-custom"></i> Basic information</span>
+          <span>
+            <i class="el-icon-s-custom"></i> Basic information
+          </span>
         </div>
         <h4>Role:{{role}}</h4>
         <h4>Username:{{username}}</h4>
@@ -17,7 +19,9 @@
       </el-card>
       <el-card class="change-info-card">
         <div slot="header">
-          <span><i class="el-icon-s-tools"></i> Setting</span>
+          <span>
+            <i class="el-icon-s-tools"></i> Setting
+          </span>
         </div>
         <el-form :model="infoForm" ref="infoForm" label-width="100px" class="form">
           <el-form-item
@@ -26,27 +30,27 @@
             prop="nickname"
             :rules="[{ required: true, message: 'Please enter the nickname number'}]"
           >
-            <el-input style="width:35rem" type="nickname" v-model="infoForm.nickname" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="infoForm.nickname" autocomplete="off"></el-input>
           </el-form-item>
-          <br>
+          <br />
           <el-form-item
-          class="label-font"
+            class="label-font"
             label="phone"
             prop="phone"
             :rules="[{ required: true, message: 'Please enter your phone number'},{ len: 11, message: 'Please enter the correct length of the phone number'}]"
           >
-            <el-input style="width:35rem" type="phone" v-model="infoForm.phone" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="infoForm.phone" autocomplete="off"></el-input>
           </el-form-item>
-          <br>
+          <br />
           <el-form-item
-          class="label-font"
+            class="label-font"
             label="email"
             prop="email"
             :rules="[{ required: true, message: 'Please enter your email'},{ type:'email', message: 'Invalid format'}]"
           >
-            <el-input style="width:35rem" type="email" v-model="infoForm.email" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="infoForm.email" autocomplete="off"></el-input>
           </el-form-item>
-          <br>
+          <br />
           <el-form-item>
             <el-button type="danger" @click="submitForm('infoForm')">Update</el-button>
           </el-form-item>
@@ -69,17 +73,19 @@ export default {
         nickname: "",
         phone: "",
         email: ""
-      },
-      submitForm(formName) {
-        this.$refs[formName].validate(valid => {
-          if (valid) {
-            console.log(this.infoForm);
-          } else {
-            return false;
-          }
-        });
       }
     };
+  },
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log(this.infoForm);
+        } else {
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
@@ -99,13 +105,12 @@ export default {
   width: 65rem;
   height: 30rem;
 }
-.form{
+.form {
   margin-top: 1rem;
   margin-left: 6rem;
 }
 .label-font >>> .el-form-item__label {
-    font-size: 17px;
-    font-weight: bold;
-    
+  font-size: 17px;
+  font-weight: bold;
 }
 </style>
