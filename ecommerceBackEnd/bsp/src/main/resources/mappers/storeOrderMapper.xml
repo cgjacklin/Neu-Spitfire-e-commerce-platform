@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.storeOrderMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.storeOrder">
+    <constructor>
+      <arg column="STO_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="STR_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="ORDER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ORDER_CREATED_TIME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PAID_TIME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_MODIFIED_TIME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATED_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATION_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CALL_CNT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STS_CD" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="PLATEFORM_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CANCEL_COMPLETE_DATE" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.storeOrder">
+    insert into sto_store_order (STO_ID, STR_ID, ORDER_ID, 
+      ORDER_CREATED_TIME, PAID_TIME, LAST_MODIFIED_TIME, 
+      CREATED_BY, CREATION_DATE, LAST_UPDATE_BY, 
+      LAST_UPDATE_DATE, CALL_CNT, REMARK, 
+      STS_CD, PLATEFORM_TYPE, CANCEL_COMPLETE_DATE
+      )
+    values (#{stoId,jdbcType=INTEGER}, #{strId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, 
+      #{orderCreatedTime,jdbcType=VARCHAR}, #{paidTime,jdbcType=VARCHAR}, #{lastModifiedTime,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{callCnt,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{stsCd,jdbcType=CHAR}, #{plateformType,jdbcType=VARCHAR}, #{cancelCompleteDate,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.storeOrder">
+    insert into sto_store_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stoId != null">
+        STO_ID,
+      </if>
+      <if test="strId != null">
+        STR_ID,
+      </if>
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="orderCreatedTime != null">
+        ORDER_CREATED_TIME,
+      </if>
+      <if test="paidTime != null">
+        PAID_TIME,
+      </if>
+      <if test="lastModifiedTime != null">
+        LAST_MODIFIED_TIME,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateBy != null">
+        LAST_UPDATE_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="callCnt != null">
+        CALL_CNT,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="stsCd != null">
+        STS_CD,
+      </if>
+      <if test="plateformType != null">
+        PLATEFORM_TYPE,
+      </if>
+      <if test="cancelCompleteDate != null">
+        CANCEL_COMPLETE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stoId != null">
+        #{stoId,jdbcType=INTEGER},
+      </if>
+      <if test="strId != null">
+        #{strId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderCreatedTime != null">
+        #{orderCreatedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="paidTime != null">
+        #{paidTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedTime != null">
+        #{lastModifiedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCnt != null">
+        #{callCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stsCd != null">
+        #{stsCd,jdbcType=CHAR},
+      </if>
+      <if test="plateformType != null">
+        #{plateformType,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelCompleteDate != null">
+        #{cancelCompleteDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

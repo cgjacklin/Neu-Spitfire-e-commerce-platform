@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.productCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.productCategory">
+    <constructor>
+      <arg column="PRC_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="PRO_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="CATEGORY_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CATEGORY_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CATEGORY_PATH" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATED_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATION_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CALL_CNT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STS_CD" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="PLATEFORM_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.productCategory">
+    insert into prc_product_category (PRC_ID, PRO_ID, CATEGORY_ID, 
+      CATEGORY_NAME, CATEGORY_PATH, CREATED_BY, 
+      CREATION_DATE, LAST_UPDATE_BY, LAST_UPDATE_DATE, 
+      CALL_CNT, REMARK, STS_CD, 
+      PLATEFORM_TYPE)
+    values (#{prcId,jdbcType=INTEGER}, #{proId,jdbcType=INTEGER}, #{categoryId,jdbcType=VARCHAR}, 
+      #{categoryName,jdbcType=VARCHAR}, #{categoryPath,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, 
+      #{callCnt,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{stsCd,jdbcType=CHAR}, 
+      #{plateformType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.productCategory">
+    insert into prc_product_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prcId != null">
+        PRC_ID,
+      </if>
+      <if test="proId != null">
+        PRO_ID,
+      </if>
+      <if test="categoryId != null">
+        CATEGORY_ID,
+      </if>
+      <if test="categoryName != null">
+        CATEGORY_NAME,
+      </if>
+      <if test="categoryPath != null">
+        CATEGORY_PATH,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateBy != null">
+        LAST_UPDATE_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="callCnt != null">
+        CALL_CNT,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="stsCd != null">
+        STS_CD,
+      </if>
+      <if test="plateformType != null">
+        PLATEFORM_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="prcId != null">
+        #{prcId,jdbcType=INTEGER},
+      </if>
+      <if test="proId != null">
+        #{proId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryName != null">
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryPath != null">
+        #{categoryPath,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCnt != null">
+        #{callCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stsCd != null">
+        #{stsCd,jdbcType=CHAR},
+      </if>
+      <if test="plateformType != null">
+        #{plateformType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

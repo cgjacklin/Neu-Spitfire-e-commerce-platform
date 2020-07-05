@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.dropshipPriceMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.dropshipPrice">
+    <constructor>
+      <arg column="DRP_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="OFP_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="DSR_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="WAR_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="CREATED_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATION_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CALL_CNT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STS_CD" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.dropshipPrice">
+    insert into drp_dropship_price (DRP_ID, OFP_ID, DSR_ID, 
+      WAR_ID, CREATED_BY, CREATION_DATE, 
+      LAST_UPDATE_BY, LAST_UPDATE_DATE, CALL_CNT, 
+      REMARK, STS_CD)
+    values (#{drpId,jdbcType=INTEGER}, #{ofpId,jdbcType=INTEGER}, #{dsrId,jdbcType=INTEGER}, 
+      #{warId,jdbcType=INTEGER}, #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP}, #{callCnt,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{stsCd,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.dropshipPrice">
+    insert into drp_dropship_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="drpId != null">
+        DRP_ID,
+      </if>
+      <if test="ofpId != null">
+        OFP_ID,
+      </if>
+      <if test="dsrId != null">
+        DSR_ID,
+      </if>
+      <if test="warId != null">
+        WAR_ID,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateBy != null">
+        LAST_UPDATE_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="callCnt != null">
+        CALL_CNT,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="stsCd != null">
+        STS_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="drpId != null">
+        #{drpId,jdbcType=INTEGER},
+      </if>
+      <if test="ofpId != null">
+        #{ofpId,jdbcType=INTEGER},
+      </if>
+      <if test="dsrId != null">
+        #{dsrId,jdbcType=INTEGER},
+      </if>
+      <if test="warId != null">
+        #{warId,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCnt != null">
+        #{callCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stsCd != null">
+        #{stsCd,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

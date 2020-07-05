@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.sequenceMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.sequence">
+    <constructor>
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="current_value" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="increment" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="initial" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.sequence">
+    insert into sequence (name, current_value, increment, 
+      initial)
+    values (#{name,jdbcType=VARCHAR}, #{currentValue,jdbcType=INTEGER}, #{increment,jdbcType=INTEGER}, 
+      #{initial,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.sequence">
+    insert into sequence
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="currentValue != null">
+        current_value,
+      </if>
+      <if test="increment != null">
+        increment,
+      </if>
+      <if test="initial != null">
+        initial,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="currentValue != null">
+        #{currentValue,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null">
+        #{increment,jdbcType=INTEGER},
+      </if>
+      <if test="initial != null">
+        #{initial,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

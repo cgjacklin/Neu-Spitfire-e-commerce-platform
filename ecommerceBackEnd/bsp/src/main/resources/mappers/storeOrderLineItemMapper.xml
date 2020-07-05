@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.storeOrderLineItemMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.storeOrderLineItem">
+    <constructor>
+      <arg column="SOL_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="ORDER_ITEM_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STO_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="SALES_PRICE" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="QTY" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="SKU_NO" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATED_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATION_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CALL_CNT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STS_CD" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.neusoft.bsp.model.storeOrderLineItem">
+    <constructor>
+      <arg column="SOL_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="ORDER_ITEM_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STO_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="SALES_PRICE" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="QTY" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="SKU_NO" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATED_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATION_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CALL_CNT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STS_CD" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="BUYER_CHECKOUT_MESSAGE" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Blob_Column_List">
+    BUYER_CHECKOUT_MESSAGE
+  </sql>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.storeOrderLineItem">
+    insert into sol_store_order_line_item (SOL_ID, ORDER_ITEM_ID, STO_ID, 
+      SALES_PRICE, QTY, SKU_NO, 
+      CREATED_BY, CREATION_DATE, LAST_UPDATE_BY, 
+      LAST_UPDATE_DATE, CALL_CNT, REMARK, 
+      STS_CD, BUYER_CHECKOUT_MESSAGE)
+    values (#{solId,jdbcType=INTEGER}, #{orderItemId,jdbcType=VARCHAR}, #{stoId,jdbcType=INTEGER}, 
+      #{salesPrice,jdbcType=DECIMAL}, #{qty,jdbcType=INTEGER}, #{skuNo,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{callCnt,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{stsCd,jdbcType=CHAR}, #{buyerCheckoutMessage,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.storeOrderLineItem">
+    insert into sol_store_order_line_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="solId != null">
+        SOL_ID,
+      </if>
+      <if test="orderItemId != null">
+        ORDER_ITEM_ID,
+      </if>
+      <if test="stoId != null">
+        STO_ID,
+      </if>
+      <if test="salesPrice != null">
+        SALES_PRICE,
+      </if>
+      <if test="qty != null">
+        QTY,
+      </if>
+      <if test="skuNo != null">
+        SKU_NO,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateBy != null">
+        LAST_UPDATE_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="callCnt != null">
+        CALL_CNT,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="stsCd != null">
+        STS_CD,
+      </if>
+      <if test="buyerCheckoutMessage != null">
+        BUYER_CHECKOUT_MESSAGE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="solId != null">
+        #{solId,jdbcType=INTEGER},
+      </if>
+      <if test="orderItemId != null">
+        #{orderItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="stoId != null">
+        #{stoId,jdbcType=INTEGER},
+      </if>
+      <if test="salesPrice != null">
+        #{salesPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="qty != null">
+        #{qty,jdbcType=INTEGER},
+      </if>
+      <if test="skuNo != null">
+        #{skuNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCnt != null">
+        #{callCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stsCd != null">
+        #{stsCd,jdbcType=CHAR},
+      </if>
+      <if test="buyerCheckoutMessage != null">
+        #{buyerCheckoutMessage,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.userloginLogoutLogMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.userloginLogoutLog">
+    <constructor>
+      <arg column="ULL_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="TOKEN" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="TERMINAL_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPERATING_TYPE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="OPERATING_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CREATED_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATION_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="CALL_CNT" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="STS_CD" javaType="java.lang.String" jdbcType="CHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.userloginLogoutLog">
+    insert into ull_user_login_logout_log (ULL_ID, USER_ID, TOKEN, 
+      TERMINAL_TYPE, OPERATING_TYPE, OPERATING_DATE, 
+      CREATED_BY, CREATION_DATE, LAST_UPDATE_BY, 
+      LAST_UPDATE_DATE, CALL_CNT, REMARK, 
+      STS_CD)
+    values (#{ullId,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, 
+      #{terminalType,jdbcType=VARCHAR}, #{operatingType,jdbcType=VARCHAR}, #{operatingDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdateBy,jdbcType=VARCHAR}, 
+      #{lastUpdateDate,jdbcType=TIMESTAMP}, #{callCnt,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{stsCd,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.userloginLogoutLog">
+    insert into ull_user_login_logout_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ullId != null">
+        ULL_ID,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="token != null">
+        TOKEN,
+      </if>
+      <if test="terminalType != null">
+        TERMINAL_TYPE,
+      </if>
+      <if test="operatingType != null">
+        OPERATING_TYPE,
+      </if>
+      <if test="operatingDate != null">
+        OPERATING_DATE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="creationDate != null">
+        CREATION_DATE,
+      </if>
+      <if test="lastUpdateBy != null">
+        LAST_UPDATE_BY,
+      </if>
+      <if test="lastUpdateDate != null">
+        LAST_UPDATE_DATE,
+      </if>
+      <if test="callCnt != null">
+        CALL_CNT,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="stsCd != null">
+        STS_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ullId != null">
+        #{ullId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalType != null">
+        #{terminalType,jdbcType=VARCHAR},
+      </if>
+      <if test="operatingType != null">
+        #{operatingType,jdbcType=VARCHAR},
+      </if>
+      <if test="operatingDate != null">
+        #{operatingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callCnt != null">
+        #{callCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="stsCd != null">
+        #{stsCd,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

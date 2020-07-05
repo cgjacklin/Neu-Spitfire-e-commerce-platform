@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.dao.walletAccountMapper">
+  <resultMap id="BaseResultMap" type="com.neusoft.bsp.model.walletAccount">
+    <constructor>
+      <arg column="BUYER_ID" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="ACCOUNT_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="EMAIL" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ACTIVE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="IS_ACTIVE" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="STATUS" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="CREATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="CREATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="LAST_UPDATE_BY" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="LAST_UPDATE_TIME" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="ACCOUNT_TYPE" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="HOLD_ORDER_TIME" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="AUTO_PAY_STATUS" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.neusoft.bsp.model.walletAccount">
+    insert into waa_wallet_account (BUYER_ID, ACCOUNT_NAME, EMAIL, 
+      PASSWORD, ACTIVE_TIME, IS_ACTIVE, 
+      STATUS, CREATE_BY, CREATE_TIME, 
+      LAST_UPDATE_BY, LAST_UPDATE_TIME, ACCOUNT_TYPE, 
+      HOLD_ORDER_TIME, AUTO_PAY_STATUS)
+    values (#{buyerId,jdbcType=INTEGER}, #{accountName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{activeTime,jdbcType=TIMESTAMP}, #{isActive,jdbcType=CHAR}, 
+      #{status,jdbcType=TINYINT}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, #{accountType,jdbcType=INTEGER}, 
+      #{holdOrderTime,jdbcType=CHAR}, #{autoPayStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.bsp.model.walletAccount">
+    insert into waa_wallet_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="buyerId != null">
+        BUYER_ID,
+      </if>
+      <if test="accountName != null">
+        ACCOUNT_NAME,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="activeTime != null">
+        ACTIVE_TIME,
+      </if>
+      <if test="isActive != null">
+        IS_ACTIVE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="lastUpdateBy != null">
+        LAST_UPDATE_BY,
+      </if>
+      <if test="lastUpdateTime != null">
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="accountType != null">
+        ACCOUNT_TYPE,
+      </if>
+      <if test="holdOrderTime != null">
+        HOLD_ORDER_TIME,
+      </if>
+      <if test="autoPayStatus != null">
+        AUTO_PAY_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="buyerId != null">
+        #{buyerId,jdbcType=INTEGER},
+      </if>
+      <if test="accountName != null">
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="activeTime != null">
+        #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateBy != null">
+        #{lastUpdateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null">
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountType != null">
+        #{accountType,jdbcType=INTEGER},
+      </if>
+      <if test="holdOrderTime != null">
+        #{holdOrderTime,jdbcType=CHAR},
+      </if>
+      <if test="autoPayStatus != null">
+        #{autoPayStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
