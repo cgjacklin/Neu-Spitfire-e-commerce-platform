@@ -1,10 +1,14 @@
-package com.neusoft.bsp.mvo.service.impl;
+package com.neusoft.bsp.business.mvo.service.impl;
 
-import com.neusoft.bsp.mvo.entity.Brand;
-import com.neusoft.bsp.mvo.mapper.BrandMapper;
-import com.neusoft.bsp.mvo.service.BrandService;
+
+import com.neusoft.bsp.business.mvo.mapper.BrandMapper;
+import com.neusoft.bsp.business.mvo.service.BrandService;
+import com.neusoft.bsp.business.po.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service("brandService")
 public class BrandServiceimpl implements BrandService {
@@ -23,8 +27,8 @@ public class BrandServiceimpl implements BrandService {
     }
 
     @Override
-    public Brand getById(Integer brdId) {
-        return brandMapper.getById(brdId);
+    public List<Brand> getAllById(Integer manid) {
+        return brandMapper.getAllById(manid);
     }
 
     @Override
