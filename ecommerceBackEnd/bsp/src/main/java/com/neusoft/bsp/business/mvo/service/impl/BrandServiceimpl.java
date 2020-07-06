@@ -35,4 +35,9 @@ public class BrandServiceimpl implements BrandService {
     public int update(Brand record) {
         return brandMapper.update(record);
     }
+
+    @Override
+    public Brand getById(Integer brdId) {
+        return brandMapper.getById(brdId);
+    }
 }

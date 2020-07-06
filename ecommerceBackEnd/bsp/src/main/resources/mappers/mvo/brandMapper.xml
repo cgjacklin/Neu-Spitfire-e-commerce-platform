@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neusoft.bsp.mvo.mapper.BrandMapper">
 
-<!--  <select id="getById" parameterType="java.lang.Integer" resultType="Brand">-->
-<!--     select * from brd_brand where man_id = #{man_id}-->
-<!--  </select>-->
+  <select id="getById" parameterType="java.lang.Integer" resultType="Brand">
+     select * from brd_brand where brd_id = #{brd_id}
+  </select>
 
   <select id="getAllByFilter" resultType="Brand">
         select * from brd_brand where man_id = #{man_id}

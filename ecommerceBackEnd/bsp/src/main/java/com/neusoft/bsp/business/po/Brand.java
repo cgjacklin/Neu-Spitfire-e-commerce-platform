@@ -16,6 +16,12 @@ public class Brand implements BaseEntity<Integer> {
     String remark;
     String sts_cd;
 
+    public Brand(String name_en,String remark) {
+        this.name_en = name_en;
+        this.remark = remark;
+    }
+
+
     public Brand(int brd_id, int man_id, String name_en, String name_cn, String created_by, Date creation_date, String last_updated_by, Date last_updated_date, String remark, String sts_cd) {
         this.brd_id = brd_id;
         this.man_id = man_id;

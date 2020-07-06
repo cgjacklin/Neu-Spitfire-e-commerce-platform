@@ -16,4 +16,5 @@ public interface BrandService {
 
     int update(Brand record);
 
+    Brand getById(Integer brdId);
 }
