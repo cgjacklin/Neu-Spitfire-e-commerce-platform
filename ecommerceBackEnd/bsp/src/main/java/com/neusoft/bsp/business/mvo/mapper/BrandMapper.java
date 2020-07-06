@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BrandMapper extends BaseMapper<Integer, Brand> {
-    List<Brand> getAllById(Integer manid);
+    List<Brand> getAllById(Integer man_id);
 
 }

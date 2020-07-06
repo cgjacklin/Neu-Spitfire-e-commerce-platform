@@ -2,7 +2,6 @@ package com.neusoft.bsp.controller;
 
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.user.service.UserService;
-import com.neusoft.bsp.business.po.Brand;
 import com.neusoft.bsp.business.vo.BrandWithBrdId;
 import com.neusoft.bsp.business.vo.BrandWithUserId;
 import com.neusoft.bsp.common.base.BaseController;
@@ -43,13 +42,13 @@ public class BrandController extends BaseController {
         if(user==null){
             throw BusinessException.USERNAME_NOT_EXISTS;
         }
-        int manid = user.getMan_buyer_id();
+        int man_id = user.getMan_buyer_id();
         response.code = 200;
-        if(manid != 0){
+        if(man_id != 0){
             HashMap<String, Object> res = new HashMap<>();
-            List<Brand> list = brandService.getAllById(manid);
+            List<Brand> list = brandService.getAllById(man_id);
             for (Brand brand : list) {
-                res.put("data", brand);
+                res.put("list", brand);
             }
             response.data = res;
         }
@@ -71,6 +70,7 @@ public class BrandController extends BaseController {
             brd.setLast_updated_by(name);
             brd.setLast_updated_date(Date.valueOf(now()));
             brd.setCreation_date(Date.valueOf(now()));
+            brd.setCall_cnt(0);
             int result_brd = brandService.insert(brd);
             if (result_brd != 1) {
                 throw BusinessException.INSERT_FAIL;
