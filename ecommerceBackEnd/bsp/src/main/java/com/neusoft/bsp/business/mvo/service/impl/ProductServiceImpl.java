@@ -1,11 +1,11 @@
-package com.neusoft.bsp.product.service.impl;
+package com.neusoft.bsp.business.mvo.service.impl;
 
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.product.entity.Product;
-import com.neusoft.bsp.product.mapper.ProductMapper;
-import com.neusoft.bsp.product.service.ProductService;
-import com.neusoft.bsp.user.entity.User;
-import com.neusoft.bsp.user.service.UserService;
+import com.neusoft.bsp.business.po.Product;
+import com.neusoft.bsp.business.mvo.mapper.ProductMapper;
+import com.neusoft.bsp.business.mvo.service.ProductService;
+import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.admin.user.service.UserService;
 import com.neusoft.bsp.utils.FileNameUtils;
 import com.neusoft.bsp.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;

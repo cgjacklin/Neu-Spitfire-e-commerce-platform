@@ -1,7 +1,7 @@
 //package com.neusoft.bsp.common.security.service.impl;
 //
 //import com.neusoft.bsp.common.security.model.JwtUser;
-//import com.neusoft.bsp.user.entity.User;
+//import com.neusoft.bsp.admin.user.po.User;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //

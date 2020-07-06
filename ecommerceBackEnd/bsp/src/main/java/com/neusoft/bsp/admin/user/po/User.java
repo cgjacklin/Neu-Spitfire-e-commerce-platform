@@ -1,7 +1,6 @@
-package com.neusoft.bsp.user.entity;
+package com.neusoft.bsp.admin.user.po;
 
 import com.neusoft.bsp.common.base.BaseEntity;
-import com.neusoft.bsp.common.validationGroup.DeleteGroup;
 import com.neusoft.bsp.common.validationGroup.InsertGroup;
 import com.neusoft.bsp.common.validationGroup.SelectGroup;
 import com.neusoft.bsp.common.validationGroup.UpdateGroup;

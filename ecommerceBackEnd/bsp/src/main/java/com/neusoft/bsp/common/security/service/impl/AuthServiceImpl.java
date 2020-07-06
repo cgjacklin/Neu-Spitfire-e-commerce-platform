@@ -2,7 +2,7 @@
 //
 //import com.neusoft.bsp.common.security.model.AuthenticationResponse;
 //import com.neusoft.bsp.common.security.service.AuthService;
-//import com.neusoft.bsp.user.entity.User;
+//import com.neusoft.bsp.admin.user.po.User;
 //import com.neusoft.bsp.utils.JwtUtil;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.ResponseEntity;

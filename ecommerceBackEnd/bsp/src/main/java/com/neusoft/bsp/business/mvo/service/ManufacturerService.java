@@ -1,6 +1,6 @@
-package com.neusoft.bsp.mvo.service;
+package com.neusoft.bsp.business.mvo.service;
 
-import com.neusoft.bsp.mvo.entity.Manufacturer;
+import com.neusoft.bsp.business.po.Manufacturer;
 
 public interface ManufacturerService {
 

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.neusoft.bsp.mvo.mapper.ManufacturerMapper">
+<mapper namespace="com.neusoft.bsp.business.mvo.mapper.ManufacturerMapper">
 
     <select id="getById" parameterType="java.lang.Integer" resultType="Manufacturer">
         select * from man_manufacturer where man_id = #{man_id}

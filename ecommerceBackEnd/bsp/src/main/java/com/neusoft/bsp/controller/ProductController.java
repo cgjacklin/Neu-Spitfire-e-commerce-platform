@@ -5,17 +5,15 @@ import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.product.entity.Product;
-import com.neusoft.bsp.product.service.ProductService;
-import com.neusoft.bsp.user.entity.User;
-import com.neusoft.bsp.user.service.UserService;
+import com.neusoft.bsp.business.po.Product;
+import com.neusoft.bsp.business.mvo.service.ProductService;
+import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.admin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController

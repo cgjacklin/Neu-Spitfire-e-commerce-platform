@@ -1,8 +1,8 @@
 //package com.neusoft.bsp.common.security.service.impl;
 //
 //import com.neusoft.bsp.common.exception.BusinessException;
-//import com.neusoft.bsp.user.entity.User;
-//import com.neusoft.bsp.user.service.UserService;
+//import com.neusoft.bsp.admin.user.po.User;
+//import com.neusoft.bsp.admin.user.service.UserService;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
