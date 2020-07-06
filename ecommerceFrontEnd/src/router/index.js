@@ -38,12 +38,20 @@ export default new Router({
           component: resolve => require(['../components/page/MVO/Goods.vue'], resolve)
         },
         {
-          path: '/order',
-          component: resolve => require(['../components/page/Same/Order.vue'], resolve)
+          path: '/MVO/order',
+          component: resolve => require(['../components/page/MVO/Order.vue'], resolve)
         },
         {
-          path: '/wallet',
-          component: resolve => require(['../components/page/Same/Wallet.vue'], resolve)
+          path: '/MVO/wallet',
+          component: resolve => require(['../components/page/MVO/Wallet.vue'], resolve)
+        },
+        {
+          path: '/BVO/order',
+          component: resolve => require(['../components/page/BVO/Order.vue'], resolve)
+        },
+        {
+          path: '/BVO/wallet',
+          component: resolve => require(['../components/page/BVO/Wallet.vue'], resolve)
         },
         {
           path: '/store',

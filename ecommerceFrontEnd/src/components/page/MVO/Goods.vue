@@ -66,7 +66,26 @@
             <el-input style="width:35rem" v-model="addGoodsForm.title" autocomplete="off"></el-input>
           </el-form-item>
           <br />
-
+          <el-form-item
+            label="Goods brand"
+            prop="brand"
+            :rules="[{ required: true, message: 'Please choose the Goods brand', trigger: 'blur'}]"
+          >
+            <el-select
+              style="width:35rem"
+              placeholder
+              v-model="addGoodsForm.brand"
+              autocomplete="off"
+            >
+              <el-option
+                v-for="item in brand_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <br />
           <el-form-item
             label="SKU Code"
             prop="sku"
@@ -94,9 +113,21 @@
           <el-form-item
             label="Goods type"
             prop="type"
-            :rules="[{ required: true, message: 'Please enter the Goods type'}]"
+            :rules="[{ required: true, message: 'Please choose the Goods type', trigger: 'blur'}]"
           >
-            <el-input style="width:35rem" v-model="addGoodsForm.type" autocomplete="off"></el-input>
+            <el-select
+              style="width:35rem"
+              placeholder
+              v-model="addGoodsForm.type"
+              autocomplete="off"
+            >
+              <el-option
+                v-for="item in type_options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <br />
           <el-form-item
@@ -192,7 +223,26 @@
               </el-form-item>
             </div>
           </div>
-          <el-form-item class="com-form-button">
+          <br />
+          <span>eBay description：</span>
+          <mavon-editor
+            :subfield="false"
+            :toolbars="toolbars"
+            class="markdown"
+            v-model="addGoodsForm.ebay_description"
+            ref="md"
+          />
+          <br />
+          <span>Amazon description：</span>
+          <mavon-editor
+            :subfield="false"
+            :toolbars="toolbars"
+            class="markdown"
+            v-model="addGoodsForm.amazon_description"
+            ref="md"
+          />
+
+          <el-form-item class="goods-form-button">
             <el-button type="danger" @click="submitForm('addGoodsForm')">Save</el-button>
             <el-button @click="darCancel('addGoodsForm')">Cancel</el-button>
           </el-form-item>
@@ -206,10 +256,46 @@
 export default {
   data() {
     return {
+      toolbars: {
+        bold: true, // 粗体
+        italic: true, // 斜体
+        header: true, // 标题
+        underline: true, // 下划线
+        mark: true, // 标记
+        ol: true, // 有序列表
+        ul: true, // 无序列表
+        link: true, // 链接
+        imagelink: true, // 图片链接
+        code: false, // code
+        fullscreen: true, // 全屏编辑
+        readmodel: true, // 沉浸式阅读
+        htmlcode: true, // 展示html源码
+        /* 1.3.5 */
+        undo: true, // 上一步
+        redo: true, // 下一步
+        trash: true, // 清空
+        /* 1.4.2 */
+        navigation: true, // 导航目录
+        /* 2.1.8 */
+        alignleft: true, // 左对齐
+        aligncenter: true, // 居中
+        alignright: true, // 右对齐
+        /* 2.2.1 */
+        subfield: true, // 单双栏模式
+        preview: true // 预览
+      },
       count: 0,
       fileList: [],
+      brand_options: [{ value: 1, label: "p" }],
+      type_options: [
+        { value: "Phone", label: "Phone" },
+        { value: "Computer", label: "Computer" },
+        { value: "Instrument", label: "Instrument" },
+        { value: "Appliances", label: "Appliances" }
+      ],
       addGoodsForm: {
         title: "",
+        brand: "",
         price: "",
         num: "",
         sku: "",
@@ -220,7 +306,9 @@ export default {
         length: "",
         width: "",
         height: "",
-        weight: ""
+        weight: "",
+        ebay_description: "",
+        amazon_description: ""
       },
       search_goodstitle: "",
       tableData: [
@@ -240,7 +328,9 @@ export default {
   },
   mounted() {},
   methods: {
-    darCancel(formName){
+    darCancel(formName) {
+      this.addGoodsForm.ebay_description = "";
+      this.addGoodsForm.amazon_description = "";
       this.$refs[formName].resetFields();
       this.drawer = false;
       this.count = 0;
@@ -255,6 +345,13 @@ export default {
           console.log(this.addGoodsForm);
           if (this.count == 0) {
             this.$message.warning("Please upload goods picture");
+            return;
+          }
+          if (
+            this.addGoodsForm.ebay_description == "" ||
+            this.addGoodsForm.amazon_description == ""
+          ) {
+            this.$message.warning("Please enter the description");
             return;
           }
           this.drawer = false;
@@ -283,11 +380,19 @@ export default {
 </script>
 
 <style scoped>
+.goods-form-button {
+  margin-top: 2rem;
+  margin-left: 30rem;
+}
+.markdown {
+  margin-top: 1rem;
+  height: 25rem;
+  width: 50rem;
+}
 .flex {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  /* align-items: center; */
 }
 .slip >>> .el-drawer__body {
   overflow-y: auto;
