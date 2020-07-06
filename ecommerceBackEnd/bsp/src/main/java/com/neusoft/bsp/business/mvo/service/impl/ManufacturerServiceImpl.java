@@ -36,4 +36,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     public int updateUserWithLastManu(int user_id) {
         return manufacturerMapper.updateUserWithLastManu(user_id);
     }
+
+    @Override
+    public int updateUserWithManuID(int man_id) { return manufacturerMapper.updateUserWithManuID(man_id); }
 }

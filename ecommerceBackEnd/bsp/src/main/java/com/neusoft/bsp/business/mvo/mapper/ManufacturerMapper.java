@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ManufacturerMapper extends BaseMapper<Integer, Manufacturer> {
     int updateUserWithLastManu(int user_id);
+
+    int updateUserWithManuID(int man_id);
 }
