@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.neusoft.bsp.bvo.mapper.ManufacturerMapper">
+<mapper namespace="com.neusoft.bsp.mvo.mapper.ManufacturerMapper">
 
     <select id="getById" parameterType="java.lang.Integer" resultType="Manufacturer">
         select * from man_manufacturer where man_id = #{man_id}
@@ -14,5 +14,10 @@
 
     <update id="updateUserWithLastManu" parameterType="java.lang.Integer">
         update sys_user set man_buyer_id = (select Max(man_id) from man_manufacturer) where user_id = #{user_id}
+    </update>
+
+    <update id="update">
+        update man_manufacturer set name_en = #{name_en},gmc_report_type = #{gmc_report_type},gmc_report_url = #{gmc_report_url},
+        description = #{description}, last_update_date = #{last_update_date} where man_id = #{man_id}
     </update>
 </mapper>

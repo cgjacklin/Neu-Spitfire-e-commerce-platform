@@ -1,7 +1,6 @@
-package com.neusoft.bsp.bvo.service;
+package com.neusoft.bsp.mvo.service;
 
-import com.neusoft.bsp.bvo.entity.Manufacturer;
-import com.neusoft.bsp.user.entity.User;
+import com.neusoft.bsp.mvo.entity.Manufacturer;
 
 public interface ManufacturerService {
 

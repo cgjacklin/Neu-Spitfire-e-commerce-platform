@@ -1,4 +1,4 @@
-package com.neusoft.bsp.bvo.entity;
+package com.neusoft.bsp.mvo.entity;
 
 import com.neusoft.bsp.common.base.BaseEntity;
 
@@ -20,9 +20,8 @@ public class Manufacturer implements BaseEntity<Integer> {
     String remark;
     String sts_cd;
 
-    public Manufacturer( String name_en, String name_cn, String gmc_report_type, String gmc_report_url, String description) {
+    public Manufacturer( String name_en,  String gmc_report_type, String gmc_report_url, String description) {
         this.name_en = name_en;
-        this.name_cn = name_cn;
         this.gmc_report_type = gmc_report_type;
         this.gmc_report_url = gmc_report_url;
         this.description = description;
