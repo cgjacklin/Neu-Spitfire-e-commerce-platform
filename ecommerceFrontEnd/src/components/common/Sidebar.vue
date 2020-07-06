@@ -94,12 +94,12 @@ export default {
             },
             {
               icon: "el-icon-s-order",
-              index: "/order",
+              index: "/MVO/order",
               title: "Order management"
             },
             {
               icon: "el-icon-wallet",
-              index: "/wallet",
+              index: "/MVO/wallet",
               title: "Wallet"
             }
           ]
@@ -126,12 +126,12 @@ export default {
             },
             {
               icon: "el-icon-s-order",
-              index: "/order",
+              index: "/BVO/order",
               title: "Order management"
             },
             {
               icon: "el-icon-wallet",
-              index: "/wallet",
+              index: "/BVO/wallet",
               title: "Wallet"
             }
           ]
