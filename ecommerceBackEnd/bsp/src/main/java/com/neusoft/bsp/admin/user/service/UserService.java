@@ -1,7 +1,7 @@
-package com.neusoft.bsp.user.service;
+package com.neusoft.bsp.admin.user.service;
 
 import com.github.pagehelper.PageInfo;
-import com.neusoft.bsp.user.entity.User;
+import com.neusoft.bsp.admin.user.po.User;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,8 @@ public interface UserService {
             "dictionaryManagement,parameterManagement,moneySettlement";
 
     int insert(User user);
+
+    int insertUserAndBvo(User user);
 
     int update(User user);
 

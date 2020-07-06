@@ -1,17 +1,15 @@
-package com.neusoft.bsp.user.service.impl;
+package com.neusoft.bsp.admin.user.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.common.security.service.AuthService;
-import com.neusoft.bsp.user.entity.User;
-import com.neusoft.bsp.user.mapper.UserMapper;
-import com.neusoft.bsp.user.service.UserService;
+import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.admin.user.mapper.UserMapper;
+import com.neusoft.bsp.admin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +17,9 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
-
-    @Autowired
-    AuthService authService;
+//
+//    @Autowired
+//    AuthService authService;
 
     @Override
     public int insert(User user) {
@@ -30,11 +28,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int insertUserAndBvo(User user) {
+        return 0;
+    }
+
+    @Override
     public int register(User user) {
         User checkName = getByUserName(user.getUsername());
         if(checkName!=null){
             throw BusinessException.DUPLICATE_USERNAME;
         }
+
+
         return insert(user);
     }
 

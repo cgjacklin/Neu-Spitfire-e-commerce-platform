@@ -1,7 +1,7 @@
-package com.neusoft.bsp.product.mapper;
+package com.neusoft.bsp.business.mvo.mapper;
 
 import com.neusoft.bsp.common.base.BaseMapper;
-import com.neusoft.bsp.product.entity.Product;
+import com.neusoft.bsp.business.po.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -5,19 +5,16 @@ import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.common.security.service.AuthService;
 import com.neusoft.bsp.common.validationGroup.DeleteGroup;
-import com.neusoft.bsp.common.validationGroup.InsertGroup;
 import com.neusoft.bsp.common.validationGroup.UpdateGroup;
-import com.neusoft.bsp.user.entity.User;
-import com.neusoft.bsp.user.service.UserService;
+import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.admin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -28,8 +25,8 @@ public class UserController extends BaseController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    AuthService authService;
+//    @Autowired
+//    AuthService authService;
 
     @PostMapping("/register")
     public BaseModel register(@RequestBody User user) {
@@ -62,7 +59,8 @@ public class UserController extends BaseController {
         if(result == 1){
             response.setSuccess();
             HashMap<String, String> res = new HashMap<>();
-            res.put("jwt", authService.login(user));
+//            res.put("jwt", authService.login(user));
+            res.put("jwt", "");
             res.put("user_id", user.getUser_id()+"");
             response.data = res;
         }

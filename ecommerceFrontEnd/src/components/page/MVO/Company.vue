@@ -86,6 +86,7 @@
         :file-list="fileList"
         :on-change="fileChange"
         :auto-upload="false"
+        list-type="picture"
         :limit="1"
       >
         <i class="el-icon-upload"></i>

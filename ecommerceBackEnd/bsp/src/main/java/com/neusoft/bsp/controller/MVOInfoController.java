@@ -1,17 +1,16 @@
 package com.neusoft.bsp.controller;
 
 
-import com.neusoft.bsp.common.validationGroup.InsertGroup;
 import com.neusoft.bsp.common.validationGroup.SelectGroup;
 import com.neusoft.bsp.common.validationGroup.UpdateGroup;
-import com.neusoft.bsp.mvo.entity.Manufacturer;
-import com.neusoft.bsp.mvo.service.ManufacturerService;
+import com.neusoft.bsp.business.po.Manufacturer;
+import com.neusoft.bsp.business.mvo.service.ManufacturerService;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.user.entity.User;
-import com.neusoft.bsp.user.service.UserService;
+import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.admin.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;

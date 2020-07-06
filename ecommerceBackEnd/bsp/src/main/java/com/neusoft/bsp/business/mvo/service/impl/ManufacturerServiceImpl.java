@@ -1,8 +1,8 @@
-package com.neusoft.bsp.mvo.service.impl;
+package com.neusoft.bsp.business.mvo.service.impl;
 
-import com.neusoft.bsp.mvo.entity.Manufacturer;
-import com.neusoft.bsp.mvo.mapper.ManufacturerMapper;
-import com.neusoft.bsp.mvo.service.ManufacturerService;
+import com.neusoft.bsp.business.po.Manufacturer;
+import com.neusoft.bsp.business.mvo.mapper.ManufacturerMapper;
+import com.neusoft.bsp.business.mvo.service.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

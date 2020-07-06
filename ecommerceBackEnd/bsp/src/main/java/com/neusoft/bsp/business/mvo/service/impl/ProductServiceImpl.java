@@ -1,17 +1,18 @@
-package com.neusoft.bsp.product.service.impl;
+package com.neusoft.bsp.business.mvo.service.impl;
 
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.product.entity.Product;
-import com.neusoft.bsp.product.mapper.ProductMapper;
-import com.neusoft.bsp.product.service.ProductService;
-import com.neusoft.bsp.user.entity.User;
-import com.neusoft.bsp.user.service.UserService;
+import com.neusoft.bsp.business.po.Product;
+import com.neusoft.bsp.business.mvo.mapper.ProductMapper;
+import com.neusoft.bsp.business.mvo.service.ProductService;
+import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.admin.user.service.UserService;
 import com.neusoft.bsp.utils.FileNameUtils;
 import com.neusoft.bsp.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,9 +73,14 @@ public class ProductServiceImpl implements ProductService {
         // 上传成功或者失败的提示
 
         String fileName = FileNameUtils.getFileName(file.getOriginalFilename());
+        long time = System.currentTimeMillis();
+        Date date = new java.sql.Date(time);
         if (FileUtils.upload(file, localPath, fileName)){
             String realPath = localPath + "/" + fileName;
-            product.setUri(realPath);
+            product.setRemark(realPath);
+            product.setCreation_date(date);
+            product.setLast_update_date(date);
+//            product.setCreated_by();
             insert(product);
             return 1;
         }
@@ -89,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
         String fileName = FileNameUtils.getFileName(file.getOriginalFilename());
         if (FileUtils.upload(file, localPath, fileName)){
             String realPath = localPath + "/" + fileName;
-            product.setUri(realPath);
+            product.setRemark(realPath);
             update(product);
             return 1;
         }else {

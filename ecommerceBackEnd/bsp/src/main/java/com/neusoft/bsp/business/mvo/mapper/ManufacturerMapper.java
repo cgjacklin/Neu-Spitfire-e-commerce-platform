@@ -1,6 +1,6 @@
-package com.neusoft.bsp.mvo.mapper;
+package com.neusoft.bsp.business.mvo.mapper;
 
-import com.neusoft.bsp.mvo.entity.*;
+import com.neusoft.bsp.business.po.Manufacturer;
 import com.neusoft.bsp.common.base.BaseMapper;
 import org.springframework.stereotype.Repository;
 
