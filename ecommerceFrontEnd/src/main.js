@@ -4,6 +4,8 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VCharts from 'v-charts'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 // import axios from 'axios'
 import App from './App'
 import router from './router'
@@ -16,6 +18,7 @@ Vue.prototype.$get=get;
 Vue.prototype.$patch=patch;
 Vue.prototype.$put=put;
 Vue.prototype.$isCollapse=store;
+Vue.use(mavonEditor)
 Vue.use(VCharts)
 Vue.use(ElementUI);
 Vue.config.productionTip = false
