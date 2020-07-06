@@ -19,9 +19,9 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
-
-    @Autowired
-    AuthService authService;
+//
+//    @Autowired
+//    AuthService authService;
 
     @Override
     public int insert(User user) {

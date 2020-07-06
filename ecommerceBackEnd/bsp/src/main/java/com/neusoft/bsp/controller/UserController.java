@@ -28,8 +28,8 @@ public class UserController extends BaseController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    AuthService authService;
+//    @Autowired
+//    AuthService authService;
 
     @PostMapping("/register")
     public BaseModel register(@RequestBody User user) {
@@ -62,7 +62,7 @@ public class UserController extends BaseController {
         if(result == 1){
             response.setSuccess();
             HashMap<String, String> res = new HashMap<>();
-            res.put("jwt", authService.login(user));
+//            res.put("jwt", authService.login(user));
             res.put("user_id", user.getUser_id()+"");
             response.data = res;
         }

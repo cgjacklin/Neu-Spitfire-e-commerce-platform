@@ -29,7 +29,6 @@ public class Product implements BaseEntity<Integer> {
     String time_unit;
     int stockseting;
     int call_cnt;
-    String uri;
 
 //    @Override
 //    public Integer getId() {
@@ -63,17 +62,9 @@ public class Product implements BaseEntity<Integer> {
                 ", time_unit='" + time_unit + '\'' +
                 ", stockseting=" + stockseting +
                 ", call_cnt=" + call_cnt +
-                ", uri='" + uri + '\'' +
                 '}';
     }
 
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
 
     public int getCall_cnt() {
         return call_cnt;

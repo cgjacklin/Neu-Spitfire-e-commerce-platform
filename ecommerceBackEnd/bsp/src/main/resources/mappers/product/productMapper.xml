@@ -12,7 +12,7 @@
         insert into pro_product values(null,#{sku_cd},#{brd_id},#{man_id},#{title},#{upc}
             ,#{ean},#{model},#{warranty_day},#{retail_price},#{created_by}
             ,#{creation_date},#{last_update_by},#{last_update_date}, #{call_cnt},#{remark},#{sts_cd},#{mininum_retail_price}
-            ,#{replenishment_period},#{key_words}, #{warranty}, #{time_unit}, #{stockseting}, #{uri})
+            ,#{replenishment_period},#{key_words}, #{warranty}, #{time_unit}, #{stockseting})
     </insert>
 
     <update id="update" parameterType="Product">
@@ -22,7 +22,7 @@
           ,last_update_by = #{last_update_by},last_update_date = #{last_update_date} ,
           remark = #{remark} ,sts_cd = #{sts_cd},mininum_retail_price = #{mininum_retail_price},
           replenishment_period = #{replenishment_period},key_words = #{key_words}, warrantly = #{warrantly},
-          time_unit = #{time_unit}, stocksetting = #{stocksetting}, uri = #{uri}
+          time_unit = #{time_unit}, stocksetting = #{stocksetting}
           where pro_id = #{pro_id}
     </update>
 
