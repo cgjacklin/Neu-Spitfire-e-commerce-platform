@@ -3,9 +3,9 @@ package com.neusoft.bsp.business.mvo.service.impl;
 
 import com.neusoft.bsp.business.mvo.mapper.BrandMapper;
 import com.neusoft.bsp.business.mvo.service.BrandService;
+import com.neusoft.bsp.business.po.Brand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service("BrandService")
@@ -14,6 +14,7 @@ public class BrandServiceimpl implements BrandService {
 
     @Autowired
     BrandMapper brandMapper;
+
     @Override
     public int delete(Integer brd_id) {
         return brandMapper.delete(brd_id);

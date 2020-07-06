@@ -1,6 +1,8 @@
 package com.neusoft.bsp.business.mvo.service;
 
 
+import com.neusoft.bsp.business.po.Brand;
+
 import java.util.List;
 
 

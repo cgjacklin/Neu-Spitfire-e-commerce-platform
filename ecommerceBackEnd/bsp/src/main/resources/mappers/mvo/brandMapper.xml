@@ -15,7 +15,7 @@
     where brd_id = #{brd_id}
   </delete>
 
-  <insert id="insert" parameterType="Brand"  useGeneratedKeys="true" keyProperty="brd_id">
+  <insert id="insert" parameterType="Brand" useGeneratedKeys="true" keyProperty="brd_id">
         insert into brd_brand values(null,#{man_id},#{name_en},#{name_cn},#{created_by},
         #{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{remark},#{sts_cd})
     </insert>
@@ -23,8 +23,8 @@
   <update id="update">
         update brd_brand set man_id = #{man_id},name_en = #{name_en},name_cn = #{name_cn},
         created_by = #{created_by}, creation_date = #{creation_date},last_update_by = #{last_update_by},
-        last_update_date= #{last_update_date}，call_cnt =#{call_cnt},remark =#{remark},sts_cd=#{sts_cd}
-        where man_id = #{man_id}
+        last_update_date= #{last_update_date},call_cnt =#{call_cnt},remark =#{remark},sts_cd=#{sts_cd}
+        where brd_id = #{brd_id}
     </update>
 
 

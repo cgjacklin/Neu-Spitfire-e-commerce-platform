@@ -2,6 +2,7 @@ package com.neusoft.bsp.controller;
 
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.user.service.UserService;
+
 import com.neusoft.bsp.business.vo.BrandWithBrdId;
 import com.neusoft.bsp.business.vo.BrandWithUserId;
 import com.neusoft.bsp.common.base.BaseController;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import com.neusoft.bsp.business.po.Brand;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,8 +68,8 @@ public class BrandController extends BaseController {
             int manid = userService.getById(brdu.getUser_id()).getMan_buyer_id();
             brd.setMan_id(manid);
             brd.setCreated_by(name);
-            brd.setLast_updated_by(name);
-            brd.setLast_updated_date(Date.valueOf(now()));
+            brd.setLast_update_by(name);
+            brd.setLast_update_date(Date.valueOf(now()));
             brd.setCreation_date(Date.valueOf(now()));
             brd.setCall_cnt(0);
             int result_brd = brandService.insert(brd);
@@ -105,8 +106,8 @@ public class BrandController extends BaseController {
             BaseModel result = new BaseModel();
             Brand brand = brandService.getById(brdu.getBrd_id());
             String name = userService.getById(brdu.getUser_id()).getName();
-            brand.setLast_updated_date(Date.valueOf(now()));
-            brand.setLast_updated_by(name);
+            brand.setLast_update_date(Date.valueOf(now()));
+            brand.setLast_update_by(name);
             brand.setName_en(brdu.getName_en());
             brand.setRemark(brdu.getRemark());
             int i =brandService.update(brand);
