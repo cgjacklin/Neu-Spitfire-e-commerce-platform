@@ -53,19 +53,28 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- tableName是数据库中的表名，domainObjectName是生成的JAVA模型名，后面的参数不用改，要生成更多的表就在下面继续加table标签 -->
-        <table  tableName="cdm_code_master" domainObjectName="codeMaster"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
+<!--        <table  tableName="cdm_code_master" domainObjectName="codeMaster"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+        <table tableName="brd_brand" domainObjectName="Brand"
+                       enableCountByExample="false"
+                       enableUpdateByExample="false"
+                       enableDeleteByExample="false"
+                       enableSelectByExample="false"
+                       selectByExampleQueryId="false"
+                       enableSelectByPrimaryKey="true"
+                       enableUpdateByPrimaryKey="true"
+                       enableDeleteByPrimaryKey="true"
+                       enableInsert="true"></table>
 
-
-        <!-- tableName是数据库中的表名，domainObjectName是生成的JAVA模型名，后面的参数不用改，要生成更多的表就在下面继续加table标签 -->
+<!--        &lt;!&ndash; tableName是数据库中的表名，domainObjectName是生成的JAVA模型名，后面的参数不用改，要生成更多的表就在下面继续加table标签 &ndash;&gt;-->
         <table tableName="drp_dropship_price" domainObjectName="dropshipPrice"
                enableCountByExample="false"
                enableUpdateByExample="false"
@@ -76,277 +85,277 @@
                enableUpdateByPrimaryKey="true"
                enableDeleteByPrimaryKey="true"
                enableInsert="true"></table>
-        <table tableName="dsr_dropshipper" domainObjectName="dropshipper"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table  tableName="goa_government_area" domainObjectName="governmentArea"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table tableName="img_image" domainObjectName="image"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table tableName="ofp_offer_price" domainObjectName="offerPrice"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true" ></table>
-        <table  tableName="mor_monitor_result" domainObjectName="monitorResult"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table  tableName="par_parameter" domainObjectName="parameter"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table  tableName="pck_package_info" domainObjectName="packageInfo"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table tableName="pdn_product_descrition" domainObjectName="productDescrition"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table tableName="prc_product_category" domainObjectName="productCategory"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true" ></table>
-        <table  tableName="pro_product" domainObjectName="product"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table catalog ="TQSmax" tableName="sal_sales_order_line_item" domainObjectName="salesOrderLineItem"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table tableName="sao_sales_order" domainObjectName="salesrder"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table  tableName="sdi_store_dropship_item" domainObjectName="storeDropshipItem"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table tableName="sequence" domainObjectName="sequence"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true" ></table>
-        <table  tableName="sha_shipping_address" domainObjectName="shippingAddress"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true" ></table>
-        <table  tableName="sol_store_order_line_item" domainObjectName="storeOrderLineItem"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table tableName="spa_specific_attribute" domainObjectName="specifiAttribute"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true" ></table>
-        <table  tableName="spv_specific_attribute_value" domainObjectName="specificAttributeValue"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table tableName="sto_store_order" domainObjectName="storeOrder"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table tableName="str_store" domainObjectName="store"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table  tableName="sys_andorra" domainObjectName="andorra"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table  tableName="ull_user_login_logout_log" domainObjectName="userloginLogoutLog"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table  tableName="waa_wallet_account" domainObjectName="walletAccount"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table  tableName="waf_wallet_account_fund" domainObjectName="walletAccountFund"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true" ></table>
-        <table  tableName="wta_wallet_transaction_aduit" domainObjectName="walletTransactionAduit"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true"></table>
-        <table tableName="wtr_wallet_transaction_record" domainObjectName="walletTransactionRecord"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableSelectByPrimaryKey="true"
-               enableUpdateByPrimaryKey="true"
-               enableDeleteByPrimaryKey="true"
-               enableInsert="true"></table>
-        <table  tableName="wit_wishlist" domainObjectName="wishlist"
-                enableCountByExample="false"
-                enableUpdateByExample="false"
-                enableDeleteByExample="false"
-                enableSelectByExample="false"
-                selectByExampleQueryId="false"
-                enableSelectByPrimaryKey="true"
-                enableUpdateByPrimaryKey="true"
-                enableDeleteByPrimaryKey="true"
-                enableInsert="true">
-        </table>
+<!--        <table tableName="dsr_dropshipper" domainObjectName="dropshipper"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table  tableName="goa_government_area" domainObjectName="governmentArea"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table tableName="img_image" domainObjectName="image"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table tableName="ofp_offer_price" domainObjectName="offerPrice"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true" ></table>-->
+<!--        <table  tableName="mor_monitor_result" domainObjectName="monitorResult"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table  tableName="par_parameter" domainObjectName="parameter"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table  tableName="pck_package_info" domainObjectName="packageInfo"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table tableName="pdn_product_descrition" domainObjectName="productDescrition"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table tableName="prc_product_category" domainObjectName="productCategory"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true" ></table>-->
+<!--        <table  tableName="pro_product" domainObjectName="product"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table catalog ="TQSmax" tableName="sal_sales_order_line_item" domainObjectName="salesOrderLineItem"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table tableName="sao_sales_order" domainObjectName="salesrder"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table  tableName="sdi_store_dropship_item" domainObjectName="storeDropshipItem"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table tableName="sequence" domainObjectName="sequence"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true" ></table>-->
+<!--        <table  tableName="sha_shipping_address" domainObjectName="shippingAddress"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true" ></table>-->
+<!--        <table  tableName="sol_store_order_line_item" domainObjectName="storeOrderLineItem"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table tableName="spa_specific_attribute" domainObjectName="specifiAttribute"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true" ></table>-->
+<!--        <table  tableName="spv_specific_attribute_value" domainObjectName="specificAttributeValue"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table tableName="sto_store_order" domainObjectName="storeOrder"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table tableName="str_store" domainObjectName="store"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table  tableName="sys_andorra" domainObjectName="andorra"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table  tableName="ull_user_login_logout_log" domainObjectName="userloginLogoutLog"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table  tableName="waa_wallet_account" domainObjectName="walletAccount"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table  tableName="waf_wallet_account_fund" domainObjectName="walletAccountFund"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true" ></table>-->
+<!--        <table  tableName="wta_wallet_transaction_aduit" domainObjectName="walletTransactionAduit"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true"></table>-->
+<!--        <table tableName="wtr_wallet_transaction_record" domainObjectName="walletTransactionRecord"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false"-->
+<!--               enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"-->
+<!--               enableSelectByPrimaryKey="true"-->
+<!--               enableUpdateByPrimaryKey="true"-->
+<!--               enableDeleteByPrimaryKey="true"-->
+<!--               enableInsert="true"></table>-->
+<!--        <table  tableName="wit_wishlist" domainObjectName="wishlist"-->
+<!--                enableCountByExample="false"-->
+<!--                enableUpdateByExample="false"-->
+<!--                enableDeleteByExample="false"-->
+<!--                enableSelectByExample="false"-->
+<!--                selectByExampleQueryId="false"-->
+<!--                enableSelectByPrimaryKey="true"-->
+<!--                enableUpdateByPrimaryKey="true"-->
+<!--                enableDeleteByPrimaryKey="true"-->
+<!--                enableInsert="true">-->
+<!--        </table>-->
 
 
 
