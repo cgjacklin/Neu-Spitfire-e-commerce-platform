@@ -29,10 +29,7 @@
       <el-table-column prop="num" label="Stock"></el-table-column>
       <el-table-column prop="tag" label="State">
         <template slot-scope="scope">
-          <el-tag
-            :type="tag(scope.row.tag)"
-            disable-transitions
-          >{{scope.row.tag}}</el-tag>
+          <el-tag :type="tag(scope.row.tag)" disable-transitions>{{scope.row.tag}}</el-tag>
         </template>
       </el-table-column>
 
@@ -51,28 +48,156 @@
       size="50%"
       :wrapperClosable="false"
       :with-header="false"
+      class="slip"
     >
-      <br />
-      <br />
-      <span>Goods title：</span>
-      <el-input style="width:300px" placeholder></el-input>
-      <br />
-      <br />
-      <span>price：</span>
-      <el-input style="width:300px"></el-input>
-      <br />
-      <br />
-      <span>number：</span>
-      <el-input style="width:300px" placeholder></el-input>
-      <br />
-      <br />
-      <span>sku：</span>
-      <el-input style="width:300px"></el-input>
-      <br />
-      <br />
-        <el-button @click="drawer = false">canceal</el-button>
-        <el-button type="danger" @click="drawer = false">sure</el-button>
-      
+      <div class="form-div">
+        <h3>Goods information</h3>
+        <el-form
+          :model="addGoodsForm"
+          ref="addGoodsForm"
+          label-width="150px"
+          class="add-goods-form"
+        >
+          <el-form-item
+            label="Goods title"
+            prop="title"
+            :rules="[{ required: true, message: 'Please enter the goods title'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.title" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+
+          <el-form-item
+            label="SKU Code"
+            prop="sku"
+            :rules="[{ required: true, message: 'Please enter the sku code'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.sku" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="UPC Code"
+            prop="upc"
+            :rules="[{ required: true, message: 'Please enter the upc code'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.upc" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="ENA Code"
+            prop="ena"
+            :rules="[{ required: true, message: 'Please enter the ena code'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.ena" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="Goods type"
+            prop="type"
+            :rules="[{ required: true, message: 'Please enter the Goods type'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.type" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="Goods model"
+            prop="model"
+            :rules="[{ required: true, message: 'Please enter the Goods model'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.model" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="Goods price"
+            prop="price"
+            :rules="[{ required: true, message: 'Please enter the Goods price'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.price" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="Goods stocks"
+            prop="num"
+            :rules="[{ required: true, message: 'Please enter the Goods stocks'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.num" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <el-form-item
+            label="Warranty period"
+            prop="period"
+            :rules="[{ required: true, message: 'Please enter the Warranty period'}]"
+          >
+            <el-input style="width:35rem" v-model="addGoodsForm.period" autocomplete="off"></el-input>
+          </el-form-item>
+          <br />
+          <div class="flex">
+            <div>
+              <span>Goods picture:</span>
+              <br />
+              <br />
+              <el-upload
+                style="width:24rem"
+                ref="upload"
+                drag
+                action="http://localhost:3000/api/file/up"
+                :file-list="fileList"
+                :on-change="fileChange"
+                :auto-upload="false"
+                list-type="picture"
+                :limit="1"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  Drag the file here, or
+                  <em>Click to upload</em>
+                </div>
+                <div
+                  class="el-upload__tip"
+                  slot="tip"
+                >It is recommended to upload JPG/PNG files and not exceed 500kb</div>
+              </el-upload>
+            </div>
+            <div>
+              <span>Goods parameters:</span>
+              <br />
+              <br />
+              <el-form-item
+                label="Length(cm)"
+                prop="length"
+                :rules="[{ required: true, message: 'Please enter the length'}]"
+              >
+                <el-input style="width:12rem" v-model="addGoodsForm.length" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item
+                label="Width(cm)"
+                prop="width"
+                :rules="[{ required: true, message: 'Please enter the width'}]"
+              >
+                <el-input style="width:12rem" v-model="addGoodsForm.width" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item
+                label="Height(cm)"
+                prop="height"
+                :rules="[{ required: true, message: 'Please enter the height'}]"
+              >
+                <el-input style="width:12rem" v-model="addGoodsForm.height" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item
+                label="Weight(kg)"
+                prop="weight"
+                :rules="[{ required: true, message: 'Please enter the weight'}]"
+              >
+                <el-input style="width:12rem" v-model="addGoodsForm.weight" autocomplete="off"></el-input>
+              </el-form-item>
+            </div>
+          </div>
+          <el-form-item class="com-form-button">
+            <el-button type="danger" @click="submitForm('addGoodsForm')">Save</el-button>
+            <el-button @click="darCancel('addGoodsForm')">Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -81,6 +206,22 @@
 export default {
   data() {
     return {
+      count: 0,
+      fileList: [],
+      addGoodsForm: {
+        title: "",
+        price: "",
+        num: "",
+        sku: "",
+        type: "",
+        upc: "",
+        ena: "",
+        model: "",
+        length: "",
+        width: "",
+        height: "",
+        weight: ""
+      },
       search_goodstitle: "",
       tableData: [
         {
@@ -90,7 +231,7 @@ export default {
           num: 8888,
           sku: "GM001031",
           tag: "In warehouse",
-          n:'push'
+          n: "push"
         }
       ],
       orginTableData: [],
@@ -99,18 +240,42 @@ export default {
   },
   mounted() {},
   methods: {
-    edit(row){
+    darCancel(formName){
+      this.$refs[formName].resetFields();
+      this.drawer = false;
+      this.count = 0;
+      this.fileList = [];
+    },
+    fileChange() {
+      this.count++;
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          console.log(this.addGoodsForm);
+          if (this.count == 0) {
+            this.$message.warning("Please upload goods picture");
+            return;
+          }
+          this.drawer = false;
+          this.$refs.upload.submit();
+        } else {
+          return false;
+        }
+      });
+    },
+    edit(row) {
       this.drawer = true;
     },
-    btn(msg){
-      if(msg == 'Not in warehouse')return 'push'
-      if(msg == 'In warehouse')return 'Shelve'
-      if(msg == 'On shelf')return 'Unshelve'
+    btn(msg) {
+      if (msg == "Not in warehouse") return "push";
+      if (msg == "In warehouse") return "Shelve";
+      if (msg == "On shelf") return "Unshelve";
     },
-    tag(msg){
-      if(msg == 'Not in warehouse')return 'danger'
-      if(msg == 'In warehouse')return 'warning'
-      if(msg == 'On shelf')return 'success'
+    tag(msg) {
+      if (msg == "Not in warehouse") return "danger";
+      if (msg == "In warehouse") return "warning";
+      if (msg == "On shelf") return "success";
     },
     search() {}
   }
@@ -118,6 +283,21 @@ export default {
 </script>
 
 <style scoped>
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /* align-items: center; */
+}
+.slip >>> .el-drawer__body {
+  overflow-y: auto;
+}
+.form-div {
+  margin-left: 3rem;
+}
+.add-goods-form {
+  margin-top: 2rem;
+}
 .top {
   display: flex;
   flex-direction: row;

@@ -112,7 +112,7 @@
       :wrapperClosable="false"
       :with-header="false"
     >
-      <div class="flex">
+      <div class="form-div">
         <h3>Company information</h3>
         <el-form :model="addComForm" ref="addComForm" label-width="150px" class="add-com-form">
           <el-form-item
@@ -233,7 +233,7 @@ export default {
 </script>
 
 <style>
-.flex {
+.form-div {
   margin-left: 3rem;
   height: 50rem;
 }
