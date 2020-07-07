@@ -17,7 +17,6 @@ public interface ProductService {
 
     int delete(int pk);
 
-
     List<Product> getAll();
 
     List<Product> getAllByFilter(Map<String, Object> map);

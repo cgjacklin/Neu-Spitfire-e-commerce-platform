@@ -1,6 +1,6 @@
 package com.neusoft.bsp.dao;
 
-import com.neusoft.bsp.model.wishlist;
+import com.neusoft.bsp.business.po.wishlist;
 
 public interface wishlistMapper {
     /**
