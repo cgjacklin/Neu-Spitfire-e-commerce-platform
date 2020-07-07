@@ -40,7 +40,7 @@
           <el-table-column prop="creation_date" label="Creation date"></el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
-              <el-button type="danger" plain size="small" @click="ship(scope.row)">Shipment</el-button>
+              <el-button type="danger" size="small" @click="ship(scope.row)">Shipment</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -57,7 +57,7 @@
           <el-table-column prop="tracking_no" label="Tracking No"></el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
-              <el-button type="danger" plain size="small" @click="cancel(scope.row)">Cancel</el-button>
+              <el-button type="danger" size="small" @click="cancel(scope.row)">Cancel</el-button>
             </template>
           </el-table-column>
         </el-table>
