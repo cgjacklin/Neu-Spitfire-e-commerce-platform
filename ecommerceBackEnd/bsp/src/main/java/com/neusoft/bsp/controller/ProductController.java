@@ -67,7 +67,7 @@ public class ProductController extends BaseController {
         return response;
     }
 
-    @PostMapping("deleteProduct")
+    @PostMapping("/deleteProduct")
     public BaseModel deleteProduct(@RequestBody Product product){
         BaseModel response = new BaseModel();
         if(productService.deleteProduct(product)==1){
@@ -78,7 +78,7 @@ public class ProductController extends BaseController {
         return response;
     }
 
-    @PostMapping("updateSts")
+    @PostMapping("/updateSts")
     public BaseModel updateSts(@RequestBody Product product){
         BaseModel response = new BaseModel();
         if(productService.updateSts(product)==1){
@@ -89,7 +89,7 @@ public class ProductController extends BaseController {
         return response;
     }
 
-    @PostMapping("getProductOnShelf")
+    @PostMapping("/getProductOnShelf")
     public BaseModelJson<List<ProductVO>> getProductOnShelf(){
         BaseModelJson<List<ProductVO>> response = new BaseModelJson<>();
         List<ProductVO> products = productService.getProductsOnShelf();
