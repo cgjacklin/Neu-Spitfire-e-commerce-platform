@@ -34,4 +34,4 @@ public interface ProductService {
     int updateSts(Product product);
 
     List<ProductVO> getProductsOnShelf();
-}
+}     
