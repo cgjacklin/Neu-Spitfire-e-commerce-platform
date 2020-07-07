@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
-@Service
 public interface PackageInfoService {
     int insert(PackageInfo packageInfo);
 

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service("productServiceImpl")
+@Service("ProductService")
 public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductMapper productMapper;
