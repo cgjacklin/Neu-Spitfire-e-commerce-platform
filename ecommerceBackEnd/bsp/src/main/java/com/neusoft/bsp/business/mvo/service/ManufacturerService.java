@@ -14,4 +14,5 @@ public interface ManufacturerService {
 
     int updateUserWithLastManu(int user_id);
 
+    int updateUserWithManuID(int man_id);
 }

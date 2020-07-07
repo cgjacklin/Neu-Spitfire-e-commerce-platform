@@ -3,28 +3,36 @@ package com.neusoft.bsp.business.po;
 import com.neusoft.bsp.common.base.BaseEntity;
 
 import java.sql.Date;
-//品牌信息，一个公司（品牌商）可有多个品牌
+
 public class Brand implements BaseEntity<Integer> {
+
     int brd_id;
     int man_id;
     String name_en;
     String name_cn;
     String created_by;
     Date creation_date;
-    String last_updated_by;
-    Date last_updated_date;
+    String last_update_by;
+    Date last_update_date;
+    int call_cnt;
     String remark;
     String sts_cd;
 
-    public Brand(int brd_id, int man_id, String name_en, String name_cn, String created_by, Date creation_date, String last_updated_by, Date last_updated_date, String remark, String sts_cd) {
+    public Brand(String name_en,String remark) {
+        this.name_en = name_en;
+        this.remark = remark;
+    }
+
+    public Brand(int brd_id, int man_id, String name_en, String name_cn, String created_by, Date creation_date, String last_update_by, Date last_update_date, int call_cnt, String remark, String sts_cd) {
         this.brd_id = brd_id;
         this.man_id = man_id;
         this.name_en = name_en;
         this.name_cn = name_cn;
         this.created_by = created_by;
         this.creation_date = creation_date;
-        this.last_updated_by = last_updated_by;
-        this.last_updated_date = last_updated_date;
+        this.last_update_by = last_update_by;
+        this.last_update_date = last_update_date;
+        this.call_cnt = call_cnt;
         this.remark = remark;
         this.sts_cd = sts_cd;
     }
@@ -77,20 +85,28 @@ public class Brand implements BaseEntity<Integer> {
         this.creation_date = creation_date;
     }
 
-    public String getLast_updated_by() {
-        return last_updated_by;
+    public String getLast_update_by() {
+        return last_update_by;
     }
 
-    public void setLast_updated_by(String last_updated_by) {
-        this.last_updated_by = last_updated_by;
+    public void setLast_update_by(String last_update_by) {
+        this.last_update_by = last_update_by;
     }
 
-    public Date getLast_updated_date() {
-        return last_updated_date;
+    public Date getLast_update_date() {
+        return last_update_date;
     }
 
-    public void setLast_updated_date(Date last_updated_date) {
-        this.last_updated_date = last_updated_date;
+    public void setLast_update_date(Date last_update_date) {
+        this.last_update_date = last_update_date;
+    }
+
+    public int getCall_cnt() {
+        return call_cnt;
+    }
+
+    public void setCall_cnt(int call_cnt) {
+        this.call_cnt = call_cnt;
     }
 
     public String getRemark() {
@@ -108,9 +124,4 @@ public class Brand implements BaseEntity<Integer> {
     public void setSts_cd(String sts_cd) {
         this.sts_cd = sts_cd;
     }
-
-//    @Override
-//    public Integer getId() {
-//        return null;
-//    }
 }
