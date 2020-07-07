@@ -1,12 +1,9 @@
-package com.neusoft.bsp.business.po;
-
-import com.neusoft.bsp.business.vo.ProductVO;
-import com.neusoft.bsp.common.base.BaseEntity;
+package com.neusoft.bsp.business.vo;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class Product implements BaseEntity<Integer> {
+public class ProductVO {
     int pro_id;
     String sku_cd;
     int brd_id;
@@ -30,6 +27,12 @@ public class Product implements BaseEntity<Integer> {
     String time_unit;
     int stockseting;
     int call_cnt;
+    int user_id;
+    BigDecimal width;
+    BigDecimal height;
+    BigDecimal length;
+
+
 
 //    @Override
 //    public Integer getId() {
@@ -39,7 +42,7 @@ public class Product implements BaseEntity<Integer> {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "ProductUpdateInfo{" +
                 "pro_id=" + pro_id +
                 ", sku_cd='" + sku_cd + '\'' +
                 ", brd_id=" + brd_id +
@@ -63,60 +66,16 @@ public class Product implements BaseEntity<Integer> {
                 ", time_unit='" + time_unit + '\'' +
                 ", stockseting=" + stockseting +
                 ", call_cnt=" + call_cnt +
+                ", user_id=" + user_id +
                 '}';
     }
 
-
-    public Product(int pro_id, String sku_cd, int brd_id, int man_id, String title, String upc, String ean, String model, String warranty_day, BigDecimal retail_price, String created_by, Date creation_date, String last_update_by, Date last_update_date, String remark, String sts_cd, BigDecimal mininum_retail_price, int replenishment_period, String key_words, String warranty, String time_unit, int stockseting, int call_cnt) {
-        this.pro_id = pro_id;
-        this.sku_cd = sku_cd;
-        this.brd_id = brd_id;
-        this.man_id = man_id;
-        this.title = title;
-        this.upc = upc;
-        this.ean = ean;
-        this.model = model;
-        this.warranty_day = warranty_day;
-        this.retail_price = retail_price;
-        this.created_by = created_by;
-        this.creation_date = creation_date;
-        this.last_update_by = last_update_by;
-        this.last_update_date = last_update_date;
-        this.remark = remark;
-        this.sts_cd = sts_cd;
-        this.mininum_retail_price = mininum_retail_price;
-        this.replenishment_period = replenishment_period;
-        this.key_words = key_words;
-        this.warranty = warranty;
-        this.time_unit = time_unit;
-        this.stockseting = stockseting;
-        this.call_cnt = call_cnt;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public Product(ProductVO productVO) {
-        this.pro_id = productVO.getPro_id();
-        this.sku_cd = productVO.getSku_cd();
-        this.brd_id = productVO.getBrd_id();
-        this.man_id = productVO.getMan_id();
-        this.title = productVO.getTitle();
-        this.upc = productVO.getUpc();
-        this.ean = productVO.getEan();
-        this.model = productVO.getModel();
-        this.warranty_day = productVO.getWarranty_day();
-        this.retail_price = productVO.getRetail_price();
-        this.created_by = productVO.getCreated_by();
-        this.creation_date = productVO.getCreation_date();
-        this.last_update_by = productVO.getLast_update_by();
-        this.last_update_date = productVO.getLast_update_date();
-        this.remark = productVO.getRemark();
-        this.sts_cd = productVO.getSts_cd();
-        this.mininum_retail_price = productVO.getMininum_retail_price();
-        this.replenishment_period = productVO.getReplenishment_period();
-        this.key_words = productVO.getKey_words();
-        this.warranty = productVO.getWarranty();
-        this.time_unit = productVO.getTime_unit();
-        this.stockseting = productVO.getStockseting();
-        this.call_cnt = productVO.getCall_cnt();
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public int getCall_cnt() {

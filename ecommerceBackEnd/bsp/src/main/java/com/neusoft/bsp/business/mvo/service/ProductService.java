@@ -2,6 +2,7 @@ package com.neusoft.bsp.business.mvo.service;
 
 import com.neusoft.bsp.business.po.Product;
 import com.neusoft.bsp.admin.user.po.User;
+import com.neusoft.bsp.business.vo.ProductVO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,9 +24,9 @@ public interface ProductService {
 
     List<Product> getProducts(User user);
 
-    int addProduct(Product product, MultipartFile file);
+    int addProduct(ProductVO productvo, MultipartFile file);
 
-    int updateProduct(Product product, MultipartFile file);
+    int updateProduct(ProductVO productvo, MultipartFile file);
 
     int deleteProduct(Product product);
 }

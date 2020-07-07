@@ -1,6 +1,7 @@
 package com.neusoft.bsp.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.neusoft.bsp.business.vo.ProductVO;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
@@ -43,8 +44,9 @@ public class ProductController extends BaseController {
     @PostMapping("/addProduct")
     public BaseModel addProduct(@RequestParam String productStr, @RequestParam("fileName") MultipartFile file){
         BaseModel response = new BaseModel();
-        Product product = JSONObject.parseObject(productStr,Product.class);
-        if(productService.addProduct(product, file)==1){
+        ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
+//        System.out.println("INFO"+productvo.getWarranty());
+        if(productService.addProduct(productvo, file)==1){
             response.setSuccess();
         }else{
             response.setFailure();
@@ -55,8 +57,9 @@ public class ProductController extends BaseController {
     @PostMapping("/updateProduct")
     public BaseModel updateProduct(@RequestParam String productStr, @RequestParam("fileName") MultipartFile file){
         BaseModel response = new BaseModel();
-        Product product = JSONObject.parseObject(productStr,Product.class);
-        if(productService.updateProduct(product, file)==1){
+        ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
+        System.out.println("INFO"+productvo.getWarranty());
+        if(productService.updateProduct(productvo, file)==1){
             response.setSuccess();
         }else{
             response.setFailure();

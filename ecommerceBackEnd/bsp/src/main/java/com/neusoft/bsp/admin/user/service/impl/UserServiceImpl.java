@@ -2,6 +2,7 @@ package com.neusoft.bsp.admin.user.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.neusoft.bsp.business.mvo.mapper.ManufacturerMapper;
 import com.neusoft.bsp.common.exception.BusinessException;
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.user.mapper.UserMapper;
@@ -13,10 +14,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 还有坑，注册的时候判断是否为buyer，是的话自动增加
+ */
 @Service("userService")
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
+
+//    @Autowired
+//    ManufacturerMapper manufacturerMapper;
 //
 //    @Autowired
 //    AuthService authService;
@@ -38,6 +45,9 @@ public class UserServiceImpl implements UserService {
         if(checkName!=null){
             throw BusinessException.DUPLICATE_USERNAME;
         }
+//        if(user.getRole_id().equals("bvo")){
+//
+//        }
 
 
         return insert(user);

@@ -4,11 +4,11 @@ package com.neusoft.bsp.common.exception;
  * 业务错误，包含所有非系统错误
  */
 public class BusinessException extends RuntimeException {
-    public static final BusinessException USERNAME_NOT_EXISTS = new BusinessException(503, "User doesn't exist", new Object[0]);
+    public static final BusinessException USERNAME_NOT_EXISTS = new BusinessException(504, "User doesn't exist", new Object[0]);
     public static final BusinessException PASSWORD_WRONG = new BusinessException(504, "Password is wrong", new Object[0]);
-    public static final BusinessException DUPLICATE_USERNAME = new BusinessException(505, "Duplicate User name", new Object[0]);
-    public static final BusinessException NO_MAN_ID = new BusinessException(601, "User doesn't register manufacture");
-    public static final BusinessException NO_PRODUCT = new BusinessException(601, "No product");
+    public static final BusinessException DUPLICATE_USERNAME = new BusinessException(504, "Duplicate User name", new Object[0]);
+    public static final BusinessException NO_MAN_ID = new BusinessException(504, "User doesn't register manufacture");
+    public static final BusinessException NO_PRODUCT = new BusinessException(504, "No product");
 
     public static final BusinessException INSERT_FAIL = new BusinessException(504, "Add operation failed", new Object[0]);
     public static final BusinessException DELETE_FAIL = new BusinessException(504, "Delete operation failed", new Object[0]);
