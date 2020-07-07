@@ -72,6 +72,8 @@ public class BrandController extends BaseController {
             brd.setLast_update_date(Date.valueOf(now()));
             brd.setCreation_date(Date.valueOf(now()));
             brd.setCall_cnt(0);
+//            brd.setRemark();
+////          brd.setSts_cd();
             int result_brd = brandService.insert(brd);
             if (result_brd != 1) {
                 throw BusinessException.INSERT_FAIL;

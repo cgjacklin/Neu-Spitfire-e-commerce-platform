@@ -16,15 +16,21 @@ public interface ProductService {
 
     int delete(int pk);
 
+    Product getById(int pd);
+
     List<Product> getAll();
 
     List<Product> getAllByFilter(Map<String, Object> map);
 
-    List<Product> getProducts(User user);
+    List<ProductVO> getProducts(User user);
 
     int addProduct(ProductVO productvo, MultipartFile file);
 
     int updateProduct(ProductVO productvo, MultipartFile file);
 
     int deleteProduct(Product product);
+
+    int updateSts(Product product);
+
+    List<ProductVO> getProductsOnShelf();
 }

@@ -14,6 +14,10 @@ public class Wishlist {
     String remark;
     String sts_cd;
 
+    public Wishlist(int pro_id) {
+        this.pro_id = pro_id;
+    }
+
     public Wishlist(int wit_id, int dsr_id, int pro_id, String created_by, Date creation_date, String last_update_by, Date last_update_date, int call_cnt, String remark, String sts_cd) {
         this.wit_id = wit_id;
         this.dsr_id = dsr_id;
