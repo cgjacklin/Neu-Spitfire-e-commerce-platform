@@ -86,6 +86,10 @@ public class WishlistController extends BaseController {
         }else{
             BaseModel result = new BaseModel();
             Wishlist wit = new Wishlist(uap.getPro_id());
+            User user = userService.getById(uap.getUser_id());
+            if(user == null){
+                throw BusinessException.USERNAME_NOT_EXISTS;
+            }
             String name = userService.getById(uap.getUser_id()).getName();
             int dsr_id = userService.getById(uap.getUser_id()).getMan_buyer_id();
             wit.setDsr_id(dsr_id);
