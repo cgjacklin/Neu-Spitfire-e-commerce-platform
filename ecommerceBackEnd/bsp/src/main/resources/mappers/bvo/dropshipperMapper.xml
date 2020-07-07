@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.business.bvo.mapper.DropshipperMapper">
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="Dropshipper">
+        select * from dsr_dropshipper where dsr_id = #{dsr_id}
+    </select>
+
+    <insert id="insert" parameterType="Dropshipper"  useGeneratedKeys="true" keyProperty="dsr_id">
+        insert into dsr_dropshipper values(null,#{name},#{created_by},#{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{remark},#{sts_cd},#{register_date})
+    </insert>
+
+
+
+</mapper>

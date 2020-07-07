@@ -1,7 +1,9 @@
 package com.neusoft.bsp.business.mvo.service;
 
 import com.neusoft.bsp.business.po.Manufacturer;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ManufacturerService {
 
     int insert(Manufacturer manufacturer);

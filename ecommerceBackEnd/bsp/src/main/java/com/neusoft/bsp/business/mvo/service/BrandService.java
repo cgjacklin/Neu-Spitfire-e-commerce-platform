@@ -2,10 +2,11 @@ package com.neusoft.bsp.business.mvo.service;
 
 
 import com.neusoft.bsp.business.po.Brand;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 public interface BrandService {
 
     int delete(Integer brd_id);

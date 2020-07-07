@@ -1,6 +1,5 @@
 package com.neusoft.bsp.controller;
 
-
 import com.neusoft.bsp.business.vo.ManufacturerWithManID;
 import com.neusoft.bsp.business.vo.ManufacturerWithUserId;
 import com.neusoft.bsp.common.validationGroup.DeleteGroup;
@@ -34,7 +33,6 @@ public class MVOInfoController extends BaseController {
 
     @Autowired
     ManufacturerService manufacturerService;
-
 
     /**
      *新增公司信息
@@ -120,7 +118,5 @@ public class MVOInfoController extends BaseController {
             throw BusinessException.DELETE_FAIL;
         }
     }
-
-
 
 }
