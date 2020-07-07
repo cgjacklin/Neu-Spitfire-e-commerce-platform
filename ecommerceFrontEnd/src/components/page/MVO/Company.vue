@@ -41,7 +41,7 @@
         <el-link style="font-size:18px" :underline="false" type="success">Brand information</el-link>
         <el-divider></el-divider>
         <span>
-          Search:
+          Search：
           <el-input
             style="width:12rem"
             placeholder="Brand Name"
@@ -233,7 +233,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .form-div {
   margin-left: 3rem;
   height: 50rem;

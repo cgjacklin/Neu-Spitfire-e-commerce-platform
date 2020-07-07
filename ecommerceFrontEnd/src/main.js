@@ -10,17 +10,18 @@ import 'mavon-editor/dist/css/index.css'
 import App from './App'
 import router from './router'
 import store from "./store/index";
-import {post,get,patch,put} from './utils/http'
+import locale from 'element-ui/lib/locale/lang/en'
+import { post, get, patch, put } from './utils/http'
 
 //定义全局变量
-Vue.prototype.$post=post;
-Vue.prototype.$get=get;
-Vue.prototype.$patch=patch;
-Vue.prototype.$put=put;
-Vue.prototype.$isCollapse=store;
+Vue.prototype.$post = post;
+Vue.prototype.$get = get;
+Vue.prototype.$patch = patch;
+Vue.prototype.$put = put;
+Vue.prototype.$isCollapse = store;
 Vue.use(mavonEditor)
 Vue.use(VCharts)
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false
 // Vue.prototype.$axios = axios;
 /* eslint-disable no-new */
