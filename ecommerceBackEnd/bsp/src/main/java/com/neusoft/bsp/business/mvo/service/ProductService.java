@@ -18,6 +18,7 @@ public interface ProductService {
 
     Product getById(int pd);
 
+
     List<Product> getAll();
 
     List<Product> getAllByFilter(Map<String, Object> map);
@@ -33,4 +34,4 @@ public interface ProductService {
     int updateSts(Product product);
 
     List<ProductVO> getProductsOnShelf();
-}
+}     

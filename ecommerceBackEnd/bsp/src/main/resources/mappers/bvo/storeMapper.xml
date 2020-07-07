@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.business.bvo.mapper.StoreMapper">
+    <select id="getById" parameterType="java.lang.Integer" resultType="Store">
+        select * from str_store where str_id = #{str_id}
+    </select>
+
+    <insert id="insert" parameterType="Store"  useGeneratedKeys="true" keyProperty="str_id">
+        insert into str_store values(null,#{dsr_id},#{plataeform_type},#{store_name},#{store_sts_cd},#{created_by},#{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{sts_cd},#{remark})
+    </insert>
+
+    <update id="update" parameterType="Store">
+        update str_store set plataeform_type = #{plataeform_type},store_name = #{store_name},
+        store_sts_cd = #{store_sts_cd},last_update_date = #{last_update_date} where str_id = #{str_id}
+    </update>
+
+    <delete id="delete">
+        delete from str_store where str_id = #{str_id}
+    </delete>
+
+    <select id="getAllByDsrId" parameterType="java.lang.Integer" resultType="Store">
+        select * from str_store where dsr_id = #{dsr_id}
+    </select>
+</mapper>
