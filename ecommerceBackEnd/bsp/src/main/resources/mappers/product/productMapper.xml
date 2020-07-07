@@ -8,7 +8,10 @@
     <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
     <!--    </select>-->
 
-    <insert id="insert" parameterType="Product"  useGeneratedKeys="true" keyProperty="pro_id">
+    <insert id="insert" parameterType="Product">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="pro_id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into pro_product values(null,#{sku_cd},#{brd_id},#{man_id},#{title},#{upc}
             ,#{ean},#{model},#{warranty_day},#{retail_price},#{created_by}
             ,#{creation_date},#{last_update_by},#{last_update_date}, #{call_cnt},#{remark},#{sts_cd},#{mininum_retail_price}
@@ -21,8 +24,13 @@
          created_by = #{created_by},creation_date = #{creation_date}
           ,last_update_by = #{last_update_by},last_update_date = #{last_update_date} ,
           remark = #{remark} ,sts_cd = #{sts_cd},mininum_retail_price = #{mininum_retail_price},
-          replenishment_period = #{replenishment_period},key_words = #{key_words}, warrantly = #{warrantly},
-          time_unit = #{time_unit}, stocksetting = #{stocksetting}
+          replenishment_period = #{replenishment_period},key_words = #{key_words}, warranty = #{warranty},
+          time_unit = #{time_unit}, stockseting = #{stockseting}
+          where pro_id = #{pro_id}
+    </update>
+
+    <update id="updateSts" parameterType="Product">
+        update pro_product set sts_cd = #{sts_cd}
           where pro_id = #{pro_id}
     </update>
 
@@ -42,7 +50,9 @@
         select * from pro_product where man_id = #{man_id}
     </select>
 
-
+    <select id="getProductOnShelf"  resultType="Product">
+        select * from pro_product where sts_cd = "On shelf"
+    </select>
 
 
 </mapper>

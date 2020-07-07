@@ -49,6 +49,7 @@
             v-model="search_name"
           ></el-input>
         </span>
+        <el-button type="danger" icon="el-icon-search"></el-button>
         <el-button type="danger" plain icon="el-icon-plus" @click="dialogVisible = true">Add</el-button>
         <br />
         <br />

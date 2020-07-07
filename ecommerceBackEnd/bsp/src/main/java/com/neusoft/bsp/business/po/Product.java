@@ -66,6 +66,9 @@ public class Product implements BaseEntity<Integer> {
                 '}';
     }
 
+    public Product(){
+
+    }
 
     public Product(int pro_id, String sku_cd, int brd_id, int man_id, String title, String upc, String ean, String model, String warranty_day, BigDecimal retail_price, String created_by, Date creation_date, String last_update_by, Date last_update_date, String remark, String sts_cd, BigDecimal mininum_retail_price, int replenishment_period, String key_words, String warranty, String time_unit, int stockseting, int call_cnt) {
         this.pro_id = pro_id;

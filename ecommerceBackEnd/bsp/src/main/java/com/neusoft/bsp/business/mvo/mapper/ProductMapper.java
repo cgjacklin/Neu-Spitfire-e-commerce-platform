@@ -26,4 +26,8 @@ public interface ProductMapper extends BaseMapper<Integer, Product> {
 
     @Override
     List<Product> getAllByFilter(Map<String, Object> map);
+
+    int updateSts(Product product);
+
+    List<Product> getProductOnShelf();
 }

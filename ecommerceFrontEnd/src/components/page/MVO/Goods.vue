@@ -16,6 +16,7 @@
         v-model="search_goodstitle"
       ></el-input>
     </span>
+    <el-button type="danger" icon="el-icon-search"></el-button>
     <el-button type="danger" plain icon="el-icon-plus" @click="drawer = true">Add</el-button>
 
     <br />
