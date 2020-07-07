@@ -1,5 +1,7 @@
 package com.neusoft.bsp.business.vo;
 
+import com.neusoft.bsp.business.po.Product;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 
@@ -27,11 +29,22 @@ public class ProductVO {
     String time_unit;
     int stockseting;
     int call_cnt;
+    //额外参数
     int user_id;
+    //体积体重表
     BigDecimal width;
     BigDecimal height;
     BigDecimal length;
-
+    BigDecimal weight;
+    //商品描述表
+    String description;
+    //商品分类表
+    String platform_type;
+    //前端参数
+    String ebay_description;
+    String amazon_description;
+    //品牌表
+    String name_en;
 
 
 //    @Override
@@ -40,9 +53,72 @@ public class ProductVO {
 //    }
 
 
+    public ProductVO(int pro_id, String sku_cd, int brd_id, int man_id, String title, String upc, String ean, String model, String warranty_day, BigDecimal retail_price, String created_by, Date creation_date, String last_update_by, Date last_update_date, String remark, String sts_cd, BigDecimal mininum_retail_price, int replenishment_period, String key_words, String warranty, String time_unit, int stockseting, int call_cnt, int user_id, BigDecimal width, BigDecimal height, BigDecimal length, BigDecimal weight, String description, String platform_type, String ebay_description, String amazon_description, String name_en) {
+        this.pro_id = pro_id;
+        this.sku_cd = sku_cd;
+        this.brd_id = brd_id;
+        this.man_id = man_id;
+        this.title = title;
+        this.upc = upc;
+        this.ean = ean;
+        this.model = model;
+        this.warranty_day = warranty_day;
+        this.retail_price = retail_price;
+        this.created_by = created_by;
+        this.creation_date = creation_date;
+        this.last_update_by = last_update_by;
+        this.last_update_date = last_update_date;
+        this.remark = remark;
+        this.sts_cd = sts_cd;
+        this.mininum_retail_price = mininum_retail_price;
+        this.replenishment_period = replenishment_period;
+        this.key_words = key_words;
+        this.warranty = warranty;
+        this.time_unit = time_unit;
+        this.stockseting = stockseting;
+        this.call_cnt = call_cnt;
+        this.user_id = user_id;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.weight = weight;
+        this.description = description;
+        this.platform_type = platform_type;
+        this.ebay_description = ebay_description;
+        this.amazon_description = amazon_description;
+        this.name_en = name_en;
+    }
+
+    public ProductVO(Product product){
+        this.pro_id = product.getPro_id();
+        this.sku_cd = product.getSku_cd();
+        this.brd_id = product.getBrd_id();
+        this.man_id = product.getMan_id();
+        this.title = product.getTitle();
+        this.upc = product.getUpc();
+        this.ean = product.getEan();
+        this.model = product.getModel();
+        this.warranty_day = product.getWarranty_day();
+        this.retail_price = product.getRetail_price();
+        this.created_by = product.getCreated_by();
+        this.creation_date = product.getCreation_date();
+        this.last_update_by = product.getLast_update_by();
+        this.last_update_date = product.getLast_update_date();
+        this.remark = product.getRemark();
+        this.sts_cd = product.getSts_cd();
+        this.mininum_retail_price = product.getMininum_retail_price();
+        this.replenishment_period = product.getReplenishment_period();
+        this.key_words = product.getKey_words();
+        this.warranty = product.getWarranty();
+        this.time_unit = product.getTime_unit();
+        this.stockseting = product.getStockseting();
+        this.call_cnt = product.getCall_cnt();
+    }
+
+
     @Override
     public String toString() {
-        return "ProductUpdateInfo{" +
+        return "ProductVO{" +
                 "pro_id=" + pro_id +
                 ", sku_cd='" + sku_cd + '\'' +
                 ", brd_id=" + brd_id +
@@ -67,7 +143,88 @@ public class ProductVO {
                 ", stockseting=" + stockseting +
                 ", call_cnt=" + call_cnt +
                 ", user_id=" + user_id +
+                ", width=" + width +
+                ", height=" + height +
+                ", length=" + length +
+                ", weight=" + weight +
+                ", description='" + description + '\'' +
+                ", platform_type='" + platform_type + '\'' +
+                ", ebay_description='" + ebay_description + '\'' +
+                ", amazon_description='" + amazon_description + '\'' +
+                ", name_en='" + name_en + '\'' +
                 '}';
+    }
+
+    public String getName_en() {
+        return name_en;
+    }
+
+    public void setName_en(String name_en) {
+        this.name_en = name_en;
+    }
+
+    public BigDecimal getWidth() {
+        return width;
+    }
+
+    public void setWidth(BigDecimal width) {
+        this.width = width;
+    }
+
+    public BigDecimal getHeight() {
+        return height;
+    }
+
+    public void setHeight(BigDecimal height) {
+        this.height = height;
+    }
+
+    public BigDecimal getLength() {
+        return length;
+    }
+
+    public void setLength(BigDecimal length) {
+        this.length = length;
+    }
+
+    public BigDecimal getWeight() {
+        return weight;
+    }
+
+    public void setWeight(BigDecimal weight) {
+        this.weight = weight;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPlatform_type() {
+        return platform_type;
+    }
+
+    public void setPlatform_type(String platform_type) {
+        this.platform_type = platform_type;
+    }
+
+    public String getEbay_description() {
+        return ebay_description;
+    }
+
+    public void setEbay_description(String ebay_description) {
+        this.ebay_description = ebay_description;
+    }
+
+    public String getAmazon_description() {
+        return amazon_description;
+    }
+
+    public void setAmazon_description(String amazon_description) {
+        this.amazon_description = amazon_description;
     }
 
     public int getUser_id() {

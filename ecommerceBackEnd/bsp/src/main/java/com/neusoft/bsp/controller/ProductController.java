@@ -28,9 +28,9 @@ public class ProductController extends BaseController {
 
 
     @PostMapping("/getProducts")
-    public BaseModelJson<List<Product>> getProducts(@RequestBody User user){
-        BaseModelJson<List<Product>> response = new BaseModelJson<>();
-        List<Product> products = productService.getProducts(user);
+    public BaseModelJson<List<ProductVO>> getProducts(@RequestBody User user){
+        BaseModelJson<List<ProductVO>> response = new BaseModelJson<>();
+        List<ProductVO> products = productService.getProducts(user);
         if(products!=null){
             response.setSuccess();
             response.setData(products);
@@ -58,7 +58,7 @@ public class ProductController extends BaseController {
     public BaseModel updateProduct(@RequestParam String productStr, @RequestParam("fileName") MultipartFile file){
         BaseModel response = new BaseModel();
         ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
-        System.out.println("INFO"+productvo.getWarranty());
+//        System.out.println("INFO"+productvo.getWarranty());
         if(productService.updateProduct(productvo, file)==1){
             response.setSuccess();
         }else{
@@ -78,6 +78,29 @@ public class ProductController extends BaseController {
         return response;
     }
 
+    @PostMapping("updateSts")
+    public BaseModel updateSts(@RequestBody Product product){
+        BaseModel response = new BaseModel();
+        if(productService.updateSts(product)==1){
+            response.setSuccess();
+        }else{
+            response.setFailure();
+        }
+        return response;
+    }
 
+    @PostMapping("getProductOnShelf")
+    public BaseModelJson<List<ProductVO>> getProductOnShelf(){
+        BaseModelJson<List<ProductVO>> response = new BaseModelJson<>();
+        List<ProductVO> products = productService.getProductsOnShelf();
+        if(products!=null){
+            response.setSuccess();
+            response.setData(products);
+        }else{
+            throw BusinessException.NO_PRODUCT;
+        }
+
+        return response;
+    }
 
 }
