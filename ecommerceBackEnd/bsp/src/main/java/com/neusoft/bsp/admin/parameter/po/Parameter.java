@@ -1,10 +1,11 @@
 package com.neusoft.bsp.admin.parameter.po;
 
 import com.neusoft.bsp.business.vo.ParameterVO;
+import com.neusoft.bsp.common.base.BaseEntity;
 
 import java.sql.Date;
 
-public class Parameter {
+public class Parameter implements BaseEntity<Integer> {
     int par_id;
     String param_cd;
     String param_value;

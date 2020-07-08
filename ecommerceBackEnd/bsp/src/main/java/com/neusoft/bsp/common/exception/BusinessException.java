@@ -18,10 +18,13 @@ public class BusinessException extends RuntimeException {
 
     public static final BusinessException NO_DSR_ID = new BusinessException(504, "Can't find corresponding dsr information", new Object[0]);
     public static final BusinessException NO_STORE_INFO = new BusinessException(504, "There's no store information", new Object[0]);
-    public static final BusinessException NP_PERMISSION = new BusinessException(504, "This account don't have permission", new Object[0]);
+    public static final BusinessException NO_PERMISSION = new BusinessException(504, "This account don't have permission", new Object[0]);
 
     public static final BusinessException NO_PARAMETER = new BusinessException(504, "There is no parameter", new Object[0]);
     public static final BusinessException DUPLICATE_PARAM_CD = new BusinessException(504, "Duplicate primary key is set", new Object[0]);
+    public static final BusinessException NO_DICTIONARY = new BusinessException(504, "There is no dictionary", new Object[0]);
+
+
     int code;
     String msg;
 

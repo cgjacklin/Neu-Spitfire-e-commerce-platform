@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.admin.dictionary.mapper.DictionaryMapper">
+
+    <!--    <select id="insert" parameterType="User">-->
+    <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
+    <!--    </select>-->
+
+    <insert id="insert" parameterType="Dictionary"  useGeneratedKeys="true" keyProperty="cdm_id">
+        insert into cdm_code_master values(null,#{code_type},#{description},#{type_cd},#{code_val},#{seq_no}
+            ,#{created_by},#{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{remark},#{sts_cd})
+    </insert>
+
+
+    <update id="update" parameterType="Dictionary">
+        update cdm_code_master set code_type = #{code_type},description = #{description},type_cd = #{type_cd},
+         code_val= #{code_val} ,seq_no = #{seq_no},created_by = #{created_by},creation_date = #{creation_date}
+         ,last_update_by = #{last_update_by} ,last_update_date = #{last_update_date},call_cnt = #{call_cnt}
+         ,remark = #{remark},sts_cd = #{sts_cd} where cdm_id = #{cdm_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from cdm_code_master where cdm_id = #{cdm_id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="Dictionary" >
+        select * from cdm_code_master where cdm_id = #{cdm_id}
+    </select>
+
+    <select id="getAll" resultType="Dictionary">
+        select * from cdm_code_master
+    </select>
+
+    <select id="getAllByFilter" parameterType="java.util.Map" resultType="Dictionary">
+        select * from cdm_code_master where cdm_id = #{cdm_id}
+    </select>
+
+</mapper>

@@ -117,7 +117,7 @@ public class StoreController extends BaseController {
                     throw BusinessException.UPDATE_FAIL;
                 }
             }else{
-                throw BusinessException.NP_PERMISSION;
+                throw BusinessException.NO_PERMISSION;
             }
         }
     }
