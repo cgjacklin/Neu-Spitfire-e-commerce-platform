@@ -212,8 +212,8 @@ export default {
     };
     return {
       emptyImage: require("../../../assets/empty-wallet.png"),
-      emptyShow: false,
-      mainShow: true,
+      emptyShow: true,
+      mainShow: false,
       time: "",
       visible: false,
       visible1: false,
