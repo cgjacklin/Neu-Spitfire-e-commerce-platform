@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.admin.parameter.mapper.ParameterMapper">
+
+    <!--    <select id="insert" parameterType="User">-->
+    <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
+    <!--    </select>-->
+
+    <insert id="insert" parameterType="Parameter"  useGeneratedKeys="true" keyProperty="par_id">
+        insert into par_parameter values(null,#{param_cd},#{param_value},#{description},#{created_by},#{creation_date},#{last_update_by}
+            ,#{last_update_date},#{call_cnt},#{remark},#{sts_cd})
+    </insert>
+
+
+    <update id="update" parameterType="Parameter">
+        update par_parameter set param_cd = #{param_cd},param_value = #{param_value},description = #{description},
+         last_update_by= #{last_update_by} ,last_update_date = #{last_update_date},call_cnt = #{call_cnt},remark = #{remark},sts_cd = #{sts_cd} where par_id = #{par_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from par_parameter where par_id = #{par_id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="Parameter" >
+        select * from par_parameter where par_id = #{par_id}
+    </select>
+
+    <select id="getAll" resultType="Parameter">
+        select * from par_parameter
+    </select>
+
+    <select id="getAllByFilter" parameterType="java.util.Map" resultType="Parameter">
+        select * from par_parameter where param_cd = #{param_cd}
+    </select>
+
+</mapper>
