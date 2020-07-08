@@ -62,15 +62,18 @@ public class WishlistController extends BaseController {
         if (dsr_id != 0) {
             HashMap<String, Object> res = new HashMap<>();
             List<Wishlist> list = wishlistService.getAllById(dsr_id);
+            int j = 0;
             for (Wishlist wishlist : list) {
+                String s = String.valueOf(j);
                 int pro_id = wishlist.getPro_id();
                 Product pro = productService.getById(pro_id);
                 PackageInfo pio = packageInfoService.getByProduct(pro_id);
                 int brd_id = pro.getBrd_id();
                 Brand brand = brandService.getById(brd_id);
-                res.put("pro", pro);
-                res.put("info",pio);
-                res.put("brand",brand);
+                res.put("pro"+j, pro);
+                res.put("info"+j,pio);
+                res.put("brand"+j,brand);
+                j++;
             }
             response.data = res;
         }

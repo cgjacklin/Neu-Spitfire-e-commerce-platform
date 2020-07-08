@@ -10,7 +10,7 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException NO_MAN_ID = new BusinessException(504, "User doesn't register manufacture");
     public static final BusinessException NO_PRODUCT = new BusinessException(504, "No product available");
     public static final BusinessException NO_BRAND = new BusinessException(504, "No brand available");
-    public static final BusinessException PERMISSION_DENY = new BusinessException(504, "Permission denied", new Object[0]);
+    public static final BusinessException PERMISSION_DENY = new BusinessException(504, "Permission denied");
     public static final BusinessException INSERT_FAIL = new BusinessException(504, "Add operation failed", new Object[0]);
     public static final BusinessException DELETE_FAIL = new BusinessException(504, "Delete operation failed", new Object[0]);
     public static final BusinessException UPDATE_FAIL = new BusinessException(504, "Update operation failed", new Object[0]);

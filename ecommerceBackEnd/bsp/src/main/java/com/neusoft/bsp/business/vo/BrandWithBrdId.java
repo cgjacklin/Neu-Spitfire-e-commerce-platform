@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 public class BrandWithBrdId {
 
-    @NotNull(message = "The man_id shouldn't be null",groups = {UpdateGroup.class, SelectGroup.class, DeleteGroup.class})
+    @NotNull(message = "The brd_id shouldn't be null",groups = {UpdateGroup.class, SelectGroup.class, DeleteGroup.class})
     int brd_id;
     int user_id;
     String name_en;

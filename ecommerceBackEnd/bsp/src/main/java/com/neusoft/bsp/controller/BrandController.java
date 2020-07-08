@@ -48,8 +48,11 @@ public class BrandController extends BaseController {
         if(man_id != 0){
             HashMap<String, Object> res = new HashMap<>();
             List<Brand> list = brandService.getAllById(man_id);
+            int j = 0;
             for (Brand brand : list) {
-                res.put("list", brand);
+                String s = String.valueOf(j);
+                res.put("brand"+j, brand);
+                j++;
             }
             response.data = res;
         }
