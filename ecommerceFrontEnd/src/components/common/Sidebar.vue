@@ -3,7 +3,7 @@
     <div class="logo" :class="{'collapse-logo': sharedState.state.isCollapse}">LOGO</div>
 
     <el-menu
-      default-active="/main"
+      :default-active="$route.path"
       background-color="#FAF3EA"
       active-text-color="#F67E7E"
       class="el-menu-vertical-demo"
@@ -139,7 +139,12 @@ export default {
       ]
     };
   },
-  methods: {}
+  mounted(){
+    
+  },
+  methods: {
+
+  }
 };
 </script>
 
