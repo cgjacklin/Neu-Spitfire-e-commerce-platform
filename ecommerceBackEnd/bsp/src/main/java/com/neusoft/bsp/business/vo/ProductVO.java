@@ -1,11 +1,12 @@
 package com.neusoft.bsp.business.vo;
 
 import com.neusoft.bsp.business.po.Product;
+import com.neusoft.bsp.common.base.BaseEntity;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class ProductVO {
+public class ProductVO implements BaseEntity<Integer> {
     int pro_id;
     String sku_cd;
     int brd_id;
