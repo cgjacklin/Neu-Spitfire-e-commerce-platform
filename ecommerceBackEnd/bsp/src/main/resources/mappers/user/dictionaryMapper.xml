@@ -10,13 +10,13 @@
 
     <insert id="insert" parameterType="Dictionary"  useGeneratedKeys="true" keyProperty="cdm_id">
         insert into cdm_code_master values(null,#{code_type},#{description},#{type_cd},#{code_val},#{seq_no}
-            ,#{created_by},#{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{remark},#{sts_cd})
+            ,#{create_by},#{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{remark},#{sts_cd})
     </insert>
 
 
     <update id="update" parameterType="Dictionary">
         update cdm_code_master set code_type = #{code_type},description = #{description},type_cd = #{type_cd},
-         code_val= #{code_val} ,seq_no = #{seq_no},created_by = #{created_by},creation_date = #{creation_date}
+         code_val= #{code_val} ,seq_no = #{seq_no},create_by = #{create_by},creation_date = #{creation_date}
          ,last_update_by = #{last_update_by} ,last_update_date = #{last_update_date},call_cnt = #{call_cnt}
          ,remark = #{remark},sts_cd = #{sts_cd} where cdm_id = #{cdm_id}
     </update>
