@@ -2,6 +2,7 @@ package com.neusoft.bsp.admin.wallet.po;
 
 import com.neusoft.bsp.common.base.BaseEntity;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class WalletAccount implements BaseEntity<Integer> {
@@ -13,9 +14,9 @@ public class WalletAccount implements BaseEntity<Integer> {
     String is_active;
     int status;
     String create_by;
-    Timestamp create_time;
+    Date create_time;
     String last_update_by;
-    Timestamp last_update_time;
+    Date last_update_time;
     int account_type;
     String hold_order_time;
     String auto_pay_status;
@@ -38,6 +39,30 @@ public class WalletAccount implements BaseEntity<Integer> {
                 ", hold_order_time='" + hold_order_time + '\'' +
                 ", auto_pay_status='" + auto_pay_status + '\'' +
                 '}';
+    }
+
+    public Timestamp getActive_time() {
+        return active_time;
+    }
+
+    public void setActive_time(Timestamp active_time) {
+        this.active_time = active_time;
+    }
+
+    public String getCreate_by() {
+        return create_by;
+    }
+
+    public void setCreate_by(String create_by) {
+        this.create_by = create_by;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 
     public int getBuyer_id() {
@@ -72,13 +97,7 @@ public class WalletAccount implements BaseEntity<Integer> {
         this.password = password;
     }
 
-    public Timestamp getActive_time() {
-        return active_time;
-    }
 
-    public void setActive_time(Timestamp active_time) {
-        this.active_time = active_time;
-    }
 
     public String getIs_active() {
         return is_active;
@@ -104,13 +123,7 @@ public class WalletAccount implements BaseEntity<Integer> {
         this.create_by = create_by;
     }
 
-    public Timestamp getCreate_time() {
-        return create_time;
-    }
 
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
-    }
 
     public String getLast_update_by() {
         return last_update_by;
@@ -120,11 +133,11 @@ public class WalletAccount implements BaseEntity<Integer> {
         this.last_update_by = last_update_by;
     }
 
-    public Timestamp getLast_update_time() {
+    public Date getLast_update_time() {
         return last_update_time;
     }
 
-    public void setLast_update_time(Timestamp last_update_time) {
+    public void setLast_update_time(Date last_update_time) {
         this.last_update_time = last_update_time;
     }
 

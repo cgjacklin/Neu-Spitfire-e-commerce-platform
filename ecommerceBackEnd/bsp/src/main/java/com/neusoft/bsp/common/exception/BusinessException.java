@@ -15,6 +15,7 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException DELETE_FAIL = new BusinessException(504, "Delete operation failed", new Object[0]);
     public static final BusinessException UPDATE_FAIL = new BusinessException(504, "Update operation failed", new Object[0]);
     public static final BusinessException USERID_NULL_ERROR = new BusinessException(504, "User null error", new Object[0]);
+    public static final BusinessException WALLET_NOT_EXISTS = new BusinessException(504, "Wallet doesn't exist", new Object[0]);
 
     public static final BusinessException NO_DSR_ID = new BusinessException(504, "Can't find corresponding dsr information", new Object[0]);
     public static final BusinessException NO_STORE_INFO = new BusinessException(504, "There's no store information", new Object[0]);
