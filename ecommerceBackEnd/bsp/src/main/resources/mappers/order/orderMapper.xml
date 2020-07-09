@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.business.mvo.mapper.OrderMapper">
+
+    <!--    <select id="insert" parameterType="User">-->
+    <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
+    <!--    </select>-->
+
+    <insert id="insert" parameterType="Order"  useGeneratedKeys="true" keyProperty="or_id">
+        insert into o_order values(null,#{dsr_id},#{str_id},#{man_id},#{pro_id}
+            ,#{order_id},#{sales_price},#{qty},#{sku_no},#{receive_name},#{receive_address},#{receive_phone}
+            ,#{tracking_company},#{tracking_number},#{sts_cd},#{order_created_time},#{paid_time},#{ship_time}
+            ,#{completed_time},#{cancelled_time})
+    </insert>
+
+
+    <update id="update" parameterType="Order">
+        update o_order set dsr_id = #{dsr_id},str_id = #{str_id},man_id = #{man_id},
+         pro_id= #{pro_id} ,order_id = #{order_id},sales_price = #{sales_price},qty = #{qty}
+         ,sku_no= #{sku_no} ,receive_name = #{receive_name},receive_address = #{receive_address}
+         ,receive_phone = #{receive_phone},tracking_company = #{tracking_company} ,
+         tracking_number = #{tracking_number}, sts_cd = #{sts_cd}
+         ,order_created_time = #{order_created_time},paid_time = #{paid_time},ship_time = #{ship_time}
+         ,completed_time = #{completed_time},cancelled_time = #{cancelled_time} where or_id = #{or_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from o_order where or_id = #{or_id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="Order" >
+        select * from o_order where or_id = #{or_id}
+    </select>
+
+    <select id="getAll" resultType="Order">
+        select * from o_order
+    </select>
+
+<!--    <select id="getAllByFilter" parameterType="java.util.Map" resultType="Order">-->
+<!--        select * from o_order where man_id = #{man_id}-->
+<!--    </select>-->
+
+<!--    <select id="getAllByFilter" parameterType="java.util.Map" resultType="Order">-->
+<!--        select * from o_order where man_id = #{man_id}-->
+<!--    </select>-->
+
+    <select id="getAllByFilter" parameterType="java.util.Map" resultType="Order">
+        select * from o_order where sts_cd = #{sts_cd}
+        <choose>
+            <when test='role_id == 1'>
+                AND man_id = #{man_buyer_id}
+            </when>
+            <when test='role_id == 2'>
+                AND dsr_id = #{man_buyer_id}
+            </when>
+<!--            <otherwise>-->
+<!--                AND featured = 1-->
+<!--            </otherwise>-->
+        </choose>
+    </select>
+
+
+</mapper>

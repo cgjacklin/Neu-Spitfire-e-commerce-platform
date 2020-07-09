@@ -24,6 +24,7 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException DUPLICATE_PARAM_CD = new BusinessException(504, "Duplicate primary key is set", new Object[0]);
     public static final BusinessException NO_DICTIONARY = new BusinessException(504, "There is no dictionary", new Object[0]);
 
+    public static final BusinessException NO_ORDER = new BusinessException(504, "There is no order", new Object[0]);
 
     int code;
     String msg;
