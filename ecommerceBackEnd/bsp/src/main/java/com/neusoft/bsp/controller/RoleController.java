@@ -87,7 +87,7 @@ public class RoleController extends BaseController {
 
 
     @PostMapping("/updateUser")
-    public BaseModel updateBrand(@Validated({UpdateGroup.class}) @RequestBody UserIdAndUpdate uau, BindingResult bindingResult) {
+    public BaseModel updateUser(@Validated({UpdateGroup.class}) @RequestBody UserIdAndUpdate uau, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {    //传值错误
             throw BusinessException.UPDATE_FAIL.newInstance(this.getErrorResponse(bindingResult),
