@@ -1,17 +1,22 @@
 package com.neusoft.bsp.business.mvo.service.impl;
 
+import com.neusoft.bsp.business.bvo.mapper.WishlistMapper;
+import com.neusoft.bsp.business.bvo.service.WishlistService;
 import com.neusoft.bsp.business.mvo.service.BrandService;
 import com.neusoft.bsp.business.mvo.service.ManufacturerService;
 import com.neusoft.bsp.business.mvo.service.PackageInfoService;
 import com.neusoft.bsp.business.po.Brand;
 import com.neusoft.bsp.business.po.PackageInfo;
+import com.neusoft.bsp.business.po.Wishlist;
 import com.neusoft.bsp.business.vo.ProductVO;
+import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
 import com.neusoft.bsp.business.po.Product;
 import com.neusoft.bsp.business.mvo.mapper.ProductMapper;
 import com.neusoft.bsp.business.mvo.service.ProductService;
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.user.service.UserService;
+import com.neusoft.bsp.controller.WishlistController;
 import com.neusoft.bsp.utils.FileNameUtils;
 import com.neusoft.bsp.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("ProductService")
 public class ProductServiceImpl implements ProductService {
@@ -38,6 +40,8 @@ public class ProductServiceImpl implements ProductService {
     BrandService brandService;
     @Autowired
     PackageInfoService packageInfoService;
+    @Autowired
+    WishlistMapper wishlistMapper;
 
     @Override
     public int insert(Product product) {
@@ -206,9 +210,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductVO> getProductsOnShelf() {
+    public List<ProductVO> getProductsOnShelf(User user_id) {
         List<Product> products = productMapper.getProductOnShelf();
         List<ProductVO> productVOS = new ArrayList<>();
+        User user = userService.getById(user_id.getUser_id());
+        System.out.println("MANBUYERIDDDD: "+user.getMan_buyer_id());
+        List<Wishlist> wishlists = wishlistMapper.getAllById(user.getMan_buyer_id());
+        List<Integer> wishProId = new LinkedList<>();
+        for(Wishlist wishlist: wishlists){
+            wishProId.add(wishlist.getPro_id());
+        }
+
         if(products.size()==0){
             throw BusinessException.NO_PRODUCT;
         }else{
@@ -226,7 +238,13 @@ public class ProductServiceImpl implements ProductService {
                 productVO.setWeight(packageInfo.getWeight());
                 productVO.setName_en(brand.getName_en());
                 productVOS.add(productVO);
-                //配置VO product
+                //配置VO star
+                if(wishProId.contains(pro.getPro_id())){
+                    productVO.setStar(1);
+                }
+                else{
+                    productVO.setStar(2);
+                }
             }
         }
 

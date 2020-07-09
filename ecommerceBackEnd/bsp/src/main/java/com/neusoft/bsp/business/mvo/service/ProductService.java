@@ -33,5 +33,5 @@ public interface ProductService {
 
     int updateSts(Product product);
 
-    List<ProductVO> getProductsOnShelf();
-}     
+    List<ProductVO> getProductsOnShelf(User user);
+}
