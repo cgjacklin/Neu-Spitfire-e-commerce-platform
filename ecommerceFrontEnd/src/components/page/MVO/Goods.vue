@@ -36,9 +36,9 @@
 
       <el-table-column label="operation" width="250">
         <template slot-scope="scope">
-          <el-button type="success" plain size="small" icon="el-icon-edit" @click="edit(scope.row)"></el-button>
+          <el-button type="success" size="small" icon="el-icon-edit" @click="edit(scope.row)"></el-button>
           <el-button type="danger" size="small" icon="el-icon-delete"></el-button>
-          <el-button type="success" size="small">{{btn(scope.row.tag)}}</el-button>
+          <el-button type="warning" size="small">{{btn(scope.row.tag)}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -47,7 +47,6 @@
       title="drawer"
       :visible.sync="drawer"
       size="50%"
-      :wrapperClosable="false"
       :with-header="false"
       class="slip"
     >

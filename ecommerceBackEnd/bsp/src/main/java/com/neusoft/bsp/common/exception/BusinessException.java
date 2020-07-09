@@ -28,6 +28,8 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException NO_DICTIONARY = new BusinessException(504, "There is no dictionary", new Object[0]);
 
     public static final BusinessException NO_ORDER = new BusinessException(504, "There is no order", new Object[0]);
+    public static final BusinessException ORDER_STATUS_WRONG = new BusinessException(504, "Order status wrong", new Object[0]);
+
 
     int code;
     String msg;
