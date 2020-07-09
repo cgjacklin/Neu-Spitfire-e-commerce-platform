@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 
 public class WalletAccountFund implements BaseEntity<Integer> {
 
-    @NotNull(message = "The buyer_id shouldn't be null",groups = {InsertGroup.class, UpdateGroup.class, SelectGroup.class, DeleteGroup.class})
     int buyer_id;
     BigDecimal available_money ;
     BigDecimal depositing_money;
@@ -27,7 +26,7 @@ public class WalletAccountFund implements BaseEntity<Integer> {
 
     }
 
-    public WalletAccountFund(@NotNull(message = "The buyer_id shouldn't be null", groups = {InsertGroup.class, UpdateGroup.class, SelectGroup.class, DeleteGroup.class}) int buyer_id, BigDecimal available_money, BigDecimal depositing_money, BigDecimal withdrawing_money, String create_by, Timestamp create_time, String last_update_by, Timestamp last_update_time, String currency) {
+    public WalletAccountFund(int buyer_id, BigDecimal available_money, BigDecimal depositing_money, BigDecimal withdrawing_money, String create_by, Timestamp create_time, String last_update_by, Timestamp last_update_time, String currency) {
         this.buyer_id = buyer_id;
         this.available_money = available_money;
         this.depositing_money = depositing_money;

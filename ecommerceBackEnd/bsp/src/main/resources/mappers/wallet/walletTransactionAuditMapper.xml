@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.admin.wallet.mapper.WalletTransactionAuditMapper">
+
+
+    <insert id="insert" parameterType="WalletTransactionAudit" useGeneratedKeys="true" keyProperty="transaction_audit_id">
+        insert into wta_wallet_transaction_aduit values(null,#{buyer_id}, #{transaction_id}, #{available_money_before}, #{depositing_money_before},
+        #{withdrawing_money_before}, #{operate_money},#{operate_type},#{available_money_after},#{depositing_money_after},
+        #{withdrawing_money_after},#{operate_by},#{status},#{create_by},#{create_time},#{last_update_by}, #{last_update_time})
+    </insert>
+
+    <update id="update" parameterType="WalletTransactionAudit">
+        update wta_wallet_transaction_aduit set buyer_id = #{buyer_id},transaction_id = #{transaction_id},available_money_before = #{available_money_before},
+         depositing_money_before= #{depositing_money_before} ,withdrawing_money_before= #{withdrawing_money_before} ,operate_money= #{operate_money} ,operate_type= #{operate_type} ,
+         available_money_after= #{available_money_after} ,depositing_money_after= #{depositing_money_after} ,withdrawing_money_after= #{withdrawing_money_after} ,operate_by= #{operate_by} ,
+         status= #{status} ,create_by= #{create_by} ,create_time = #{create_time},last_update_by = #{last_update_by},last_update_time = #{last_update_time}
+          where transaction_audit_id = #{transaction_audit_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from wta_wallet_transaction_aduit where transaction_audit_id = #{transaction_audit_id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="WalletTransactionAudit" >
+        select * from wta_wallet_transaction_aduit where transaction_audit_id = #{transaction_audit_id}
+    </select>
+
+    <select id="getAll" resultType="WalletTransactionAudit">
+        select * from wta_wallet_transaction_aduit
+    </select>
+
+    <select id="getAllById" parameterType="java.lang.Integer" resultType="WalletTransactionAudit">
+        select * from wta_wallet_transaction_aduit where buyer_id = #{buyer_id}
+    </select>
+
+</mapper>

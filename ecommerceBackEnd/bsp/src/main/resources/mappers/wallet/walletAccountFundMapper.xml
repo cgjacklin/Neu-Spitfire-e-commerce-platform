@@ -21,7 +21,7 @@
         delete from waf_wallet_account_fund where buyer_id = #{buyer_id}
     </delete>
 
-    <select id="getById" parameterType="java.lang.Integer" resultType="WalletAccount" >
+    <select id="getById" parameterType="java.lang.Integer" resultType="WalletAccountFund" >
         select * from waf_wallet_account_fund where buyer_id = #{buyer_id}
     </select>
 

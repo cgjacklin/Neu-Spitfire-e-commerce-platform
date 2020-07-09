@@ -3,7 +3,7 @@ package com.neusoft.bsp.admin.wallet.service;
 import com.neusoft.bsp.admin.wallet.po.WalletAccountFund;
 
 import java.util.List;
-import java.util.Map;
+
 
 public interface WalletAccountFundService {
 
