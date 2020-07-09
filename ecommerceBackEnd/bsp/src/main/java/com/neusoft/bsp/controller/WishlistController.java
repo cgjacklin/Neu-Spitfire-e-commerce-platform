@@ -70,6 +70,7 @@ public class WishlistController extends BaseController {
                 PackageInfo pio = packageInfoService.getByProduct(pro_id);
                 int brd_id = pro.getBrd_id();
                 Brand brand = brandService.getById(brd_id);
+                res.put("wishlist"+j,wishlist);
                 res.put("pro"+j, pro);
                 res.put("info"+j,pio);
                 res.put("brand"+j,brand);
