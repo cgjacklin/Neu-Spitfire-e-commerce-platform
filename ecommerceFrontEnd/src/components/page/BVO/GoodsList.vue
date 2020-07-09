@@ -138,16 +138,16 @@ export default {
       type: "",
       goods: [
         {
-          name: "Iphone7",
+          name: "Mac book",
           src:
             "http://img1.imgtn.bdimg.com/it/u=1524275480,3404163321&fm=26&gp=0.jpg",
           price: 3333,
           star: 1
         },
         {
-          name: "Mac book",
+          name: "iPhone",
           src:
-            "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+            "http://img2.imgtn.bdimg.com/it/u=2221061121,1432349285&fm=26&gp=0.jpg",
           price: 3333,
           star: 2
         }

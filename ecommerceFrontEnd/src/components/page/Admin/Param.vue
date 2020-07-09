@@ -9,7 +9,7 @@
 
     <span>
       Search：
-      <el-input style="width:15rem" placeholder @input="search" v-model="search_name"></el-input>
+      <el-input style="width:15rem" placeholder="Primary key" @input="search" v-model="search_name"></el-input>
     </span>
     <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true">Add</el-button>
 

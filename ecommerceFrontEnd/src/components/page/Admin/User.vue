@@ -23,8 +23,9 @@
       <el-table-column prop="email" label="E-mail"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" @click="edit(scope.row)">Edit</el-button>
-          <el-button type="danger" size="mini" @click="remove(scope.row)">Delete</el-button>
+          <el-button type="warning" size="mini" icon="el-icon-user" @click="permissions(scope.row)"></el-button>
+          <el-button type="success" size="mini" icon="el-icon-edit" @click="edit(scope.row)"></el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="remove(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -94,6 +95,19 @@
         </el-form>
       </div>
     </el-drawer>
+    <!-- direction="ltr" -->
+    <el-drawer title="drawer" :visible.sync="drawerPr" size="20%" :with-header="false">
+      <div class="form-div">
+        <h3>Permission Assignment</h3>
+        <div class="switch" v-for="item in menu" :key="item">
+          <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8"></el-switch>
+          <p class="p-menu">
+            <i :class="item.icon"></i>
+            {{item.title}}
+          </p>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -101,8 +115,72 @@
 export default {
   data() {
     return {
+      menu: [
+        {
+          icon: "el-icon-school",
+          index: "/company",
+          title: "Company information",
+          state: true
+        },
+        {
+          icon: "el-icon-goods",
+          index: "/goods",
+          title: "Goods management"
+        },
+        {
+          icon: "el-icon-s-order",
+          index: "/MVO/order",
+          title: "Order management"
+        },
+        {
+          icon: "el-icon-wallet",
+          index: "/MVO/wallet",
+          title: "Wallet"
+        },
+        {
+          icon: "el-icon-house",
+          index: "/store",
+          title: "Store management"
+        },
+        {
+          icon: "el-icon-goods",
+          index: "/goodslist",
+          title: "Goods list"
+        },
+        {
+          icon: "el-icon-star-off",
+          index: "/wishlist",
+          title: "Wish list"
+        },
+        {
+          icon: "el-icon-notebook-2",
+          index: "/menu",
+          title: "Menu management"
+        },
+        {
+          icon: "el-icon-user",
+          index: "/user",
+          title: "User management"
+        },
+        {
+          icon: "el-icon-notebook-1",
+          index: "/param",
+          title: "Parameter management"
+        },
+        {
+          icon: "el-icon-collection",
+          index: "/data",
+          title: "Data dictionary"
+        },
+        {
+          icon: "el-icon-document-checked",
+          index: "/check",
+          title: "Fund check"
+        }
+      ],
+      drawerPr: false,
       drawer: false,
-      tableData: [{ username: 1 }],
+      tableData: [{ username: "admin"}],
       userForm: {
         username: "",
         nickname: "",
@@ -114,6 +192,9 @@ export default {
     };
   },
   methods: {
+    permissions(row) {
+      this.drawerPr = true;
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -138,6 +219,14 @@ export default {
 </script>
 
 <style scoped>
+.p-menu {
+  margin-left: 1rem;
+}
+.switch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .form-div {
   margin-left: 3rem;
   height: 50rem;
