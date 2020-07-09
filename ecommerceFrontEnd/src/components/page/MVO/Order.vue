@@ -91,7 +91,7 @@
 export default {
   data() {
     return {
-      tableData: [{ name: 1 }],
+      tableData: [{ name: 1 },{ name: 1 }],
       search_title: "",
       activeName: "first"
     };
@@ -120,7 +120,10 @@ export default {
 .el-tabs__active-bar {
   background-color: #f56c6c;
 }
-.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-checked .el-checkbox__inner{
+  background-color: #f56c6c;
+  border-color: #f56c6c;
+}
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   background-color: #f56c6c;
   border-color: #f56c6c;
