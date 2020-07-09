@@ -2,6 +2,8 @@ package com.neusoft.bsp.admin.user.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.neusoft.bsp.admin.wallet.po.WalletAccount;
+import com.neusoft.bsp.admin.wallet.service.WalletAccountService;
 import com.neusoft.bsp.business.mvo.mapper.ManufacturerMapper;
 import com.neusoft.bsp.common.exception.BusinessException;
 import com.neusoft.bsp.admin.user.po.User;
@@ -21,6 +23,9 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    WalletAccountService walletAccountService;
 
 //    @Autowired
 //    ManufacturerMapper manufacturerMapper;
@@ -48,9 +53,10 @@ public class UserServiceImpl implements UserService {
 //        if(user.getRole_id().equals("bvo")){
 //
 //        }
+        insert(user);
 
 
-        return insert(user);
+        return walletAccountService.registerWalletAccount(user);
     }
 
     @Override

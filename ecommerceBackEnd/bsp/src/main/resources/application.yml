@@ -6,63 +6,99 @@ spring:
     password: root
     url: jdbc:mysql://127.0.0.1:3306/dbs?useUnicode=true&characterEncoding=utf-8&serverTimezone=CTT
     driver-class-name: com.mysql.cj.jdbc.Driver
+    ###################以下为druid增加的配置###########################
     type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      # 下面为连接池的补充设置，应用到上面所有数据源中
-      # 初始化大小，最小，最大
-      initial-size: 5
-      min-idle: 5
-      max-active: 20
-      # 配置获取连接等待超时的时间
-      max-wait: 60000
-      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      time-between-eviction-runs-millis: 60000
-      # 配置一个连接在池中最小生存的时间，单位是毫秒
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      # 打开PSCache，并且指定每个连接上PSCache的大小
-      pool-prepared-statements: true
-      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-      max-pool-prepared-statement-per-connection-size: 20
-      filters:
-        - stat
-        - wall
-        - slf4j
-      use-global-data-source-stat: true
-      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-      #状态监控
-      filter:
-        stat:
-          # 慢SQL记录
-          log-slow-sql: true
-          slow-sql-millis: 1000
-          merge-sql: true
-          enabled: true
-        wall:
-          config:
-            multi-statement-allow: true
+    # 初始化连接池个数
+    initialSize: 5
+    # 最小连接池个数——》已经不再使用，配置了也没效果
+    minIdle: 2
+    # 最大连接池个数
+    maxActive: 20
+    # 配置获取连接等待超时的时间，单位毫秒，缺省启用公平锁，并发效率会有所下降
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    # 用来检测连接是否有效的sql，要求是一个查询语句。
+    # 如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用
+    validationQuery: SELECT 1 FROM DUAL
+    # 建议配置为true，不影响性能，并且保证安全性。
+    # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+    testWhileIdle: true
+    # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+    testOnBorrow: false
+    # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 通过别名的方式配置扩展插件，多个英文逗号分隔，常用的插件有：
+    # 监控统计用的filter:stat
+    # 日志用的filter:log4j
+    # 防御sql注入的filter:wall
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
 
-      # 配置监控服务器
-      stat-view-servlet:
-        enable: true
-        login-username: admin
-        login-password: 123456
-        reset-enable: false
-        url-pattern: /druid/*
-        # 添加IP白名单
-        #allow:
-        # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
-        #deny:
-      web-stat-filter:
-        enable: true
-        # 添加过滤规则
-        url-pattern: /*
-        # 忽略过滤格式
-        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+#    druid:
+#      # 下面为连接池的补充设置，应用到上面所有数据源中
+#      # 初始化大小，最小，最大
+#      initial-size: 5
+#      min-idle: 5
+#      max-active: 20
+#      # 配置获取连接等待超时的时间
+#      max-wait: 60000
+#      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+#      time-between-eviction-runs-millis: 60000
+#      # 配置一个连接在池中最小生存的时间，单位是毫秒
+#      min-evictable-idle-time-millis: 300000
+#      validation-query: SELECT 1 FROM DUAL
+#      test-while-idle: true
+#      test-on-borrow: false
+#      test-on-return: false
+#      # 打开PSCache，并且指定每个连接上PSCache的大小
+#      pool-prepared-statements: true
+#      #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+#      max-pool-prepared-statement-per-connection-size: 20
+#      filters:
+#        - stat
+#        - wall
+#        - slf4j
+#      use-global-data-source-stat: true
+#      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+#      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+#      #状态监控
+#      filter:
+#        stat:
+#          # 慢SQL记录
+#          log-slow-sql: true
+#          slow-sql-millis: 1000
+#          merge-sql: true
+#          enabled: true
+#        wall:
+#          config:
+#            multi-statement-allow: true
+#
+#      # 配置监控服务器
+#      stat-view-servlet:
+#        enable: true
+#        login-username: admin
+#        login-password: 123456
+#        reset-enable: false
+#        url-pattern: /druid/*
+#        # 添加IP白名单
+#        #allow:
+#        # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
+#        #deny:
+#      web-stat-filter:
+#        enable: true
+#        # 添加过滤规则
+#        url-pattern: /*
+#        # 忽略过滤格式
+#        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
 #  security:
 #    basic:
 #      enabled: false
