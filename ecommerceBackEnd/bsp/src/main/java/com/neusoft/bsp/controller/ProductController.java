@@ -90,9 +90,9 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/getProductOnShelf")
-    public BaseModelJson<List<ProductVO>> getProductOnShelf(){
+    public BaseModelJson<List<ProductVO>> getProductOnShelf(@RequestBody User user){
         BaseModelJson<List<ProductVO>> response = new BaseModelJson<>();
-        List<ProductVO> products = productService.getProductsOnShelf();
+        List<ProductVO> products = productService.getProductsOnShelf(user);
         if(products!=null){
             response.setSuccess();
             response.setData(products);
