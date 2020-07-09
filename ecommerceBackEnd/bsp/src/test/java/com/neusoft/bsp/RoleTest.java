@@ -1,6 +1,7 @@
 package com.neusoft.bsp;
 
 import com.neusoft.bsp.admin.user.vo.UserIdAndDeleteId;
+import com.neusoft.bsp.admin.user.vo.UserIdAndUpdate;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
@@ -47,7 +48,7 @@ public class RoleTest {
     }
 
     @Test
-    public void TestdeleteWishlist_success(){
+    public void TestdeleteUser_success(){
         UserIdAndDeleteId uad = new UserIdAndDeleteId();
         uad.setUser_id(1);
         uad.setDelete_id(2);
@@ -55,5 +56,75 @@ public class RoleTest {
         assertEquals(200, bm.code);
     }
 
+    @Test
+    public void TestdeleteUser_user_not_exist1(){
+        assertThrows(BusinessException.class, () -> {
+            UserIdAndDeleteId uad = new UserIdAndDeleteId();
+            uad.setUser_id(10);
+            uad.setDelete_id(2);
+            BaseModel bm = roleController.deletedUser(uad);
+        });
+    }
+
+    @Test
+    public void TestdeleteUser_user_not_exist2(){
+        assertThrows(BusinessException.class, () -> {
+            UserIdAndDeleteId uad = new UserIdAndDeleteId();
+            uad.setUser_id(1);
+            uad.setDelete_id(20);
+            BaseModel bm = roleController.deletedUser(uad);
+        });
+    }
+
+    @Test
+    public void TestdeleteUser_permission_deny(){
+        assertThrows(BusinessException.class, () -> {
+            UserIdAndDeleteId uad = new UserIdAndDeleteId();
+            uad.setUser_id(2);
+            uad.setDelete_id(1);
+            BaseModel bm = roleController.deletedUser(uad);
+        });
+    }
+
+    @Test
+    public void TestupdateUser_success(){
+        UserIdAndUpdate uau = new UserIdAndUpdate();
+        uau.setAdmin_id(1);
+        uau.setUser_id(2);
+        BaseModel bm = roleController.updateUser(uau,null);
+        assertEquals(200, bm.code);
+    }
+
+    @Test
+    public void TestupdateUser_user_not_exist1(){
+        assertThrows(BusinessException.class, () -> {
+            UserIdAndUpdate uau = new UserIdAndUpdate();
+            uau.setAdmin_id(10);
+            uau.setUser_id(2);
+            BaseModel bm = roleController.updateUser(uau,null);
+        });
+    }
+
+    @Test
+    public void TestupdateUser_user_not_exist2(){
+        assertThrows(BusinessException.class, () -> {
+            UserIdAndUpdate uau = new UserIdAndUpdate();
+            uau.setAdmin_id(1);
+            uau.setUser_id(20);
+            BaseModel bm = roleController.updateUser(uau,null);
+        });
+    }
+
+    @Test
+    public void TestupdateUser_permission_deny(){
+        assertThrows(BusinessException.class, () -> {
+            UserIdAndUpdate uau = new UserIdAndUpdate();
+            uau.setAdmin_id(2);
+            uau.setUser_id(1);
+            BaseModel bm = roleController.updateUser(uau,null);
+        });
+    }
 
 }
+
+
