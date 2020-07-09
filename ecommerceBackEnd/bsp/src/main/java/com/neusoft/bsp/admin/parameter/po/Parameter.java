@@ -18,6 +18,8 @@ public class Parameter implements BaseEntity<Integer> {
     String remark;
     String sts_cd;
 
+    public Parameter(){}
+
     public Parameter(ParameterVO parameterVO){
         this.par_id = parameterVO.getPar_id();
         this.param_cd = parameterVO.getParam_cd();

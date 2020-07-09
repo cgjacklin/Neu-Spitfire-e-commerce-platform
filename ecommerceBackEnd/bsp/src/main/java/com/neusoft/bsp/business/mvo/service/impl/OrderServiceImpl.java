@@ -8,6 +8,7 @@ import com.neusoft.bsp.business.mvo.mapper.ProductMapper;
 import com.neusoft.bsp.business.mvo.service.OrderService;
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.OrderRequest;
+import com.neusoft.bsp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +86,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int deliverOrder(Order order) {
         Order new_order = orderMapper.getById(order.getOr_id());
+        if(!new_order.getSts_cd().equals("2")){
+            throw BusinessException.ORDER_STATUS_WRONG;
+        }
         new_order.setSts_cd("3");
         new_order.setTracking_number(order.getTracking_number());
         new_order.setTracking_company(order.getTracking_company());
@@ -98,6 +102,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int cancelOrder(Order order) {
         Order new_order = orderMapper.getById(order.getOr_id());
+        if(!new_order.getSts_cd().equals("3")){
+            throw BusinessException.ORDER_STATUS_WRONG;
+        }
         new_order.setSts_cd("0");
 //        new_order.setTracking_number(order.getTracking_number());
 

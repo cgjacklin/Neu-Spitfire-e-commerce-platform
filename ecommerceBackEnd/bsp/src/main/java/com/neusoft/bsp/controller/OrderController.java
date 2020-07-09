@@ -23,7 +23,7 @@ public class OrderController extends BaseController {
     public BaseModelJson<List<Order>> getOrders(@RequestBody OrderRequest orderRequest){
         BaseModelJson<List<Order>> response = new BaseModelJson<>();
         List<Order> results = orderService.getOrders(orderRequest);
-        if(results!=null){
+        if(results!=null && results.size()!=0){
             response.setSuccess();
             response.setData(results);
         }else{
