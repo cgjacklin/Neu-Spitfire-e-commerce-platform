@@ -46,6 +46,7 @@ public class ProductVO implements BaseEntity<Integer> {
     String amazon_description;
     //品牌表
     String name_en;
+    int star;
 
 
 //    @Override
@@ -53,6 +54,43 @@ public class ProductVO implements BaseEntity<Integer> {
 //        return null;
 //    }
 
+
+    public ProductVO(int pro_id, String sku_cd, int brd_id, int man_id, String title, String upc, String ean, String model, String warranty_day, BigDecimal retail_price, String created_by, Date creation_date, String last_update_by, Date last_update_date, String remark, String sts_cd, BigDecimal mininum_retail_price, int replenishment_period, String key_words, String warranty, String time_unit, int stockseting, int call_cnt, int user_id, BigDecimal width, BigDecimal height, BigDecimal length, BigDecimal weight, String description, String platform_type, String ebay_description, String amazon_description, String name_en, int star) {
+        this.pro_id = pro_id;
+        this.sku_cd = sku_cd;
+        this.brd_id = brd_id;
+        this.man_id = man_id;
+        this.title = title;
+        this.upc = upc;
+        this.ean = ean;
+        this.model = model;
+        this.warranty_day = warranty_day;
+        this.retail_price = retail_price;
+        this.created_by = created_by;
+        this.creation_date = creation_date;
+        this.last_update_by = last_update_by;
+        this.last_update_date = last_update_date;
+        this.remark = remark;
+        this.sts_cd = sts_cd;
+        this.mininum_retail_price = mininum_retail_price;
+        this.replenishment_period = replenishment_period;
+        this.key_words = key_words;
+        this.warranty = warranty;
+        this.time_unit = time_unit;
+        this.stockseting = stockseting;
+        this.call_cnt = call_cnt;
+        this.user_id = user_id;
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.weight = weight;
+        this.description = description;
+        this.platform_type = platform_type;
+        this.ebay_description = ebay_description;
+        this.amazon_description = amazon_description;
+        this.name_en = name_en;
+        this.star = star;
+    }
 
     public ProductVO(int pro_id, String sku_cd, int brd_id, int man_id, String title, String upc, String ean, String model, String warranty_day, BigDecimal retail_price, String created_by, Date creation_date, String last_update_by, Date last_update_date, String remark, String sts_cd, BigDecimal mininum_retail_price, int replenishment_period, String key_words, String warranty, String time_unit, int stockseting, int call_cnt, int user_id, BigDecimal width, BigDecimal height, BigDecimal length, BigDecimal weight, String description, String platform_type, String ebay_description, String amazon_description, String name_en) {
         this.pro_id = pro_id;
@@ -116,44 +154,12 @@ public class ProductVO implements BaseEntity<Integer> {
         this.call_cnt = product.getCall_cnt();
     }
 
+    public int getStar() {
+        return star;
+    }
 
-    @Override
-    public String toString() {
-        return "ProductVO{" +
-                "pro_id=" + pro_id +
-                ", sku_cd='" + sku_cd + '\'' +
-                ", brd_id=" + brd_id +
-                ", man_id=" + man_id +
-                ", title='" + title + '\'' +
-                ", upc='" + upc + '\'' +
-                ", ean='" + ean + '\'' +
-                ", model='" + model + '\'' +
-                ", warranty_day='" + warranty_day + '\'' +
-                ", retail_price=" + retail_price +
-                ", created_by='" + created_by + '\'' +
-                ", creation_date=" + creation_date +
-                ", last_update_by='" + last_update_by + '\'' +
-                ", last_update_date=" + last_update_date +
-                ", remark='" + remark + '\'' +
-                ", sts_cd='" + sts_cd + '\'' +
-                ", mininum_retail_price=" + mininum_retail_price +
-                ", replenishment_period=" + replenishment_period +
-                ", key_words='" + key_words + '\'' +
-                ", warranty='" + warranty + '\'' +
-                ", time_unit='" + time_unit + '\'' +
-                ", stockseting=" + stockseting +
-                ", call_cnt=" + call_cnt +
-                ", user_id=" + user_id +
-                ", width=" + width +
-                ", height=" + height +
-                ", length=" + length +
-                ", weight=" + weight +
-                ", description='" + description + '\'' +
-                ", platform_type='" + platform_type + '\'' +
-                ", ebay_description='" + ebay_description + '\'' +
-                ", amazon_description='" + amazon_description + '\'' +
-                ", name_en='" + name_en + '\'' +
-                '}';
+    public void setStar(int star) {
+        this.star = star;
     }
 
     public String getName_en() {

@@ -1,5 +1,6 @@
 package com.neusoft.bsp.business.mvo.service.impl;
 
+import com.neusoft.bsp.business.bvo.service.WishlistService;
 import com.neusoft.bsp.business.mvo.service.BrandService;
 import com.neusoft.bsp.business.mvo.service.ManufacturerService;
 import com.neusoft.bsp.business.mvo.service.PackageInfoService;
@@ -38,6 +39,8 @@ public class ProductServiceImpl implements ProductService {
     BrandService brandService;
     @Autowired
     PackageInfoService packageInfoService;
+    @Autowired
+    WishlistService wishlistService;
 
     @Override
     public int insert(Product product) {
@@ -209,6 +212,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductVO> getProductsOnShelf() {
         List<Product> products = productMapper.getProductOnShelf();
         List<ProductVO> productVOS = new ArrayList<>();
+        
         if(products.size()==0){
             throw BusinessException.NO_PRODUCT;
         }else{
