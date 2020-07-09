@@ -56,8 +56,49 @@
             <el-link :underline="false" type="danger">{{chooseItem.price}} ¥</el-link>
             <p>Brand: {{chooseItem.brand}}</p>
             <p>Stock: {{chooseItem.brand}}</p>
-            <el-button type="danger">Dropship Now</el-button>
-            <el-button type="danger">Add to Wish List</el-button>
+            <el-popover placement="bottom" v-model="dialogVisible">
+              <div class="check">
+                <el-checkbox
+                  :indeterminate="isIndeterminate"
+                  v-model="checkAll"
+                  @change="handleCheckAllChange"
+                >Amazon</el-checkbox>
+
+                <el-checkbox-group v-model="checkedAStores" @change="handleCheckedAStoresChange">
+                  <el-checkbox
+                    class="store"
+                    v-for="item in Astores"
+                    :label="item"
+                    :key="item"
+                  >{{item}}</el-checkbox>
+                </el-checkbox-group>
+
+                <el-checkbox
+                  class="title"
+                  :indeterminate="EisIndeterminate"
+                  v-model="EcheckAll"
+                  @change="EhandleCheckAllChange"
+                >Ebay</el-checkbox>
+
+                <el-checkbox-group v-model="checkedEStores" @change="handleCheckedEStoresChange">
+                  <el-checkbox
+                    class="store"
+                    v-for="item in Estores"
+                    :label="item"
+                    :key="item"
+                  >{{item}}</el-checkbox>
+                </el-checkbox-group>
+              </div>
+              <div class="minibtn">
+                <el-button size="mini" @click="dialogVisible = false">Cancel</el-button>
+                <el-button size="mini" type="danger" plain @click="pushShip">Push</el-button>
+              </div>
+              <el-button type="danger" slot="reference">Dropship Now</el-button>
+            </el-popover>
+            <el-button
+              type="danger"
+              @click="star(chooseItem)"
+            >{{chooseItem.star == 1 ? 'Remove from Wish List' : 'Add to Wish List'}}</el-button>
           </div>
         </div>
         <br />
@@ -74,6 +115,16 @@
 export default {
   data() {
     return {
+      checkAll: false,
+      EcheckAll: false,
+      checkedAStores: [],
+      checkedEStores: [],
+      Astores: ["Apple", "Nick"],
+      Estores: ["Apple", "Nick"],
+      isIndeterminate: true,
+      EisIndeterminate: true,
+      //
+      dialogVisible: false,
       activeName: "first",
       chooseItem: {},
       drawer: false,
@@ -104,6 +155,30 @@ export default {
     };
   },
   methods: {
+    EhandleCheckAllChange(val) {
+      this.checkedEStores = val ? this.Estores : [];
+      this.EisIndeterminate = false;
+    },
+    handleCheckAllChange(val) {
+      this.checkedAStores = val ? this.Astores : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedEStoresChange(value) {
+      let checkedCount = value.length;
+      this.EcheckAll = checkedCount === this.Estores.length;
+      this.EisIndeterminate =
+        checkedCount > 0 && checkedCount < this.Estores.length;
+    },
+    handleCheckedAStoresChange(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.Astores.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.Astores.length;
+    },
+    pushShip() {
+      this.dialogVisible = false;
+      this.$notify.success("Successfull");
+    },
     star(item) {
       if (item.star == 1) {
         item.star = 2;
@@ -124,7 +199,29 @@ export default {
 </script>
 
 <style scoped>
-.tab{
+.minibtn {
+  margin-top: 1rem;
+}
+.check >>> .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #f56c6c;
+  border-color: #f56c6c;
+}
+.check >>> .el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #f56c6c;
+  border-color: #f56c6c;
+}
+.check >>> .el-checkbox__input.is-checked + .el-checkbox__label {
+  color: #f56c6c;
+}
+.title {
+  margin-top: 0.5rem;
+}
+.store {
+  display: block;
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+.tab {
   width: 50rem;
 }
 .tab >>> .el-tabs__item.is-active {
