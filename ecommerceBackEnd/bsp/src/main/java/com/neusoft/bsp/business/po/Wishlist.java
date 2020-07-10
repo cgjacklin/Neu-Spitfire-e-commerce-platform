@@ -1,8 +1,10 @@
 package com.neusoft.bsp.business.po;
 
+import com.neusoft.bsp.common.base.BaseEntity;
+
 import java.sql.Date;
 
-public class Wishlist {
+public class Wishlist implements BaseEntity<Integer> {
     int wit_id;
     int dsr_id;
     int pro_id;

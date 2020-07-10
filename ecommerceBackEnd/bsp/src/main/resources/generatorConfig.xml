@@ -325,7 +325,7 @@
 <!--                enableUpdateByPrimaryKey="true"-->
 <!--                enableDeleteByPrimaryKey="true"-->
 <!--                enableInsert="true" ></table>-->
-<!--        <table  tableName="wta_wallet_transaction_aduit" domainObjectName="walletTransactionAduit"-->
+<!--        <table  tableName="wta_wallet_transaction_aduit" domainObjectName="walletTransactionAudit"-->
 <!--                enableCountByExample="false"-->
 <!--                enableUpdateByExample="false"-->
 <!--                enableDeleteByExample="false"-->

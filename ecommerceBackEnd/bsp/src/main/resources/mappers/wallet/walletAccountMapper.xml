@@ -8,7 +8,7 @@
     <!--        select * from user where t_id = #{tid} and t_password = #{tpassword}-->
     <!--    </select>-->
 
-    <insert id="insert" parameterType="WalletAccount"  useGeneratedKeys="true" keyProperty="buyer_id">
+    <insert id="insert" parameterType="WalletAccount">
         insert into waa_wallet_account values(#{buyer_id}, #{account_name}, #{email}, #{password}, #{active_time}, #{is_active},
         #{status}, #{create_by}, #{create_time}, #{last_update_by}, #{last_update_time}, #{account_type},
         #{hold_order_time}, #{auto_pay_status})

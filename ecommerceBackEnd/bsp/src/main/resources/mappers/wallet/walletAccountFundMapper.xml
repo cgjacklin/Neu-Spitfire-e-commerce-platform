@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.bsp.admin.wallet.mapper.WalletAccountFundMapper">
+
+
+    <insert id="insert" parameterType="WalletAccountFund" >
+        insert into waf_wallet_account_fund values(#{buyer_id}, #{available_money}, #{depositing_money}, #{withdrawing_money},
+        #{create_by}, #{create_time},#{last_update_by}, #{last_update_time}, #{currency})
+    </insert>
+
+    <update id="update" parameterType="WalletAccountFund">
+        update waf_wallet_account_fund set available_money = #{available_money},depositing_money = #{depositing_money},withdrawing_money = #{withdrawing_money},
+         create_by= #{create_by} ,create_time = #{create_time},last_update_by = #{last_update_by},last_update_time = #{last_update_time}
+         ,currency = #{currency}
+          where buyer_id = #{buyer_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from waf_wallet_account_fund where buyer_id = #{buyer_id}
+    </delete>
+
+    <select id="getById" parameterType="java.lang.Integer" resultType="WalletAccountFund" >
+        select * from waf_wallet_account_fund where buyer_id = #{buyer_id}
+    </select>
+
+    <select id="getAll" resultType="WalletAccountFund">
+        select * from waf_wallet_account_fund
+    </select>
+
+    <select id="getAllByFilter" parameterType="java.lang.Integer" resultType="WalletAccountFund">
+        select * from waf_wallet_account_fund where buyer_id = #{buyer_id}
+    </select>
+
+</mapper>
