@@ -1,4 +1,4 @@
-package com.neusoft.bsp.business.mvo.service;
+package com.neusoft.bsp.business.order.service;
 
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.OrderRequest;
