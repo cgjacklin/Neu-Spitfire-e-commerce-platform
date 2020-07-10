@@ -10,6 +10,7 @@ import com.neusoft.bsp.admin.wallet.service.WalletAccountFundService;
 import com.neusoft.bsp.admin.wallet.service.WalletAccountService;
 import com.neusoft.bsp.admin.wallet.service.WalletTransactionAuditService;
 import com.neusoft.bsp.admin.wallet.service.WalletTransactionRecordService;
+import com.neusoft.bsp.admin.wallet.vo.Audit;
 import com.neusoft.bsp.admin.wallet.vo.Recharge;
 import com.neusoft.bsp.admin.wallet.vo.UseridAndAccount;
 import com.neusoft.bsp.admin.wallet.vo.Withdraw;
@@ -287,11 +288,81 @@ public class WalletController extends BaseController {
         }else{
             throw BusinessException.PERMISSION_DENY;
         }
-
-
-
-
     }
+
+
+    @PostMapping("/adminAudit")
+    public BaseModel adminAudit(@RequestBody Audit audit){
+        BaseModel result = new BaseModel();
+        User admin = userService.getById(audit.getAdmin_id());
+        if (admin == null) {
+            throw BusinessException.USERNAME_NOT_EXISTS;
+        }
+        User user = userService.getById(audit.getUser_id());
+        if (user == null) {
+            throw BusinessException.USERNAME_NOT_EXISTS;
+        }
+        String per = admin.getRole_id();
+        if(per.equals("0")) {
+            WalletAccountFund walletAccountFund = walletAccountFundService.getById(audit.getUser_id());
+            WalletTransactionAudit walletTransactionAudit = walletTransactionAuditService.getById(audit.getTransaction_audit_id());
+            int transaction_id =walletTransactionAudit.getTransaction_id();
+            WalletTransactionRecord walletTransactionRecord = walletTransactionRecordService.getById(transaction_id);
+            Timestamp datetime = new Timestamp(System.currentTimeMillis());
+            int operate_type = walletTransactionAudit.getOperate_type();
+            BigDecimal money = walletTransactionAudit.getOperate_money();
+            if(audit.getStatus()==2){//管理员审核通过
+                walletTransactionAudit.setStatus(2);
+                walletTransactionAudit.setLast_update_by(admin.getName());
+                walletTransactionAudit.setOperate_by(admin.getName());
+                walletTransactionAudit.setLast_update_time(datetime);
+                walletTransactionAuditService.update(walletTransactionAudit);
+                walletTransactionRecord.setStatus(2);
+                walletTransactionRecord.setOperator_name(admin.getName());
+                walletTransactionRecord.setLast_update_by(admin.getName());
+                walletTransactionRecord.setLast_update_time(datetime);
+                walletTransactionRecordService.update(walletTransactionRecord);
+                if(operate_type==1){
+                    walletAccountFund.setAvailable_money(walletAccountFund.getAvailable_money().add(money));
+                    walletAccountFund.setDepositing_money(walletAccountFund.getDepositing_money().subtract(money));
+                    walletAccountFund.setLast_update_by(admin.getName());
+                    walletAccountFund.setLast_update_time(datetime);
+                }else if(operate_type==2){
+                    walletAccountFund.setAvailable_money(walletAccountFund.getAvailable_money().subtract(money));
+                    walletAccountFund.setWithdrawing_money(walletAccountFund.getWithdrawing_money().subtract(money));
+                    walletAccountFund.setLast_update_by(admin.getName());
+                    walletAccountFund.setLast_update_time(datetime);
+                }
+                walletAccountFundService.update(walletAccountFund);
+            }else{//其余都为不通过
+                walletTransactionAudit.setStatus(audit.getStatus());
+                walletTransactionAudit.setLast_update_by(admin.getName());
+                walletTransactionAudit.setOperate_by(admin.getName());
+                walletTransactionAudit.setLast_update_time(datetime);
+                walletTransactionAuditService.update(walletTransactionAudit);
+                walletTransactionRecord.setStatus(audit.getStatus());
+                walletTransactionRecord.setOperator_name(admin.getName());
+                walletTransactionRecord.setLast_update_by(admin.getName());
+                walletTransactionRecord.setLast_update_time(datetime);
+                walletTransactionRecordService.update(walletTransactionRecord);
+                if(operate_type==1){
+                    walletAccountFund.setDepositing_money(walletAccountFund.getDepositing_money().subtract(money));
+                    walletAccountFund.setLast_update_by(admin.getName());
+                    walletAccountFund.setLast_update_time(datetime);
+                }else if(operate_type==2){
+                    walletAccountFund.setWithdrawing_money(walletAccountFund.getWithdrawing_money().subtract(money));
+                    walletAccountFund.setLast_update_by(admin.getName());
+                    walletAccountFund.setLast_update_time(datetime);
+                }
+                walletAccountFundService.update(walletAccountFund);
+            }
+            result.code = 200;
+            return  result;
+        }else{
+            throw BusinessException.PERMISSION_DENY;
+        }
+    }
+
 }
 
 
