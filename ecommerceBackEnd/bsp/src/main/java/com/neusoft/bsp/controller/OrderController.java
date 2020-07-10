@@ -1,6 +1,6 @@
 package com.neusoft.bsp.controller;
 
-import com.neusoft.bsp.business.mvo.service.OrderService;
+import com.neusoft.bsp.business.order.service.OrderService;
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.OrderRequest;
 import com.neusoft.bsp.common.base.BaseController;

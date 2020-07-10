@@ -1,4 +1,4 @@
-package com.neusoft.bsp.business.mvo.mapper;
+package com.neusoft.bsp.business.order.mapper;
 
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.common.base.BaseMapper;
