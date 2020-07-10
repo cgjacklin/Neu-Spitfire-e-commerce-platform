@@ -12,6 +12,24 @@
         insert into dsr_dropshipper values(null,#{name},#{created_by},#{creation_date},#{last_update_by},#{last_update_date},#{call_cnt},#{remark},#{sts_cd},#{register_date})
     </insert>
 
+    <update id="update" parameterType="DropShipper">
+        update dsr_dropshipper set name = #{name},created_by = #{created_by},creation_date = #{creation_date},
+         last_update_by= #{last_update_by} ,last_update_date = #{last_update_date},call_cnt = #{call_cnt},remark = #{remark},sts_cd = #{sts_cd}
+         ,register_date = #{register_date} where dsr_id = #{dsr_id}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from dsr_dropshipper where dsr_id = #{dsr_id}
+    </delete>
+
+    <select id="getAll" resultType="DropShipper">
+        select * from dsr_dropshipper
+    </select>
+
+    <select id="getAllByFilter" parameterType="java.util.Map" resultType="DropShipper">
+        select * from dsr_dropshipper where dsr_id = #{dsr_id}
+    </select>
+
 
 
 </mapper>

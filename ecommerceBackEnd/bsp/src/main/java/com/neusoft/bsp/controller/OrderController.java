@@ -2,7 +2,9 @@ package com.neusoft.bsp.controller;
 
 import com.neusoft.bsp.business.order.service.OrderService;
 import com.neusoft.bsp.business.po.Order;
+import com.neusoft.bsp.business.vo.CancelOrderRequest;
 import com.neusoft.bsp.business.vo.OrderRequest;
+import com.neusoft.bsp.business.vo.PayOrderRequest;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
@@ -45,9 +47,20 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("/cancelOrder")
-    public BaseModel cancelOrder(@RequestBody Order order){
+    public BaseModel cancelOrder(@RequestBody CancelOrderRequest cancelOrderRequest){
         BaseModel response = new BaseModel();
-        if(orderService.cancelOrder(order)==1){
+        if(orderService.cancelOrder(cancelOrderRequest)==1){
+            response.setSuccess();
+        }else{
+            response.setFailure();
+        }
+        return response;
+    }
+
+    @PostMapping("/payOrder")
+    public BaseModel payOrder(@RequestBody PayOrderRequest payOrderRequest){
+        BaseModel response = new BaseModel();
+        if(orderService.payOrder(payOrderRequest)==1){
             response.setSuccess();
         }else{
             response.setFailure();

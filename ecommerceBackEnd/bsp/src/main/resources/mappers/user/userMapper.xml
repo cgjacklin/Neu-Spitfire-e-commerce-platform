@@ -43,4 +43,9 @@
         select * from sys_user where username = #{username}
     </select>
 
+    <select id="getBuyerOrSeller" parameterType="java.util.Map" resultType="User">
+        select * from sys_user where man_buyer_id = #{man_buyer_id} and role_id = #{role_id}
+    </select>
+
+
 </mapper>

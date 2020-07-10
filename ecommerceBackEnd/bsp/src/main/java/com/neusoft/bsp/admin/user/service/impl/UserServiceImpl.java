@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.neusoft.bsp.admin.wallet.po.WalletAccount;
 import com.neusoft.bsp.admin.wallet.service.WalletAccountService;
+import com.neusoft.bsp.business.bvo.service.DropshipperService;
 import com.neusoft.bsp.business.mvo.mapper.ManufacturerMapper;
 import com.neusoft.bsp.common.exception.BusinessException;
 import com.neusoft.bsp.admin.user.po.User;
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     WalletAccountService walletAccountService;
+
+    @Autowired
+    DropshipperService dropshipperService;
 
 //    @Autowired
 //    ManufacturerMapper manufacturerMapper;
@@ -50,9 +54,10 @@ public class UserServiceImpl implements UserService {
         if(checkName!=null){
             throw BusinessException.DUPLICATE_USERNAME;
         }
-//        if(user.getRole_id().equals("bvo")){
-//
-//        }
+        if(user.getRole_id().equals("2")){
+            int man_buyer_id = dropshipperService.addDropshipper(user);
+            user.setMan_buyer_id(man_buyer_id);
+        }
         insert(user);
 
 
