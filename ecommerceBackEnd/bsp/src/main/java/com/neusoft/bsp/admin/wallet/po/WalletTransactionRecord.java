@@ -16,7 +16,7 @@ public class WalletTransactionRecord implements BaseEntity<Integer> {
     BigDecimal transaction_money ;
     BigDecimal commission;
     BigDecimal discount_commission;
-    int transcation_method;
+    int transaction_method;
     Timestamp complete_time;
     int status;
     BigDecimal actual_money;
@@ -114,12 +114,12 @@ public class WalletTransactionRecord implements BaseEntity<Integer> {
         this.discount_commission = discount_commission;
     }
 
-    public int getTranscation_method() {
-        return transcation_method;
+    public int getTransaction_method() {
+        return transaction_method;
     }
 
-    public void setTranscation_method(int transcation_method) {
-        this.transcation_method = transcation_method;
+    public void setTransaction_method(int transaction_method) {
+        this.transaction_method = transaction_method;
     }
 
     public Timestamp getComplete_time() {
@@ -282,7 +282,7 @@ public class WalletTransactionRecord implements BaseEntity<Integer> {
         this.withdraw_fee = withdraw_fee;
     }
 
-    public WalletTransactionRecord(int transaction_id, int buyer_id, int bank_card_id, String transaction_number, int transaction_type, String account_name, BigDecimal transaction_money, BigDecimal commission, BigDecimal discount_commission, int transcation_method, Timestamp complete_time, int status, BigDecimal actual_money, BigDecimal actual_commission, BigDecimal actual_discount_commission, BigDecimal balance, int business_id, int finance_type, String note, String operator_name, String operator_ip, String create_by, Timestamp create_time, String last_update_by, Timestamp last_update_time, String bank_receipt_url, BigDecimal exchange_rate, String transaction_desc, BigDecimal foreign_exchange_fee, BigDecimal withdraw_fee) {
+    public WalletTransactionRecord(int transaction_id, int buyer_id, int bank_card_id, String transaction_number, int transaction_type, String account_name, BigDecimal transaction_money, BigDecimal commission, BigDecimal discount_commission, int transaction_method, Timestamp complete_time, int status, BigDecimal actual_money, BigDecimal actual_commission, BigDecimal actual_discount_commission, BigDecimal balance, int business_id, int finance_type, String note, String operator_name, String operator_ip, String create_by, Timestamp create_time, String last_update_by, Timestamp last_update_time, String bank_receipt_url, BigDecimal exchange_rate, String transaction_desc, BigDecimal foreign_exchange_fee, BigDecimal withdraw_fee) {
         this.transaction_id = transaction_id;
         this.buyer_id = buyer_id;
         this.bank_card_id = bank_card_id;
@@ -292,7 +292,7 @@ public class WalletTransactionRecord implements BaseEntity<Integer> {
         this.transaction_money = transaction_money;
         this.commission = commission;
         this.discount_commission = discount_commission;
-        this.transcation_method = transcation_method;
+        this.transaction_method = transaction_method;
         this.complete_time = complete_time;
         this.status = status;
         this.actual_money = actual_money;
