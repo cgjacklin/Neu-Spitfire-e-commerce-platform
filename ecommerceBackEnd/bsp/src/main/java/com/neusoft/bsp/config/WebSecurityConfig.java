@@ -42,11 +42,11 @@
 //    protected void configure(HttpSecurity httpSecurity) throws Exception {
 //        httpSecurity
 //                .csrf().disable()
-//                //允许访问登录和注册api
-//                .authorizeRequests()
-//                .antMatchers("/user/login").permitAll()
-//                .antMatchers("/user/register").permitAll()
-//                .antMatchers("/user/checkUsername").permitAll()
+////                //允许访问登录和注册api
+////                .authorizeRequests()
+////                .antMatchers("/user/login").permitAll()
+////                .antMatchers("/user/register").permitAll()
+////                .antMatchers("/user/checkUsername").permitAll()
 //                .antMatchers("api/user/login").permitAll()
 //                .antMatchers("api/user/register").permitAll()
 //
