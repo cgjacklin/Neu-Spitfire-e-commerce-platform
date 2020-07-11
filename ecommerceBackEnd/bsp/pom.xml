@@ -17,7 +17,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--        数据库链接， MySQL + mybatis + druid-->
+        <!--        数据库链接， MySQL + mybatis + druid + redis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -32,6 +32,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
         <!--        junit-->

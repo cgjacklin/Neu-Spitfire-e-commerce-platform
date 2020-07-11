@@ -3,11 +3,13 @@ package com.neusoft.bsp;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @MapperScan("com.neusoft.bsp.*.*.mapper")
 @SpringBootApplication
 @EnableSwagger2
+@EnableCaching
 public class BspApplication {
 
     public static void main(String[] args) {
