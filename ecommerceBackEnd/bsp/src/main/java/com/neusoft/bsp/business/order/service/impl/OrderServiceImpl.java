@@ -129,6 +129,11 @@ public class OrderServiceImpl implements OrderService {
         WalletAccountFund walletAccountFundBuyer = walletAccountFundService.getById(userBuyer.getUser_id());
         WalletTransactionRecord walletTransactionRecord =new WalletTransactionRecord();
 
+        //验证余额是否足够
+        if(walletAccountFundSeller.getAvailable_money().compareTo(paidMoney)<0){
+            throw BusinessException.NOT_SUFFICIENT_FUNDS;
+        }
+
         //公共业务逻辑
         walletTransactionRecord.setBuyer_id(userBuyer.getUser_id());
         walletTransactionRecord.setTransaction_type(3);
@@ -191,7 +196,7 @@ public class OrderServiceImpl implements OrderService {
         User userSeller = userMapper.getBuyerOrSeller(map);
         WalletAccount walletAccountSeller = walletAccountService.getById(userSeller.getUser_id());
 
-        //校验账户是否存在，密码是否正确
+        //校验账户是否存在，密码是否正确以及余额是否足够
         WalletAccount walletAccountBuyer = walletAccountService.getById(request.getUser_id());
         if(walletAccountBuyer.getIs_active().equals("N")){
             throw BusinessException.WALLET_ACCOUNT_STATUS_WRONG;
