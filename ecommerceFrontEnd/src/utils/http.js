@@ -2,7 +2,7 @@ import axios from 'axios';
 import QS from 'qs'
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='http://localhost:3000';
+axios.defaults.baseURL ='https://mock.yonyoucloud.com/mock/11240';
 
 /**
  * 封装get方法

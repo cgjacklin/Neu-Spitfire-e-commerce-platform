@@ -232,22 +232,26 @@ export default {
       this.role_id = "1";
     },
     usernameInput() {
-      if (this.username == "aaa") {
-        this.$notify({
-          title: "Warning",
-          message: `The user name '${this.username}' already exists, please enter a new name`,
-          position: "bottom-left",
-          type: "warning"
-        });
-        this.username = "";
-      } else {
-        this.$notify({
-          title: "Wonderfull",
-          message: "The user name is available",
-          position: "bottom-left",
-          type: "success"
-        });
-      }
+      this.$post("/user/checkUsername", {
+        username: this.username
+      }).then(res => {
+        if (res.code == 504) {
+          this.$notify({
+            title: "Warning",
+            message: `The user name '${this.username}' already exists, please enter a new name`,
+            position: "bottom-left",
+            type: "warning"
+          });
+        }
+        if (res.code == 200) {
+          this.$notify({
+            title: "Wonderfull",
+            message: "The user name is available",
+            position: "bottom-left",
+            type: "success"
+          });
+        }
+      });
     },
     passwordSureInput() {
       if (this.password == this.passwordSure && this.passwordSure != "") {
@@ -298,9 +302,17 @@ export default {
         this.$notify.error("Two passwords are not the same，please re-enter");
         return;
       }
-
-      this.change();
-      this.$notify.success("Registered successfully, now jump to login");
+      this.$post("/user/register", {
+        username: this.username
+      }).then(res => {
+        if (res.code == 504) {
+          this.$notify.error("The user name already exists");
+        }
+        if (res.code == 200) {
+          this.change();
+          this.$notify.success("Registered successfully");
+        }
+      });
     },
     login() {
       if (this.username == "") {
@@ -311,32 +323,30 @@ export default {
         this.$notify.error("Please enter the password");
         return;
       }
-      if (this.checkCode == ""){
-        this.$notify.error("Please enter the verification code")
-        return
+      if (this.checkCode == "") {
+        this.$notify.error("Please enter the verification code");
+        return;
       }
-      if(this.checkCode != this.Code){
-        this.$notify.warning("The verification code is error")
-        return
-      }
-      //无后端演示登录
-      if (this.username == "admin" && this.password == "admin888") {
-        this.$message.success("演示页面登录成功");
-        this.$router.push("/main");
+      if (this.checkCode != this.Code) {
+        this.$notify.warning("The verification code is error");
         return;
       }
       //请求
-      this.$post("/api/admin/login", {
+      this.$post("/user/login", {
         username: this.username,
         password: this.password
       }).then(res => {
         //处理response
-        if (res == "用户名错误") {
-          this.$notify.warning("用户名错误");
-        } else if (res == "密码错误") {
-          this.$notify.warning("密码错误");
-        } else {
-          this.$notify.success("登录成功");
+        if (res.message == "User doesn't exist") {
+          this.$notify.warning("User doesn't exist");
+          return;
+        }
+        if (res.message == "Password is wrong") {
+          this.$notify.warning("Password is wrong");
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Login Successfull");
           this.$router.push("/main");
         }
       });
