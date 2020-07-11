@@ -1,8 +1,10 @@
 package com.neusoft.bsp.business.po;
 
+import com.neusoft.bsp.common.base.BaseEntity;
+
 import java.util.Date;
 
-public class Store {
+public class Store implements BaseEntity<Integer> {
 
     private int str_id;
     private int dsr_id;

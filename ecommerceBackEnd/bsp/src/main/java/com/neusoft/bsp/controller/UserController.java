@@ -44,6 +44,7 @@ public class UserController extends BaseController {
     public BaseModel checkUsername(@RequestBody User user){
         BaseModel response = new BaseModel();
         User checkName = userService.getByUserName(user.getUsername());
+//        System.out.println(checkName+"DDDD");
         if(checkName==null){
             response.setSuccess();
         }else {
