@@ -65,10 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int login(User user) {
+    public User login(User user) {
         Map<String, Object> map = new HashMap<>();
         map.put("username", user.getUsername());
         map.put("password", user.getPassword());
+        map.put("user_id", user.getUser_id());
         User checkName = getByUserName(user.getUsername());
         if(checkName==null){
             throw BusinessException.USERNAME_NOT_EXISTS;
@@ -76,9 +77,8 @@ public class UserServiceImpl implements UserService {
         List<User> users = getAllByFilter(map);
         if (users.size() == 0) {
             throw BusinessException.PASSWORD_WRONG;
-        } else {
-            return 1;
         }
+        return users.get(0);
     }
 
     @Override

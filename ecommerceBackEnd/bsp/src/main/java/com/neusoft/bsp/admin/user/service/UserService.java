@@ -44,6 +44,6 @@ public interface UserService {
 
     int register(User user);
 
-    int login(User user);
+    User login(User user);
 
 }
