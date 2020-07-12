@@ -1,0 +1,34 @@
+##test login
+
+##1 login success
+POST http://127.0.0.1:8088/user/login
+Content-Type: application/json
+
+{
+  "username": "a",
+  "password": "a"
+
+}
+
+###2 login wrong password
+POST http://127.0.0.1:8088/user/login
+Content-Type: application/json
+
+{
+  "username": "a",
+  "password": "b"
+
+}
+
+###3 login no user
+POST http://127.0.0.1:8088/user/login
+Content-Type: application/json
+
+{
+  "username": "h",
+  "password": "a"
+
+}
+
+###
+
