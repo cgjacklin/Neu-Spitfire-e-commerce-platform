@@ -14,9 +14,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "autoprefixer": "^7.2.6",
     "axios": "^0.19.2",
     "echarts": "^4.8.0",
     "element-ui": "^2.13.1",
+    "extract-text-webpack-plugin": "^3.0.2",
     "lodash": "^4.17.15",
     "mavon-editor": "^2.9.0",
     "module": "^1.2.5",
@@ -79,8 +81,8 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-dev-server": "^2.11.5",
+    "webpack-merge": "^4.2.2"
   },
   "engines": {
     "node": ">= 6.0.0",
@@ -90,5 +92,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "main": "index.js",
+  "keywords": [],
+  "license": "ISC"
 }

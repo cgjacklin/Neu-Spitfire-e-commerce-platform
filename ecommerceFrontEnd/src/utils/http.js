@@ -2,7 +2,8 @@ import axios from 'axios';
 import QS from 'qs'
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='https://mock.yonyoucloud.com/mock/11240';
+axios.defaults.baseURL ='http://localhost:8088/';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 /**
  * 封装get方法
@@ -35,7 +36,7 @@ export function get(url,params){
 
  export function post(url,data){
    return new Promise((resolve,reject) => {
-    var pr = QS.stringify(data) 
+    var pr = JSON.stringify(data) 
     axios.post(url,pr)//转换为josn数据
           .then(response => {
             resolve(response.data);
