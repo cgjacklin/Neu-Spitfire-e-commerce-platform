@@ -30,5 +30,10 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
-  render: h => h(App)
+  render: h => h(App),
+  data: function(){
+    return {
+      user_id: ''
+    }
+  }
 })

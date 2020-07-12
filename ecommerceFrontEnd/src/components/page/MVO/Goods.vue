@@ -326,7 +326,22 @@ export default {
       drawer: false
     };
   },
-  mounted() {},
+  mounted() {
+    this.$post("/product/getProducts", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == "504") {
+          this.$notify.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // console.log(this.$root.user_id);
+          this.$message.success("Login Successfull");
+        }
+      });
+  },
   methods: {
     darCancel(formName) {
       this.addGoodsForm.ebay_description = "";
