@@ -282,7 +282,7 @@ export default {
         this.$notify.error("Please enter the nickname");
         return;
       }
-      if (this.Rpassword == "") {
+      if (this.password == "") {
         this.$notify.error("Please enter the password");
         return;
       }
@@ -303,7 +303,12 @@ export default {
         return;
       }
       this.$post("/user/register", {
-        username: this.username
+        username: this.username,
+        password:this.password,
+        name:this.nickname,
+        phone:this.phone,
+        email:this.email,
+        role_id:this.role_id
       }).then(res => {
         if (res.code == 504) {
           this.$notify.error("The user name already exists");
@@ -337,6 +342,7 @@ export default {
         password: this.password
       }).then(res => {
         //处理response
+        console.log(res)
         if (res.message == "User doesn't exist") {
           this.$notify.warning("User doesn't exist");
           return;
