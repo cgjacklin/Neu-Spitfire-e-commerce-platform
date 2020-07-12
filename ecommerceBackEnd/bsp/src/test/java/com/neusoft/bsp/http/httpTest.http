@@ -1,0 +1,9 @@
+
+POST http://127.0.0.1:8088/mvo/getManufacturerByUserID/
+Content-Type: application/json
+
+{
+  "user_id": 1
+}
+
+###
