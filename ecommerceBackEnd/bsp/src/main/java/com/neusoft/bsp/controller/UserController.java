@@ -55,19 +55,15 @@ public class UserController extends BaseController {
 
     @PostMapping("/login")
     public  BaseModelJson<Map<String, String>> getAllByFilter(@RequestBody User user) {
-        int result = userService.login(user);
+        User returnUser = userService.login(user);
         BaseModelJson<Map<String, String>> response = new BaseModelJson();
-        if(result == 1){
-            response.setSuccess();
-            HashMap<String, String> res = new HashMap<>();
+        response.setSuccess();
+        HashMap<String, String> res = new HashMap<>();
 //            res.put("jwt", authService.login(user));
-            res.put("jwt", "");
-            res.put("user_id", user.getUser_id()+"");
-            response.data = res;
-        }
-        else{
-            response.setFailure();
-        }
+        res.put("jwt", "");
+        res.put("user_id", returnUser.getUser_id()+"");
+        response.data = res;
+
         return response;
 
     }

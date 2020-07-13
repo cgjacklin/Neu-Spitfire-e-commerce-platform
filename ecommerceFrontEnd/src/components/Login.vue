@@ -352,6 +352,10 @@ export default {
           return;
         }
         if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          sessionStorage.setItem("user_id", res.data.user_id);
+          sessionStorage.setItem("jwt", res.data.jwt);
+          console.log(sessionStorage.getItem("user_id"));
           this.$message.success("Login Successfull");
           this.$router.push("/main");
         }
