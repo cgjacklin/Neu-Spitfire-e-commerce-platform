@@ -37,25 +37,20 @@ public class BrandController extends BaseController {
     BrandService brandService;
 
     @PostMapping("/getBrand")
-    public BaseModelJson<Map<String, Object>> getBrand(@RequestBody User userget){
+    public BaseModelJson<List<Brand>> getBrand(@RequestBody User userget){
         int user_id = userget.getUser_id();
         User user = userService.getById(user_id);
-        BaseModelJson<Map<String, Object>> response = new BaseModelJson();
+        BaseModelJson<List<Brand>> response = new BaseModelJson();
         if(user==null){
             throw BusinessException.USERNAME_NOT_EXISTS;
         }
         int man_id = user.getMan_buyer_id();
         response.code = 200;
+        List<Brand> list;
         if(man_id != 0){
             HashMap<String, Object> res = new HashMap<>();
-            List<Brand> list = brandService.getAllById(man_id);
-            int j = 0;
-            for (Brand brand : list) {
-                String s = String.valueOf(j);
-                res.put("brand"+j, brand);
-                j++;
-            }
-            response.data = res;
+            list = brandService.getAllById(man_id);
+            response.data = list;
         }
         return response;
     }
