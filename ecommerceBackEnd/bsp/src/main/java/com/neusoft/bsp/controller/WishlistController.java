@@ -51,8 +51,8 @@ public class WishlistController extends BaseController {
     PackageInfoService packageInfoService;
 
     @PostMapping("/getWishlist")
-    public BaseModelJson<Map<String, Object>> getWishlist(@Validated({SelectGroup.class}) @RequestBody int user_id) {
-        User user = userService.getById(user_id);
+    public BaseModelJson<Map<String, Object>> getWishlist(@Validated({SelectGroup.class}) @RequestBody User user1) {
+        User user = userService.getById(user1.getUser_id());
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
         if (user == null) {
             throw BusinessException.USERNAME_NOT_EXISTS;
@@ -117,8 +117,8 @@ public class WishlistController extends BaseController {
     }
 
     @PostMapping("/deletedWishlist")
-    public BaseModel deletedWishlist(@RequestBody int wit_id) {
-        int i = wishlistService.delete(wit_id);
+    public BaseModel deletedWishlist(@RequestBody Wishlist wit_id) {
+        int i = wishlistService.delete(wit_id.getWit_id());
         BaseModel result = new BaseModel();
         if(i!=1){
             throw BusinessException.DELETE_FAIL;

@@ -133,24 +133,25 @@ export default {
       search_name: "",
       type: "",
       goods: [
-        {
-          name: "Mac book",
-          src:
-            "http://img1.imgtn.bdimg.com/it/u=1524275480,3404163321&fm=26&gp=0.jpg",
-          price: 3333,
-          star: 1
-        },
-        {
-          name: "iPhone",
-          src:
-            "http://img2.imgtn.bdimg.com/it/u=2221061121,1432349285&fm=26&gp=0.jpg",
-          price: 3333,
-          star: 2
-        }
+        // {
+        //   name: "Mac book",
+        //   src:
+        //     "http://img1.imgtn.bdimg.com/it/u=1524275480,3404163321&fm=26&gp=0.jpg",
+        //   price: 3333,
+        //   star: 1
+        // },
+        // {
+        //   name: "iPhone",
+        //   src:
+        //     "http://img2.imgtn.bdimg.com/it/u=2221061121,1432349285&fm=26&gp=0.jpg",
+        //   price: 3333,
+        //   star: 2
+        // }
       ]
     };
   },
   mounted: function () {
+    console.log("mounted")
     this.loadData()
   },
   methods: {
@@ -158,20 +159,7 @@ export default {
        this.$post("/wit/getWishlist", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
-     
         console.log(res)
-        if (res.message == "User doesn't exist") {
-          this.$notify.warning("User doesn't exist");
-          return;
-        }
-        if (res.message == "Password is wrong") {
-          this.$notify.warning("Password is wrong");
-          return;
-        }
-        if (res.code == 200) {
-          this.$message.success("Login Successfull");
-          this.$router.push("/main");
-        }
       });
     },
     EhandleCheckAllChange(val) {
