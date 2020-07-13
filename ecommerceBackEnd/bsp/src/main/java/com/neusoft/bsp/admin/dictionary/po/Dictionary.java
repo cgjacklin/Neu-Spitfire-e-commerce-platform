@@ -19,6 +19,23 @@ public class Dictionary implements BaseEntity<Integer> {
     String remark;
     String sts_cd;
 
+    public Dictionary(){}
+    public Dictionary(int cdm_id, String code_type, String description, String type_cd, String code_val, int seq_no, String created_by, Date creation_date, String last_update_by, Date last_update_date, int call_cnt, String remark, String sts_cd) {
+        this.cdm_id = cdm_id;
+        this.code_type = code_type;
+        this.description = description;
+        this.type_cd = type_cd;
+        this.code_val = code_val;
+        this.seq_no = seq_no;
+        this.created_by = created_by;
+        this.creation_date = creation_date;
+        this.last_update_by = last_update_by;
+        this.last_update_date = last_update_date;
+        this.call_cnt = call_cnt;
+        this.remark = remark;
+        this.sts_cd = sts_cd;
+    }
+
     @Override
     public String toString() {
         return "Dictionary{" +
@@ -37,6 +54,7 @@ public class Dictionary implements BaseEntity<Integer> {
                 ", sts_cd=" + sts_cd +
                 '}';
     }
+
 
     public int getCdm_id() {
         return cdm_id;

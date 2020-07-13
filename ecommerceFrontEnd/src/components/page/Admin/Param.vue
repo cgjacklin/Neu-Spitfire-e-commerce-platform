@@ -145,6 +145,7 @@ export default {
             this.$refs[formName].resetFields()
           }
           if(this.isAdd){
+            this.isAdd = false;
              this.$post("/parameter/addParameter",{
               user_id: sessionStorage.getItem("user_id"),
               param_value: this.paramForm.param_value,

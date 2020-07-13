@@ -3,6 +3,7 @@ package com.neusoft.bsp.controller;
 import com.neusoft.bsp.admin.dictionary.po.Dictionary;
 import com.neusoft.bsp.admin.dictionary.service.DictionaryService;
 
+import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
@@ -14,7 +15,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/dictionary")
-public class DictionaryController {
+public class DictionaryController extends BaseController {
     @Autowired
     DictionaryService dictionaryService;
     
