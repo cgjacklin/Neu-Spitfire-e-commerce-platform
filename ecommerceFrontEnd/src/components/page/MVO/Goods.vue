@@ -68,13 +68,13 @@
           <br />
           <el-form-item
             label="Goods brand"
-            prop="name_en"
+            prop="brand_options"
             :rules="[{ required: true, message: 'Please choose the Goods brand', trigger: 'blur'}]"
           >
             <el-select
               style="width:35rem"
               placeholder
-              v-model="addGoodsForm.brand"
+              v-model="addGoodsForm.name_en"
               autocomplete="off"
             >
               <el-option
@@ -296,7 +296,7 @@ export default {
       ],
       addGoodsForm: {
         title: "",
-        brand: "",
+        name_en: "",
         retail_price: "",
         replenishment_period: "",
         sku_cd: "",
@@ -334,19 +334,26 @@ export default {
       user_id: sessionStorage.getItem("user_id")
     }).then(res=>{
       console.log(res)
+      console.log(res.data.length)
       let tmpBrands = [];
       for(let i = 0; i < res.data.length; i++){
         console.log(res.data[i].name_en);
-        tmpData[i] = {value: res.data[i].name_en, label:res.data[i].name_en}
+        tmpBrands[i] = {value: res.data[i].name_en, 
+                      label: res.data[i].name_en}
       }
-      // console.log(this.brand_options);
+      // console.log("DFD"+this.brand_options);
       this.brand_options = tmpBrands;
+      // console.log("getBrand_options")
+      // console.log(this.brand_options)
+      // console.log("over")
     }),
     this.$post("/product/getProducts", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         //处理response
+        // console.log("getProduct")
         // console.log(res)
+        // console.log("over")
         if (res.code == "504") {
           this.$notify.warning(res.message);
           return;
