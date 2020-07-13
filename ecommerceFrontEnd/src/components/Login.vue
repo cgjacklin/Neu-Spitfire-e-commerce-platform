@@ -336,12 +336,12 @@ export default {
         this.$notify.warning("The verification code is error");
         return;
       }
-      //请求
+   
       this.$post("/user/login", {
         username: this.username,
         password: this.password
       }).then(res => {
-        //处理response
+     
         console.log(res)
         if (res.message == "User doesn't exist") {
           this.$notify.warning("User doesn't exist");

@@ -150,7 +150,30 @@ export default {
       ]
     };
   },
+  mounted: function () {
+    this.loadData()
+  },
   methods: {
+  loadData () {
+       this.$post("/wit/getWishlist", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+     
+        console.log(res)
+        if (res.message == "User doesn't exist") {
+          this.$notify.warning("User doesn't exist");
+          return;
+        }
+        if (res.message == "Password is wrong") {
+          this.$notify.warning("Password is wrong");
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Login Successfull");
+          this.$router.push("/main");
+        }
+      });
+    },
     EhandleCheckAllChange(val) {
       this.checkedEStores = val ? this.Estores : [];
       this.EisIndeterminate = false;
