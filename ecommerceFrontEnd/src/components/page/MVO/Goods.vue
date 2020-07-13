@@ -23,14 +23,14 @@
     <br />
     <el-table :data="tableData" style="width: 100%" class="table-check">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column prop="name" label="Goods title"></el-table-column>
-      <el-table-column prop="type" label="Goods type"></el-table-column>
-      <el-table-column prop="picture" label="Goods picture"></el-table-column>
-      <el-table-column prop="price" label="Goods price"></el-table-column>
-      <el-table-column prop="num" label="Stock"></el-table-column>
-      <el-table-column prop="tag" label="State">
+      <el-table-column prop="title" label="Goods title"></el-table-column>
+      <el-table-column prop="key_words" label="Goods type"></el-table-column>
+      <el-table-column prop="remark" label="Goods picture"></el-table-column>
+      <el-table-column prop="retail_price" label="Goods price"></el-table-column>
+      <el-table-column prop="replenishment_period" label="Stock"></el-table-column>
+      <el-table-column prop="sts_cd" label="State">
         <template slot-scope="scope">
-          <el-tag :type="tag(scope.row.tag)" disable-transitions>{{scope.row.tag}}</el-tag>
+          <el-tag :type="tag(scope.row.sts_cd)" disable-transitions>{{scope.row.sts_cd}}</el-tag>
         </template>
       </el-table-column>
 
@@ -38,7 +38,7 @@
         <template slot-scope="scope">
           <el-button type="success" size="small" icon="el-icon-edit" @click="edit(scope.row)"></el-button>
           <el-button type="danger" size="small" icon="el-icon-delete"></el-button>
-          <el-button type="warning" size="small">{{btn(scope.row.tag)}}</el-button>
+          <el-button type="warning" size="small">{{btn(scope.row.sts_cd)}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -68,7 +68,7 @@
           <br />
           <el-form-item
             label="Goods brand"
-            prop="brand"
+            prop="name_en"
             :rules="[{ required: true, message: 'Please choose the Goods brand', trigger: 'blur'}]"
           >
             <el-select
@@ -88,10 +88,10 @@
           <br />
           <el-form-item
             label="SKU Code"
-            prop="sku"
-            :rules="[{ required: true, message: 'Please enter the sku code'}]"
+            prop="sku_cd"
+            :rules="[{ required: true, message: 'Please enter the sku_cd code'}]"
           >
-            <el-input style="width:35rem" v-model="addGoodsForm.sku" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addGoodsForm.sku_cd" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
@@ -103,16 +103,16 @@
           </el-form-item>
           <br />
           <el-form-item
-            label="ENA Code"
-            prop="ena"
-            :rules="[{ required: true, message: 'Please enter the ena code'}]"
+            label="ean Code"
+            prop="ean"
+            :rules="[{ required: true, message: 'Please enter the ean code'}]"
           >
-            <el-input style="width:35rem" v-model="addGoodsForm.ena" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addGoodsForm.ean" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
             label="Goods type"
-            prop="type"
+            prop="key_words"
             :rules="[{ required: true, message: 'Please choose the Goods type', trigger: 'blur'}]"
           >
             <el-select
@@ -140,26 +140,26 @@
           <br />
           <el-form-item
             label="Goods price"
-            prop="price"
+            prop="retail_price"
             :rules="[{ required: true, message: 'Please enter the Goods price'}]"
           >
-            <el-input style="width:35rem" v-model="addGoodsForm.price" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addGoodsForm.retail_price" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
             label="Goods stocks"
-            prop="num"
+            prop="replenishment_period"
             :rules="[{ required: true, message: 'Please enter the Goods stocks'}]"
           >
-            <el-input style="width:35rem" v-model="addGoodsForm.num" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addGoodsForm.replenishment_period" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
             label="Warranty period"
-            prop="period"
+            prop="warranty_day"
             :rules="[{ required: true, message: 'Please enter the Warranty period'}]"
           >
-            <el-input style="width:35rem" v-model="addGoodsForm.period" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addGoodsForm.warranty_day" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <div class="flex">
@@ -286,7 +286,8 @@ export default {
       },
       count: 0,
       fileList: [],
-      brand_options: [{ value: 1, label: "p" }],
+      // brand_options: [{ value: 1, label: "p" }],
+      brand_options: [],
       type_options: [
         { value: "Phone", label: "Phone" },
         { value: "Computer", label: "Computer" },
@@ -296,12 +297,13 @@ export default {
       addGoodsForm: {
         title: "",
         brand: "",
-        price: "",
-        num: "",
-        sku: "",
-        type: "",
+        retail_price: "",
+        replenishment_period: "",
+        sku_cd: "",
+        key_words: "",
         upc: "",
-        ena: "",
+        warranty_day: "",
+        ean: "",
         model: "",
         length: "",
         width: "",
@@ -312,33 +314,74 @@ export default {
       },
       search_goodstitle: "",
       tableData: [
-        {
-          id: 1,
-          name: "joy",
-          price: 34,
-          num: 8888,
-          sku: "GM001031",
-          tag: "In warehouse",
-          n: "push"
-        }
+        // {
+        //   id: 1,
+        //   name: "joy",
+        //   price: 34,
+        //   num: 8888,
+        //   sku_cd: "GM001031",
+        //   tag: "In warehouse",
+        //   n: "push"
+        // },
+
       ],
       orginTableData: [],
       drawer: false
     };
   },
   mounted() {
+    this.$post("brd/getBrand",{
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res=>{
+      console.log(res)
+      let tmpBrands = [];
+      for(let i = 0; i < res.data.length; i++){
+        console.log(res.data[i].name_en);
+        tmpData[i] = {value: res.data[i].name_en, label:res.data[i].name_en}
+      }
+      // console.log(this.brand_options);
+      this.brand_options = tmpBrands;
+    }),
     this.$post("/product/getProducts", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         //处理response
-        console.log(res)
+        // console.log(res)
         if (res.code == "504") {
           this.$notify.warning(res.message);
           return;
         }
         if (res.code == 200) {
           // console.log(this.$root.user_id);
-          this.$message.success("Login Successfull");
+          let tmpData = [];
+          for(let i = 0; i < res.data.length; i++) {
+              // tmpData[i].id = res.data[i].pro_id;
+              // tmpData[i].name = res.data[i].title
+              // tmpData[i].type = res.data[i].remark
+              // // this.tableData[i].
+              // tmpData[i].num = res.data[i].stockseting
+              // tmpData[i].sku_cd = res.data[i].sku_cd
+              // tmpData[i].tag = res.data[i].sts_cd
+
+              // tmpData[i] = {id:res.data[i].pro_id, 
+              //               name:res.data[i].title,
+              //               type:res.data[i].key_words,
+              //               price:res.data[i].retail_price,
+              //               picture:res.data[i].remark,
+              //               num:res.data[i].replenishment_period,
+              //               sku_cd:res.data[i].sku_cd,
+              //               tag:res.data[i].sts_cd}
+
+              tmpData[i] = res.data[i]
+              // this.tableData[i].id = res.data[i].pro_id;
+              // this.tableData[i].name = res.data[i].title
+              // this.tableData[i].type = res.data[i].remark
+              // // this.tableData[i].
+              // this.tableData[i].num = res.data[i].stockseting
+              // this.tableData[i].sku_cd = res.data[i].sku_cd
+              // this.tableData[i].tag = res.data[i].sts_cd
+          }
+          this.tableData = tmpData;
         }
       });
   },
@@ -378,6 +421,16 @@ export default {
     },
     edit(row) {
       this.drawer = true;
+      // console.log(row.title);
+      // this.addGoodsForm.title = row.name;
+      // this.addGoodsForm.brand = row.brand;
+      // this.addGoodsForm.sku_cd = row.sku_cd;
+      // this.addGoodsForm.upc = row.upc;
+      // this.addGoodsForm.ean = row.ean;
+      // this.addGoodsForm.type = row.type;
+      // this.addGoodsForm.model = row.model;
+      // this.addGoodsForm
+      this.addGoodsForm = row
     },
     btn(msg) {
       if (msg == "Not in warehouse") return "push";

@@ -37,7 +37,8 @@ public class BrandController extends BaseController {
     BrandService brandService;
 
     @PostMapping("/getBrand")
-    public BaseModelJson<Map<String, Object>> getBrand(@Validated({SelectGroup.class}) @RequestBody int user_id){
+    public BaseModelJson<Map<String, Object>> getBrand(@RequestBody User userget){
+        int user_id = userget.getUser_id();
         User user = userService.getById(user_id);
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
         if(user==null){
