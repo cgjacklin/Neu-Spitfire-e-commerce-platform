@@ -4,6 +4,7 @@ import com.neusoft.bsp.business.order.service.OrderService;
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.CancelOrderRequest;
 import com.neusoft.bsp.business.vo.OrderRequest;
+import com.neusoft.bsp.business.vo.OrderResponse;
 import com.neusoft.bsp.business.vo.PayOrderRequest;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
@@ -22,9 +23,9 @@ public class OrderController extends BaseController {
     OrderService orderService;
 
     @PostMapping("/getOrders")
-    public BaseModelJson<List<Order>> getOrders(@RequestBody OrderRequest orderRequest){
-        BaseModelJson<List<Order>> response = new BaseModelJson<>();
-        List<Order> results = orderService.getOrders(orderRequest);
+    public BaseModelJson<List<OrderResponse>> getOrders(@RequestBody OrderRequest orderRequest){
+        BaseModelJson<List<OrderResponse>> response = new BaseModelJson<>();
+        List<OrderResponse> results = orderService.getOrders(orderRequest);
         if(results!=null && results.size()!=0){
             response.setSuccess();
             response.setData(results);

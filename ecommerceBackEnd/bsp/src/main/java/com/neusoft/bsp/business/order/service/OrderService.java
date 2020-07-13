@@ -3,6 +3,7 @@ package com.neusoft.bsp.business.order.service;
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.CancelOrderRequest;
 import com.neusoft.bsp.business.vo.OrderRequest;
+import com.neusoft.bsp.business.vo.OrderResponse;
 import com.neusoft.bsp.business.vo.PayOrderRequest;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface OrderService {
 
     List<Order> getAllByFilter(Map<String, Object> map);
 
-    List<Order> getOrders(OrderRequest orderRequest);
+    List<OrderResponse> getOrders(OrderRequest orderRequest);
 
     int deliverOrder(Order order);
 

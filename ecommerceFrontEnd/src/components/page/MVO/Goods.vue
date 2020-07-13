@@ -17,7 +17,7 @@
       ></el-input>
     </span>
     <el-button type="danger" icon="el-icon-search"></el-button>
-    <el-button type="danger" plain icon="el-icon-plus" @click="drawer = true">Add</el-button>
+    <el-button type="danger" plain icon="el-icon-plus" @click="add">Add</el-button>
 
     <br />
     <br />
@@ -25,7 +25,11 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="title" label="Goods title"></el-table-column>
       <el-table-column prop="key_words" label="Goods type"></el-table-column>
-      <el-table-column prop="remark" label="Goods picture"></el-table-column>
+      <!-- <el-table-column prop="remark" label="Goods picture">
+        <template slot-scope="scope">
+          <img :src=remark width="100" />
+        </template>
+      </el-table-column> -->
       <el-table-column prop="retail_price" label="Goods price"></el-table-column>
       <el-table-column prop="replenishment_period" label="Stock"></el-table-column>
       <el-table-column prop="sts_cd" label="State">
@@ -118,7 +122,7 @@
             <el-select
               style="width:35rem"
               placeholder
-              v-model="addGoodsForm.type"
+              v-model="addGoodsForm.key_words"
               autocomplete="off"
             >
               <el-option
@@ -303,6 +307,7 @@ export default {
         key_words: "",
         upc: "",
         warranty_day: "",
+        key_words: "",
         ean: "",
         model: "",
         length: "",
@@ -314,15 +319,6 @@ export default {
       },
       search_goodstitle: "",
       tableData: [
-        // {
-        //   id: 1,
-        //   name: "joy",
-        //   price: 34,
-        //   num: 8888,
-        //   sku_cd: "GM001031",
-        //   tag: "In warehouse",
-        //   n: "push"
-        // },
 
       ],
       orginTableData: [],
@@ -333,19 +329,16 @@ export default {
     this.$post("brd/getBrand",{
       user_id: sessionStorage.getItem("user_id")
     }).then(res=>{
-      console.log(res)
-      console.log(res.data.length)
+      // console.log(res)
+      // console.log(res.data.length)
       let tmpBrands = [];
       for(let i = 0; i < res.data.length; i++){
-        console.log(res.data[i].name_en);
+        // console.log(res.data[i].name_en);
         tmpBrands[i] = {value: res.data[i].name_en, 
                       label: res.data[i].name_en}
       }
       // console.log("DFD"+this.brand_options);
       this.brand_options = tmpBrands;
-      // console.log("getBrand_options")
-      // console.log(this.brand_options)
-      // console.log("over")
     }),
     this.$post("/product/getProducts", {
         user_id: sessionStorage.getItem("user_id")
@@ -362,37 +355,20 @@ export default {
           // console.log(this.$root.user_id);
           let tmpData = [];
           for(let i = 0; i < res.data.length; i++) {
-              // tmpData[i].id = res.data[i].pro_id;
-              // tmpData[i].name = res.data[i].title
-              // tmpData[i].type = res.data[i].remark
-              // // this.tableData[i].
-              // tmpData[i].num = res.data[i].stockseting
-              // tmpData[i].sku_cd = res.data[i].sku_cd
-              // tmpData[i].tag = res.data[i].sts_cd
-
-              // tmpData[i] = {id:res.data[i].pro_id, 
-              //               name:res.data[i].title,
-              //               type:res.data[i].key_words,
-              //               price:res.data[i].retail_price,
-              //               picture:res.data[i].remark,
-              //               num:res.data[i].replenishment_period,
-              //               sku_cd:res.data[i].sku_cd,
-              //               tag:res.data[i].sts_cd}
-
               tmpData[i] = res.data[i]
-              // this.tableData[i].id = res.data[i].pro_id;
-              // this.tableData[i].name = res.data[i].title
-              // this.tableData[i].type = res.data[i].remark
-              // // this.tableData[i].
-              // this.tableData[i].num = res.data[i].stockseting
-              // this.tableData[i].sku_cd = res.data[i].sku_cd
-              // this.tableData[i].tag = res.data[i].sts_cd
           }
           this.tableData = tmpData;
         }
       });
   },
   methods: {
+    add(){
+      this.drawer = true;
+      //  if (this.$refs['addGoodsForm'] !== undefined) {
+      //               this.$refs['addGoodsForm'].resetFields();
+      // }
+      // this.$refs['addGoodsForm'].resetFields()
+    },
     darCancel(formName) {
       this.addGoodsForm.ebay_description = "";
       this.addGoodsForm.amazon_description = "";
@@ -428,15 +404,6 @@ export default {
     },
     edit(row) {
       this.drawer = true;
-      // console.log(row.title);
-      // this.addGoodsForm.title = row.name;
-      // this.addGoodsForm.brand = row.brand;
-      // this.addGoodsForm.sku_cd = row.sku_cd;
-      // this.addGoodsForm.upc = row.upc;
-      // this.addGoodsForm.ean = row.ean;
-      // this.addGoodsForm.type = row.type;
-      // this.addGoodsForm.model = row.model;
-      // this.addGoodsForm
       this.addGoodsForm = row
     },
     btn(msg) {
