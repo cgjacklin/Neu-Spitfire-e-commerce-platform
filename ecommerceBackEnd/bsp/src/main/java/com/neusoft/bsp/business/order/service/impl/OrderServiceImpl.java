@@ -12,8 +12,10 @@ import com.neusoft.bsp.business.order.mapper.OrderMapper;
 import com.neusoft.bsp.business.mvo.mapper.ProductMapper;
 import com.neusoft.bsp.business.order.service.OrderService;
 import com.neusoft.bsp.business.po.Order;
+import com.neusoft.bsp.business.po.Product;
 import com.neusoft.bsp.business.vo.CancelOrderRequest;
 import com.neusoft.bsp.business.vo.OrderRequest;
+import com.neusoft.bsp.business.vo.OrderResponse;
 import com.neusoft.bsp.business.vo.PayOrderRequest;
 import com.neusoft.bsp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrders(OrderRequest orderRequest) {
+    public List<OrderResponse> getOrders(OrderRequest orderRequest) {
         int user_id = orderRequest.getUser_id();
         String sts_cd = orderRequest.getSts_cd();
         User user = userMapper.getById(user_id);
@@ -84,7 +87,14 @@ public class OrderServiceImpl implements OrderService {
         para.put("man_buyer_id", man_buyer_id);
         System.out.println("ROLEID: "+user.getRole_id());
         System.out.println(para.toString());
-        return orderMapper.getAllByFilter(para);
+        List<Order> orders = orderMapper.getAllByFilter(para);
+        List<OrderResponse> orderResponses = new LinkedList<>();
+        for(Order o:orders){
+            Product product = productMapper.getById(o.getPro_id());
+            String title = product.getTitle();
+            orderResponses.add(new OrderResponse(o, title));
+        }
+        return orderResponses;
     }
 
     @Override

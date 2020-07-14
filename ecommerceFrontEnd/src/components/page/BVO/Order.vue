@@ -22,58 +22,58 @@
       <el-tab-pane label="Awaiting Payment" name="first">
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column type="selection" width="50"></el-table-column>
-          <el-table-column prop="name" label="Title"></el-table-column>
-          <el-table-column prop="price" label="Price"></el-table-column>
+          <el-table-column prop="title" label="Title"></el-table-column>
+          <el-table-column prop="sales_price" label="Price"></el-table-column>
           <el-table-column prop="qty" label="QTY"></el-table-column>
-          <el-table-column prop="sku" label="SKU"></el-table-column>
-          <el-table-column prop="order_num" label="Order No"></el-table-column>
+          <el-table-column prop="sku_no" label="SKU"></el-table-column>
+          <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
-              <el-button type="danger" size="small" @click="pay(scope.row)">Pay</el-button>
+              <el-button type="danger" size="small" @click="pay(scope.row, scope.$index)">Pay</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Awaiting Shipment" name="second">
         <el-table :data="tableData" style="width: 100%" class="table">
-          <el-table-column prop="name" label="Title"></el-table-column>
-          <el-table-column prop="price" label="Price"></el-table-column>
+          <el-table-column prop="title" label="Title"></el-table-column>
+          <el-table-column prop="sales_price" label="Price"></el-table-column>
           <el-table-column prop="qty" label="QTY"></el-table-column>
-          <el-table-column prop="sku" label="SKU"></el-table-column>
-          <el-table-column prop="order_num" label="Order No"></el-table-column>
+          <el-table-column prop="sku_no" label="SKU"></el-table-column>
+          <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Shiped" name="third">
         <el-table :data="tableData" style="width: 100%" class="table">
-          <el-table-column prop="name" label="Title"></el-table-column>
-          <el-table-column prop="price" label="Price"></el-table-column>
+          <el-table-column prop="title" label="Title"></el-table-column>
+          <el-table-column prop="sales_price" label="Price"></el-table-column>
           <el-table-column prop="qty" label="QTY"></el-table-column>
-          <el-table-column prop="sku" label="SKU"></el-table-column>
-          <el-table-column prop="order_num" label="Order No"></el-table-column>
+          <el-table-column prop="sku_no" label="SKU"></el-table-column>
+          <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
           <el-table-column prop="tracking_no" label="Tracking No"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Completed Orders" name="fourth">
         <el-table :data="tableData" style="width: 100%" class="table">
-          <el-table-column prop="name" label="Title"></el-table-column>
-          <el-table-column prop="price" label="Price"></el-table-column>
+          <el-table-column prop="title" label="Title"></el-table-column>
+          <el-table-column prop="sales_price" label="Price"></el-table-column>
           <el-table-column prop="qty" label="QTY"></el-table-column>
-          <el-table-column prop="sku" label="SKU"></el-table-column>
-          <el-table-column prop="order_num" label="Order No"></el-table-column>
+          <el-table-column prop="sku_no" label="SKU"></el-table-column>
+          <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
           <el-table-column prop="tracking_no" label="Tracking No"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Cancelled Orders" name="fifth">
         <el-table :data="tableData" style="width: 100%" class="table">
-          <el-table-column prop="name" label="Title"></el-table-column>
-          <el-table-column prop="price" label="Price"></el-table-column>
+          <el-table-column prop="title" label="Title"></el-table-column>
+          <el-table-column prop="sales_price" label="Price"></el-table-column>
           <el-table-column prop="qty" label="QTY"></el-table-column>
-          <el-table-column prop="sku" label="SKU"></el-table-column>
-          <el-table-column prop="order_num" label="Order No"></el-table-column>
+          <el-table-column prop="sku_no" label="SKU"></el-table-column>
+          <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
         </el-table>
       </el-tab-pane>
@@ -136,7 +136,9 @@ export default {
   data() {
     return {
       drawer: false,
-      tableData: [{ name: 1 }],
+      opRow: '',
+      opIndex: '',
+      tableData: [],
       search_title: "",
       activeName: "first",
       payForm: {
@@ -147,22 +149,85 @@ export default {
       }
     };
   },
+   mounted(){
+    this.$post("/order/getOrders", {
+        user_id: sessionStorage.getItem("user_id"),
+        sts_cd: "1"
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          this.tableData = res.data
+        }
+      });
+  },
   methods: {
+    deleteRow(index){
+      this.tableData.splice(index, 1)
+    },
+    
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           console.log(this.payForm);
           this.drawer = false;
+
+          this.$post("/order/payOrder",{
+              or_id: this.opRow.or_id,
+              user_id: sessionStorage.getItem("user_id"),
+              password: "account"
+          }).then(res=>{
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+              return;
+            }
+            if (res.code == 200) {
+              // this.$root.user_id=res.data.user_id;
+              this.$message.success(res.message);
+              this.deleteRow(this.opIndex);
+              this.$refs[formName].resetFields()
+            }
+          })
         } else {
           return false;
         }
       });
     },
-    pay() {
+    pay(row, index) {
       this.drawer = true;
+      this.opRow = row;
+      this.opIndex = index;
     },
     handleClick(tab) {
       console.log(tab.index);
+      let tmpStscd = 0;
+      if(tab.index == 0){
+        tmpStscd = 1
+      }
+      if(tab.index == 1 ){
+        tmpStscd = 2
+      }
+      if(tab.index == 2){
+        tmpStscd = 3
+      }
+      if(tab.index == 3){
+        tmpStscd = 4
+      }
+      if(tab.index == 4){
+        tmpStscd = 0
+      }
+      this.$post("/order/getOrders",{
+        user_id:  sessionStorage.getItem("user_id"),
+        sts_cd: tmpStscd
+      }).then(res=>{
+        console.log(res);
+        this.tableData = res.data;
+      })
     },
     search() {}
   }

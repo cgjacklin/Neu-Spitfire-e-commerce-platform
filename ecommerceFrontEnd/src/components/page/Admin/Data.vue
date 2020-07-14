@@ -11,19 +11,19 @@
       Search：
       <el-input style="width:15rem" placeholder="Dictionary type" @input="search" v-model="search_name"></el-input>
     </span>
-    <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true">Add</el-button>
+    <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true; isAdd = true">Add</el-button>
 
     <el-divider></el-divider>
     <el-table :data="tableData" style="width: 100%" class="table">
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column prop="name" label="Dictionary type"></el-table-column>
+      <el-table-column prop="code_type" label="Dictionary type"></el-table-column>
       <el-table-column prop="description" label="Description"></el-table-column>
-      <el-table-column prop="code" label="Code"></el-table-column>
-      <el-table-column prop="value" label="Code value"></el-table-column>
+      <el-table-column prop="type_cd" label="Code"></el-table-column>
+      <el-table-column prop="code_val" label="Code value"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
           <el-button type="danger" size="mini" @click="edit(scope.row)">Edit</el-button>
-          <el-button type="danger" size="mini" @click="remove(scope.row)">Delete</el-button>
+          <el-button type="danger" size="mini" @click="remove(scope.row, scope.$index)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -32,10 +32,10 @@
       <el-form :model="dataForm" ref="dataForm" label-width="120px">
         <el-form-item
           label="Dictionary type"
-          prop="name"
+          prop="code_type"
           :rules="[{ required: true, message: 'Please enter the dictionary type'}]"
         >
-          <el-input style="width:20rem" v-model="dataForm.name" autocomplete="off"></el-input>
+          <el-input style="width:20rem" v-model="dataForm.code_type" autocomplete="off"></el-input>
         </el-form-item>
         <br />
         <el-form-item
@@ -48,18 +48,18 @@
         <br />
         <el-form-item
           label="Code"
-          prop="code"
-          :rules="[{ required: true, message: 'Please enter the code'}]"
+          prop="type_cd"
+          :rules="[{ required: true, message: 'Please enter the type_cd'}]"
         >
-          <el-input style="width:20rem" v-model="dataForm.code" autocomplete="off"></el-input>
+          <el-input style="width:20rem" v-model="dataForm.type_cd" autocomplete="off"></el-input>
         </el-form-item>
         <br />
         <el-form-item
           label="Code value"
-          prop="value"
+          prop="code_val"
           :rules="[{ required: true, message: 'Please enter the value'}]"
         >
-          <el-input style="width:20rem" v-model="dataForm.value" autocomplete="off"></el-input>
+          <el-input style="width:20rem" v-model="dataForm.code_val" autocomplete="off"></el-input>
         </el-form-item>
         <br />
       </el-form>
@@ -76,24 +76,115 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      tableData: [{ name: 1 }],
+      tableData: [],
+      isAdd: false,
+      opRow: '',
       dataForm: {
-        name: "",
+        code_type: "",
         description: "",
-        code: "",
-        value: ""
+        type_cd: "",
+        code_val: ""
       }
     };
   },
+   mounted(){
+    this.$post("/dictionary/getDictionaries", {
+       
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          this.tableData = res.data
+        }
+      });
+  },
   methods: {
-    submitForm(formName) {
+    refresh(){
+      this.$post("/dictionary/getDictionaries", {
+       
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          // Vue.set()
+          this.tableData = res.data
+        }
+      });
+    },
+   submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.dataForm);
-          this.dialogVisible = false;
+          if(!this.isAdd){
+            
+            // console.log(this.dataForm.param_value);
+            this.$post("/dictionary/updateDictionary",{
+              user_id: sessionStorage.getItem("user_id"),
+              cdm_id: this.opRow.cdm_id,
+              code_type: this.dataForm.code_type,
+              description: this.dataForm.description,
+              code_val: this.dataForm.code_val,
+              type_cd: this.dataForm.type_cd
+            }).then(res => {
+              // console.log(this.opRow.param_value);
+              // console.log(this.dataForm.param_value);
+              // console.log(res)
+              if (res.code == 504) {
+                this.$message.warning(res.message);
+                return;
+              }
+              if (res.code == 200) {
+                // this.$root.user_id=res.data.user_id;
+                this.$message.success(res.message);
+                this.refresh()
+              }
+              
+            })
+           
+            this.dialogVisible = false;
+            this.$refs[formName].resetFields()
+          }
+          if(this.isAdd){
+            this.isAdd = false;
+             this.$post("/dictionary/addDictionary",{
+              user_id: sessionStorage.getItem("user_id"),
+              // cdm_id: this.opRow.cdm_id,
+              code_type: this.dataForm.code_type,
+              description: this.dataForm.description,
+              code_val: this.dataForm.code_val,
+              type_cd: this.dataForm.type_cd
+            }).then(res => {
+              if (res.code == 504) {
+                this.$message.warning(res.message);
+                return;
+              }
+              if (res.code == 200) {
+                // this.$root.user_id=res.data.user_id;
+                this.$message.success(res.message);
+                this.refresh();
+              }
+              
+            })
+            
+            this.dialogVisible = false;
+            this.$refs[formName].resetFields()
+          }
+
         } else {
           return false;
         }
+
+
+
       });
     },
     cancel(formName) {
@@ -101,10 +192,28 @@ export default {
       this.dialogVisible = false;
     },
     edit(row) {
-      this.dataForm.name = row.name;
+      this.opRow = row;
+      this.dataForm.code_type = row.code_type;
+      this.dataForm.description = row.description;
+      this.dataForm.type_cd = row.type_cd;
+      this.dataForm.code_val = row.code_val;
       this.dialogVisible = true;
     },
-    remove() {}
+    remove(row, index) {
+      this.$post("/dictionary/deleteDictionary", {
+        cdm_id: row.cdm_id
+      }).then(res => {
+        if(res.code ==504){
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+              // this.$root.user_id=res.data.user_id;
+            this.$message.success(res.message);
+            this.tableData.splice(index);
+        }
+      })
+    }
   }
 };
 </script>
