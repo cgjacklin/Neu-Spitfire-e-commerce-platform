@@ -22,19 +22,19 @@
     <el-button type="danger" icon="el-icon-search"></el-button>
     <el-divider></el-divider>
     <el-row>
-      <el-col :span="4" v-for="item in goods" :key="item.name">
+      <el-col :span="4" v-for="item in goods" :key="item.title">
         <div>
           <el-card class="goods-card" :body-style="{ padding: '0px' }">
-            <img :src="item.src" class="small-img" @click="detail(item)" />
+            <img :src="item.remark" class="small-img" @click="detail(item)" />
             <div class="goods-info-div">
               <div class="goods-row">
-                <span>{{item.name}}</span>
+                <span>{{item.title}}</span>
                 <div class="small-icon" @click="star(item)">
                   <i :class="item.star == 1 ? 'el-icon-star-on' :'el-icon-star-off'"></i>
                 </div>
               </div>
               <div class="goods-row">
-                <el-link :underline="false" type="danger">{{item.price}} ¥</el-link>
+                <el-link :underline="false" type="danger">{{item.retail_price}} ¥</el-link>
                 <el-button type="text" class="btn" @click="detail(item)">Details</el-button>
               </div>
             </div>
@@ -45,17 +45,17 @@
 
     <el-drawer title="drawer" :visible.sync="drawer" size="50%" :with-header="false">
       <div class="goods-div">
-        <h2>{{chooseItem.name}}</h2>
+        <h2>{{chooseItem.title}}</h2>
         <div class="icon" @click="star(chooseItem)">
           <i :class="chooseItem.star == 1 ? 'el-icon-star-on' :'el-icon-star-off'"></i>
         </div>
         <div class="base-info">
-          <img :src="chooseItem.src" class="img" />
+          <img :src="chooseItem.remark" class="img" />
           <div style="width:25rem">
-            <p>{{chooseItem.name}}</p>
-            <el-link :underline="false" type="danger">{{chooseItem.price}} ¥</el-link>
-            <p>Brand: {{chooseItem.brand}}</p>
-            <p>Stock: {{chooseItem.brand}}</p>
+            <p>{{chooseItem.title}}</p>
+            <el-link :underline="false" type="danger">{{chooseItem.retail_price}} ¥</el-link>
+            <p>Brand: {{chooseItem.name_en}}</p>
+            <p>Stock: {{chooseItem.replenishment_period}}</p>
             <el-popover placement="bottom" v-model="dialogVisible">
               <div class="check">
                 <el-checkbox
@@ -136,25 +136,36 @@ export default {
       ],
       search_name: "",
       type: "",
-      goods: [
-        {
-          name: "Mac book",
-          src:
-            "http://img1.imgtn.bdimg.com/it/u=1524275480,3404163321&fm=26&gp=0.jpg",
-          price: 3333,
-          star: 1
-        },
-        {
-          name: "iPhone",
-          src:
-            "http://img2.imgtn.bdimg.com/it/u=2221061121,1432349285&fm=26&gp=0.jpg",
-          price: 3333,
-          star: 2
-        }
-      ]
+      goods: []
     };
   },
+  mounted(){
+    this.$post("/product/getProductOnShelf", {
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res => {
+      if(res.code == 504){
+        this.$notify.warning(res.message);
+        return;
+      }
+      if(res.code == 200){
+        this.goods = res.data;
+      }
+    })
+  },
   methods: {
+    refresh(){
+      this.$post("/product/getProductOnShelf", {
+      user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if(res.code == 504){
+          this.$notify.warning(res.message);
+          return;
+        }
+        if(res.code == 200){
+          this.goods = res.data;
+        }
+      })
+    },
     EhandleCheckAllChange(val) {
       this.checkedEStores = val ? this.Estores : [];
       this.EisIndeterminate = false;
@@ -179,6 +190,7 @@ export default {
       this.dialogVisible = false;
       this.$notify.success("Successfull");
     },
+    //添加到心愿单，记得调refresh()刷新一下
     star(item) {
       if (item.star == 1) {
         item.star = 2;

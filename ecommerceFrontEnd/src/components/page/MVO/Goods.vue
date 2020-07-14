@@ -347,7 +347,7 @@ export default {
         // console.log("getProduct")
         // console.log(res)
         // console.log("over")
-        if (res.code == "504") {
+        if (res.code == 504) {
           this.$notify.warning(res.message);
           return;
         }
