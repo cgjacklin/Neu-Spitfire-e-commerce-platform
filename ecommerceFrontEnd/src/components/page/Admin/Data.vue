@@ -193,11 +193,13 @@ export default {
     },
     edit(row) {
       this.opRow = row;
-      this.dataForm.code_type = row.code_type;
-      this.dataForm.description = row.description;
-      this.dataForm.type_cd = row.type_cd;
-      this.dataForm.code_val = row.code_val;
       this.dialogVisible = true;
+      this.$nextTick(function(){
+        this.dataForm.code_type = row.code_type;
+        this.dataForm.description = row.description;
+        this.dataForm.type_cd = row.type_cd;
+        this.dataForm.code_val = row.code_val;
+      })
     },
     remove(row, index) {
       this.$post("/dictionary/deleteDictionary", {

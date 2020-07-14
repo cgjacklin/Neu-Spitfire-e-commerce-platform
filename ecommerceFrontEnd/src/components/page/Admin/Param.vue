@@ -182,10 +182,15 @@ export default {
     },
     edit(row) {
       this.opRow = row;
-      this.paramForm.param_cd = row.param_cd;
-      this.paramForm.description = row.description;
-      this.paramForm.param_value = row.param_value;
       this.dialogVisible = true;
+       this.$nextTick(function(){
+        this.paramForm.param_cd = row.param_cd;
+        this.paramForm.description = row.description;
+        this.paramForm.param_value = row.param_value;
+      })
+
+     
+      
     },
     remove(row, index) {
       this.$post("/parameter/deleteParameter", {

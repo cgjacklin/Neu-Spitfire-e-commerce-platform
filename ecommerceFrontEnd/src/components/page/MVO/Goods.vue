@@ -25,11 +25,11 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="title" label="Goods title"></el-table-column>
       <el-table-column prop="key_words" label="Goods type"></el-table-column>
-      <!-- <el-table-column prop="remark" label="Goods picture">
+      <el-table-column prop="remark" label="Goods picture">
         <template slot-scope="scope">
-          <img :src=remark width="100" />
+          <img :src="scope.row.remark" width="100" />
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column prop="retail_price" label="Goods price"></el-table-column>
       <el-table-column prop="replenishment_period" label="Stock"></el-table-column>
       <el-table-column prop="sts_cd" label="State">
@@ -41,8 +41,8 @@
       <el-table-column label="operation" width="250">
         <template slot-scope="scope">
           <el-button type="success" size="small" icon="el-icon-edit" @click="edit(scope.row)"></el-button>
-          <el-button type="danger" size="small" icon="el-icon-delete"></el-button>
-          <el-button type="warning" size="small">{{btn(scope.row.sts_cd)}}</el-button>
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="remove(scope.row, scope.$index)"></el-button>
+          <el-button type="warning" size="small" @click="operate(scope.row)">{{btn(scope.row.sts_cd)}}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -73,12 +73,13 @@
           <el-form-item
             label="Goods brand"
             prop="brand_options"
-            :rules="[{ required: true, message: 'Please choose the Goods brand', trigger: 'blur'}]"
           >
+                      <!-- :rules="[{ required: true, message: 'Please choose the Goods brand', trigger: 'blur'}]" -->
+
             <el-select
               style="width:35rem"
               placeholder
-              v-model="addGoodsForm.name_en"
+              v-model="addGoodsForm.brd_id"
               autocomplete="off"
             >
               <el-option
@@ -175,8 +176,11 @@
                 style="width:24rem"
                 ref="upload"
                 drag
-                action="http://localhost:3000/api/file/up"
+                action="http://localhost:8088/product/uploadPicture"
+                :name=fileName
+                :data=addGoodsForm
                 :file-list="fileList"
+                :on-success="handleSuccess"
                 :on-change="fileChange"
                 :auto-upload="false"
                 list-type="picture"
@@ -290,6 +294,8 @@ export default {
       },
       count: 0,
       fileList: [],
+      fileName: "fileName",
+      isAdd: false,
       // brand_options: [{ value: 1, label: "p" }],
       brand_options: [],
       type_options: [
@@ -299,15 +305,16 @@ export default {
         { value: "Appliances", label: "Appliances" }
       ],
       addGoodsForm: {
+        pro_id: "",
         title: "",
         name_en: "",
         retail_price: "",
         replenishment_period: "",
+        remark: "",
         sku_cd: "",
         key_words: "",
         upc: "",
         warranty_day: "",
-        key_words: "",
         ean: "",
         model: "",
         length: "",
@@ -315,13 +322,34 @@ export default {
         height: "",
         weight: "",
         ebay_description: "",
-        amazon_description: ""
+        amazon_description: "",
+        brd_id: ""
+      },
+      ori_form: {
+        pro_id: "",
+        title: "",
+        name_en: "",
+        retail_price: "",
+        replenishment_period: "",
+        remark: "",
+        sku_cd: "",
+        key_words: "",
+        upc: "",
+        warranty_day: "",
+        ean: "",
+        model: "",
+        length: "",
+        width: "",
+        height: "",
+        weight: "",
+        ebay_description: "",
+        amazon_description: "",
+        brd_id: ""
       },
       search_goodstitle: "",
-      tableData: [
-
-      ],
+      tableData: [],
       orginTableData: [],
+      opRow: '',
       drawer: false
     };
   },
@@ -334,41 +362,48 @@ export default {
       let tmpBrands = [];
       for(let i = 0; i < res.data.length; i++){
         // console.log(res.data[i].name_en);
-        tmpBrands[i] = {value: res.data[i].name_en, 
+        tmpBrands[i] = {value: res.data[i].brd_id, 
                       label: res.data[i].name_en}
       }
       // console.log("DFD"+this.brand_options);
       this.brand_options = tmpBrands;
+      // console.log(this.brand_options)
     }),
     this.$post("/product/getProducts", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
-        //处理response
-        // console.log("getProduct")
-        // console.log(res)
-        // console.log("over")
         if (res.code == 504) {
           this.$notify.warning(res.message);
           return;
         }
         if (res.code == 200) {
-          // console.log(this.$root.user_id);
-          let tmpData = [];
-          for(let i = 0; i < res.data.length; i++) {
-              tmpData[i] = res.data[i]
-          }
-          this.tableData = tmpData;
+          this.tableData = res.data;
         }
       });
   },
   methods: {
     add(){
+      this.isAdd = true;
+      this.addGoodsForm = this.ori_form;
       this.drawer = true;
-      //  if (this.$refs['addGoodsForm'] !== undefined) {
-      //               this.$refs['addGoodsForm'].resetFields();
-      // }
-      // this.$refs['addGoodsForm'].resetFields()
+
     },
+
+    remove(row, index){
+      this.$post("/product/deleteProduct", {
+        pro_id: row.pro_id
+      }).then (res=> {
+        if(res.code == 504){
+          this.$message.warning(res.message);
+          return;
+        }
+        if(res.code == 200){
+          this.$message.success(res.message);
+          this.refresh();
+        }
+      })
+    },
+
     darCancel(formName) {
       this.addGoodsForm.ebay_description = "";
       this.addGoodsForm.amazon_description = "";
@@ -380,10 +415,86 @@ export default {
     fileChange() {
       this.count++;
     },
+
+    handleSuccess(res){
+        if(this.isAdd){
+          console.log(this.addGoodsForm.brd_id)
+          this.isAdd = false;
+          this.$post("/product/addProduct", {
+            brd_id: this.addGoodsForm.brd_id,
+              retail_price: this.addGoodsForm.retail_price,
+              sku_cd: this.addGoodsForm.sku_cd,
+              title: this.addGoodsForm.title,
+              upc: this.addGoodsForm.upc,
+              ean: this.addGoodsForm.ean,
+              name_en: this.addGoodsForm.name_en,
+              ebay_description: this.addGoodsForm.ebay_description,
+              amazon_description: this.addGoodsForm.amazon_description,
+              key_words: this.addGoodsForm.key_words,
+              width: this.addGoodsForm.width,
+              height: this.addGoodsForm.height,
+              weight: this.addGoodsForm.weight,
+              length: this.addGoodsForm.length,
+              model: this.addGoodsForm.model,
+              replenishment_period: this.addGoodsForm.replenishment_period,
+              warranty_day: this.addGoodsForm.warranty_day,
+              remark: res.data,
+              user_id: sessionStorage.getItem("user_id")
+        }).then(res => {
+          if(res.code == 504){
+            this.$message.warning(res.message);
+            return;
+          }
+          if(res.code == 200){
+            this.$message.success(res.message);
+            this.refresh();
+          }
+        })
+        }
+        if(!this.isAdd){
+          this.$post("/product/updateProduct", {
+            brd_id: this.addGoodsForm.brd_id,
+            retail_price: this.addGoodsForm.retail_price,
+            sku_cd: this.addGoodsForm.sku_cd,
+              title: this.addGoodsForm.title,
+              upc: this.addGoodsForm.upc,
+              ean: this.addGoodsForm.ean,
+              name_en: this.addGoodsForm.name_en,
+              ebay_description: this.addGoodsForm.ebay_description,
+              amazon_description: this.addGoodsForm.amazon_description,
+              key_words: this.addGoodsForm.key_words,
+              width: this.addGoodsForm.width,
+              height: this.addGoodsForm.height,
+              weight: this.addGoodsForm.weight,
+              length: this.addGoodsForm.length,
+              model: this.addGoodsForm.model,
+              replenishment_period: this.addGoodsForm.replenishment_period,
+              warranty_day: this.addGoodsForm.warranty_day,
+              remark: res.data,
+              user_id: sessionStorage.getItem("user_id"),
+              pro_id: this.addGoodsForm.pro_id
+          }).then(res => {
+            if(res.code == 504){
+              this.$message.warning(res.message);
+              this.$refs[formName].resetFields();
+              return;
+            }
+            if(res.code == 200){
+              this.$message.success(res.message);
+              this.refresh();
+              this.$refs[formName].resetFields();
+            }
+          })
+        }
+        this.drawer = false;
+        
+    },
+
     submitForm(formName) {
+      // console.log(JSON.stringify(this.addGoodsForm));
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.addGoodsForm);
+          // console.log(this.addGoodsForm);
           if (this.count == 0) {
             this.$message.warning("Please upload goods picture");
             return;
@@ -395,7 +506,6 @@ export default {
             this.$message.warning("Please enter the description");
             return;
           }
-          this.drawer = false;
           this.$refs.upload.submit();
         } else {
           return false;
@@ -404,7 +514,11 @@ export default {
     },
     edit(row) {
       this.drawer = true;
-      this.addGoodsForm = row
+      this.$nextTick(function(){
+          this.addGoodsForm = JSON.parse(JSON.stringify(row));
+      })
+
+      
     },
     btn(msg) {
       if (msg == "Not in warehouse") return "push";
@@ -416,7 +530,51 @@ export default {
       if (msg == "In warehouse") return "warning";
       if (msg == "On shelf") return "success";
     },
-    search() {}
+    search() {},
+
+    refresh(){
+      this.$post("/product/getProducts", {
+          user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        //处理response
+        // console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          // Vue.set()
+          this.tableData = res.data
+        }
+      });
+    },
+
+    operate(row){
+      let nextStage = '';
+      if(row.sts_cd == "Not in warehouse"){
+          nextStage = "In warehouse";
+      }
+      if(row.sts_cd == "In warehouse"){
+        nextStage = "On shelf";
+      }
+      if(row.sts_cd == "On shelf"){
+        nextStage = "In warehouse";
+      }
+      this.$post("/product/updateSts", {
+        pro_id: row.pro_id,
+        sts_cd: nextStage
+      }).then(res => {
+        // console.log(res)
+        if(res.code == 504){
+          this.$message.warning(res.message);
+          return;
+        }
+        if(res.code == 200){
+          this.refresh();
+        }
+      })
+    }
   }
 };
 </script>
