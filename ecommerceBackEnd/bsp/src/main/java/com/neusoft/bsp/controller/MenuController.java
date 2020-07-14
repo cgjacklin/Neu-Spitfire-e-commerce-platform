@@ -36,17 +36,17 @@ public class MenuController extends BaseController {
      *通过user_id验证role_id从而返回List
      */
     @PostMapping("/getAllMenuList")
-    public BaseModelJson<List<Menu>> getAllMenuList(@RequestBody int user_id) {
+    public BaseModelJson<List<Menu>> getAllMenuList(@RequestBody User us) {
         BaseModelJson<List<Menu>> result = new BaseModelJson<>();
-        User user = userService.getById(user_id);
+        User user = userService.getById(us.getUser_id());
         int role_id = Integer.parseInt(user.getRole_id());
         if (role_id == 0) {
-            result.code = 200;
+            result.setSuccess();
             List<Menu> menus = menuService.getAll();
             if (menus.size() == 0) {
-                result.message = "no data";
+                result.message = "There is no menu data";
             } else {
-                result.data = menus;
+                result.setData(menus);
             }
             return result;
         } else {
@@ -68,7 +68,7 @@ public class MenuController extends BaseController {
                 Menu menu = new Menu(menuWithUserID.getMenu_id(),menuWithUserID.getMenu_name());
                 int i = menuService.update(menu);
                 if(i==1){
-                    result.code = 200;
+                    result.setSuccess();
                     return result;
                 }else {
                     throw BusinessException.UPDATE_FAIL;
