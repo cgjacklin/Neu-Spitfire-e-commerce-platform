@@ -42,13 +42,13 @@ class BspApplicationTests {
         System.out.println(menus);
     }
 
-    @Test
-    public void TestgetWishlist_success(){
-        int user_id = 1;
-        BaseModelJson<Map<String, Object>> bmj= wishlistController.getWishlist(user_id);
-        System.out.println(bmj);
-        assertEquals(200, bmj.code);
-
-    }
+//    @Test
+//    public void TestgetWishlist_success(){
+//        int user_id = 1;
+//        BaseModelJson<Map<String, Object>> bmj= wishlistController.getWishlist(user_id);
+//        System.out.println(bmj);
+//        assertEquals(200, bmj.code);
+//
+//    }
 
 }

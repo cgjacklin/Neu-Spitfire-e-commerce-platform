@@ -37,7 +37,7 @@ export function get(url,params){
  export function post(url,data){
    return new Promise((resolve,reject) => {
     var pr = JSON.stringify(data) 
-    axios.post(url,pr)//转换为josn数据
+    axios.post(url,pr)
           .then(response => {
             resolve(response.data);
           },err => {

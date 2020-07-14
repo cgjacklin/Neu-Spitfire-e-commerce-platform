@@ -9,11 +9,11 @@
       <el-link style="font-size:18px" :underline="false" type="warning">Amazon</el-link>
       <el-divider></el-divider>
       <el-row>
-        <el-col :span="4" v-for="item in aList" :key="item.name">
+        <el-col :span="4" v-for="item in aList" :key="item.store_name">
           <el-card class="card">
             <div class="card-flex">
               <img :src="aImg" class="img" />
-              <span>{{item.name}}</span>
+              <span>{{item.store_name}}</span>
             </div>
           </el-card>
         </el-col>
@@ -25,11 +25,11 @@
       <el-link style="font-size:18px" :underline="false" type="success">y</el-link>
       <el-divider></el-divider>
       <el-row>
-        <el-col :span="4" v-for="item in aList" :key="item.name">
+        <el-col :span="4" v-for="item in eList" :key="item.store_name">
           <el-card class="card">
             <div class="card-flex">
               <img :src="eImg" class="img" />
-              <span>{{item.name}}</span>
+              <span>{{item.store_name}}</span>
             </div>
           </el-card>
         </el-col>
@@ -40,7 +40,7 @@
     <el-dialog title="Add new store" :visible.sync="dialogVisible" width="25.5%">
       <span>
         Store Name：
-        <el-input style="width:20rem" v-model="name" placeholder="Please enter the store name."></el-input>
+        <el-input style="width:20rem" v-model="store_name" placeholder="Please enter the store name."></el-input>
       </span>
       <br />
       <br />
@@ -48,8 +48,18 @@
       <div class="radio">
         <span>
           Store Type：
-          <el-radio v-model="type" label="1">Amazon</el-radio>
-          <el-radio v-model="type" label="2">Ebay</el-radio>
+          <el-radio v-model="plataeform_type" label="1">Amazon</el-radio>
+          <el-radio v-model="plataeform_type" label="2">Ebay</el-radio>
+        </span>
+      </div>
+      <br />
+
+      <div class="radio">
+        <span>
+          Store state：
+          <el-radio v-model="store_sts_cd" label="0">Error</el-radio>
+          <el-radio v-model="store_sts_cd" label="1">Normal</el-radio>
+          <el-radio v-model="store_sts_cd" label="2">Close</el-radio>
         </span>
       </div>
 
@@ -65,17 +75,58 @@
 export default {
   data() {
     return {
-      type: "1",
-      name: "",
+      plataeform_type: "1",
+      store_name: "",
+      store_sts_cd: "1",
       dialogVisible: false,
       aImg: require("../../../assets/amazon.png"),
       eImg: require("../../../assets/ebay.png"),
-      aList: [{ name: 1 }, { name: 2 }],
-      eList: [{ name: 1 }, { name: 2 }]
+      aList: [],
+      eList: []
     };
   },
+  mounted(){
+    this.getStoreList();
+  },
   methods: {
+    getStoreList(){
+      this.$post("/str/getStoreByUserID",{
+            user_id: sessionStorage.getItem("user_id"),
+          }).then(res => {
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success("Successfully get store List!");
+              for(let i=0;i<res.data.length;i++){
+                if(res.data[i].plataeform_type == 1){
+                  this.aList.push(res.data[i]);
+                }
+                if(res.data[i].plataeform_type == 2){
+                  this.eList.push(res.data[i]);
+                }
+              }
+            }
+          })
+    },
     add() {
+      this.$post("/str/addStore",{
+            user_id: sessionStorage.getItem("user_id"),
+            plataeform_type: this.plataeform_type,
+            store_name: this.store_name,
+            store_sts_cd: this.store_sts_cd,
+          }).then(res => {
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success("Successfully added new store!");
+              this.getStoreList();
+            }
+          })
+
       this.dialogVisible = false;
     }
   }

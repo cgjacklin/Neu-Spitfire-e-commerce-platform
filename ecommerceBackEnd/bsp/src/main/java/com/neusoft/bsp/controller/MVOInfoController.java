@@ -70,17 +70,19 @@ public class MVOInfoController extends BaseController {
      *用id获取
      */
     @PostMapping("/getManufacturerByUserID")
-    public BaseModelJson<Manufacturer> getManufacturerByUserID(@RequestBody int user_id) {
-        User user = userService.getById(user_id);
+    public BaseModelJson<Manufacturer> getManufacturerByUserID(@RequestBody User us) {
+        User user = userService.getById(us.getUser_id());
         BaseModelJson<Manufacturer> result = new BaseModelJson<>();
         if(user==null){   //用户id不存在
             throw BusinessException.USERNAME_NOT_EXISTS;
         }
         int manufacturerID = user.getMan_buyer_id();  //获得manuID
-        result.code = 200;
 
         if(manufacturerID != 0){     //有信息的老用户
+            result.setSuccess();
             result.data = manufacturerService.getById(manufacturerID);
+        }else{
+            throw BusinessException.NO_MAN_ID;
         }
         return result;
     }
