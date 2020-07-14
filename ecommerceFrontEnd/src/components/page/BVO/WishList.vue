@@ -33,7 +33,7 @@
       <el-table-column label="operation">
         <template slot-scope="scope">
           <el-button type="danger" size="mini" @click="detail(scope.row)">Details</el-button>
-          <el-button type="danger" size="mini" @click="remove(scope.row)">Remove</el-button>
+          <el-button type="danger" size="mini" @click="star(scope.row)">Remove</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -157,7 +157,8 @@ export default {
           amazondescription:res.data.packageinfo[i].amazon_description,
           ebaydescription:res.data.packageinfo[i].ebay_description,
           witid:res.data.wishlist[i].wit_id,
-          star: 1
+          star: 1,
+          proid:res.data.product[i].pro_id
         }
                 )
  } 
@@ -188,16 +189,6 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.Astores.length;
     },
-
-    remove(item) {
-      this.$post("/wit/deletedWishlist", {
-        wit_id: item.witid
-      }).then(res => {
-        this.loadData()
-                
-      })
-    },
-
     pushShip() {
       this.dialogVisible = false;
       this.$notify.success("Successfull");
@@ -205,10 +196,21 @@ export default {
 
     star(item) {
       if (item.star == 1) {
+        this.$post("/wit/deletedWishlist", {
+        wit_id: item.witid
+      }).then(res => {
         item.star = 2;
+        this.loadData()         
+      })
         return;
       }
-      item.star = 1;
+       this.$post("/wit/addWishlist", {
+        user_id:sessionStorage.getItem("user_id"),
+        pro_id:item.proid,
+      }).then(res => {
+        item.star = 1;
+        this.loadData()         
+      })
     },
 
     detail(item) {
