@@ -24,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,21 +62,27 @@ public class WishlistController extends BaseController {
         response.code = 200;
         if (dsr_id != 0) {
             HashMap<String, Object> res = new HashMap<>();
-            List<Wishlist> list = wishlistService.getAllById(dsr_id);
+            List<Wishlist> wishlist1 = wishlistService.getAllById(dsr_id);
+            List<Product> pro1 = new ArrayList<Product>();
+            List<PackageInfo> pio1 = new ArrayList<PackageInfo>();
+            List<Brand> brand1 = new ArrayList<Brand>();
             int j = 0;
-            for (Wishlist wishlist : list) {
-                String s = String.valueOf(j);
+            for (Wishlist wishlist : wishlist1) {
                 int pro_id = wishlist.getPro_id();
                 Product pro = productService.getById(pro_id);
+                pro1.add(pro);
                 PackageInfo pio = packageInfoService.getByProduct(pro_id);
+                pio1.add(pio);
                 int brd_id = pro.getBrd_id();
                 Brand brand = brandService.getById(brd_id);
-                res.put("wishlist"+j,wishlist);
-                res.put("pro"+j, pro);
-                res.put("info"+j,pio);
-                res.put("brand"+j,brand);
+                brand1.add(brand);
                 j++;
             }
+            res.put("wishlist",wishlist1);
+            res.put("product",pro1);
+            res.put("packageinfo",pio1);
+            res.put("brand",brand1);
+            res.put("number",j);
             response.data = res;
         }
         return response;
