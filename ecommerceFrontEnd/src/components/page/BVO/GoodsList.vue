@@ -103,8 +103,8 @@
         </div>
         <br />
         <el-tabs v-model="activeName" class="tab">
-          <el-tab-pane label="Amazon description" name="first">{{chooseItem.description}}</el-tab-pane>
-          <el-tab-pane label="ebay description" name="second">{{chooseItem.description}}</el-tab-pane>
+          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazon_description}}</el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebay_description}}</el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>

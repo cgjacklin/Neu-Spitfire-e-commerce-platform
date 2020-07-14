@@ -1,6 +1,12 @@
 server:
   port: 8088
+prop:
+  upload-folder: E:/test/
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   datasource:
     username: dbs
     password: root

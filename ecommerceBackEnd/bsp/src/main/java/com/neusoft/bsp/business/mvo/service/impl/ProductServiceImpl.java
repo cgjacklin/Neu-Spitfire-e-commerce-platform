@@ -24,6 +24,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.InputStream;
 import java.sql.Date;
 import java.util.*;
@@ -114,12 +116,48 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int addProduct(ProductVO productvo, MultipartFile file) {
+    public String uploadPicture(MultipartFile uploadFile, HttpServletRequest request) {
+        //构建文件上传所要保存的"文件夹路径"--这里是相对路径，保存到项目根路径的文件夹下
+        String realPath = "E:/Develop/Files/Photos/";
+//        String realPath = new String("ecommerceBackEnd/bsp/src/main/resources/static/upload");
+        //存放上传文件的文件夹
+        File file = new File(realPath);
+        System.out.println("-----------存放上传文件的文件夹【"+ file +"】-----------");
+        System.out.println("-----------输出文件夹绝对路径 -- 这里的绝对路径是相当于当前项目的路径而不是“容器”路径【"+ file.getAbsolutePath() +"】-----------");
+        if(!file.isDirectory()){
+            //递归生成文件夹
+            file.mkdirs();
+        }
+        String fileName = FileNameUtils.getFileName(uploadFile.getOriginalFilename());
+        //获取原始的名字  original:最初的，起始的  方法是得到原来的文件名在客户机的文件系统名称
+
+        try {
+            //构建真实的文件路径
+            File newFile = new File(file.getAbsolutePath() + File.separator + fileName);
+            //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
+            uploadFile.transferTo(newFile);
+            String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/image/" + fileName;
+//            logger.info("-----------【"+ filePath +"】-----------");
+            System.out.println(filePath);
+            return filePath;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "NOPHOTO";
+
+    }
+
+
+
+
+
+    @Override
+    public int addProduct(ProductVO productvo) {
         User user = userService.getById(productvo.getUser_id());
         PackageInfo packageInfo = new PackageInfo();
         // 要上传的目标文件存放路径
 //        String localPath = "src/main/resources/static/upload";
-        String localPath = "E:/Develop/Files/Photos";
+//        String localPath = "E:/Develop/Files/Photos";
         // 上传成功或者失败的提示
 //        ClassPathResource classPathResource = new ClassPathResource("static/upload");
 //        InputStream inputStream = classPathResource.getInputStream();
@@ -128,6 +166,7 @@ public class ProductServiceImpl implements ProductService {
         long time = System.currentTimeMillis();
         Date date = new java.sql.Date(time);
         Product product = new Product(productvo);
+        System.out.println("BRDDDID"+product.getBrd_id());
 //        System.out.println(productvo.toString());
         //存package信息
         packageInfo.setAmazon_description(productvo.getAmazon_description());
@@ -137,30 +176,36 @@ public class ProductServiceImpl implements ProductService {
         packageInfo.setLength(productvo.getLength());
         packageInfo.setWidth(productvo.getWidth());
 
-        //存prodcut信息
+        //存product信息
         product.setCreated_by(user.getUsername());
         product.setLast_update_by(user.getUsername());
         product.setMan_id(user.getMan_buyer_id());
         product.setCreation_date(date);
         product.setLast_update_date(date);
+        product.setSts_cd("Not in warehouse");
 
-        //存图片
-        String fileName = FileNameUtils.getFileName(file.getOriginalFilename());
-        if (FileUtils.upload(file, localPath, fileName)){
-            //处理路径
-            String realPath = localPath + "/" + fileName;
-            product.setRemark(realPath);
+        product.setRemark(productvo.getRemark());
 
-            insert(product);
-            packageInfo.setProId(product.getPro_id());
-            packageInfoService.insert(packageInfo);
-            return 1;
-        }
-        return 0;
+        insert(product);
+        packageInfo.setProId(product.getPro_id());
+        packageInfoService.insert(packageInfo);
+        return 1;
+
+//        //存图片
+//        String fileName = FileNameUtils.getFileName(file.getOriginalFilename());
+//        if (FileUtils.upload(file, localPath, fileName)){
+//            //处理路径
+//            String realPath = localPath + "/" + fileName;
+//            insert(product);
+//            packageInfo.setProId(product.getPro_id());
+//            packageInfoService.insert(packageInfo);
+//            return 1;
+//        }
+//        return 0;
     }
 
     @Override
-    public int updateProduct(ProductVO productvo, MultipartFile file) {
+    public int updateProduct(ProductVO productvo) {
         User user = userService.getById(productvo.getUser_id());
         PackageInfo packageInfo = packageInfoService.getByProduct(productvo.getPro_id());
         System.out.println();
@@ -182,20 +227,10 @@ public class ProductServiceImpl implements ProductService {
         packageInfo.setLength(productvo.getLength());
         packageInfo.setWidth(productvo.getWidth());
 
-        //存图片
-//        String localPath = "src/main/resources/static/upload";
-        String localPath = "E:/Develop/Files/Photos";
-        String fileName = FileNameUtils.getFileName(file.getOriginalFilename());
-        if (FileUtils.upload(file, localPath, fileName)){
-            String realPath = localPath + "/" + fileName;
-            product.setRemark(realPath);
-            update(product);
-            packageInfoService.update(packageInfo);
-            return 1;
-        }else {
-            return 0;
-
-        }
+        product.setRemark(productvo.getRemark());
+        update(product);
+        packageInfoService.update(packageInfo);
+        return 1;
     }
 
     @Override

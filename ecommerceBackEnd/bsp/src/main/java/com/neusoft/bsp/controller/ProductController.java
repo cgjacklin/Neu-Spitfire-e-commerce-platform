@@ -10,10 +10,13 @@ import com.neusoft.bsp.business.po.Product;
 import com.neusoft.bsp.business.mvo.service.ProductService;
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.user.service.UserService;
+import com.neusoft.bsp.utils.FileNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.List;
 
 @CrossOrigin
@@ -42,11 +45,11 @@ public class ProductController extends BaseController {
     }
 
     @PostMapping("/addProduct")
-    public BaseModel addProduct(@RequestParam String productStr, @RequestParam("fileName") MultipartFile file){
+    public BaseModel addProduct(@RequestBody ProductVO productVO){
         BaseModel response = new BaseModel();
-        ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
+//        ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
 //        System.out.println("INFO"+productvo.getWarranty());
-        if(productService.addProduct(productvo, file)==1){
+        if(productService.addProduct(productVO)==1){
             response.setSuccess();
         }else{
             response.setFailure();
@@ -54,12 +57,21 @@ public class ProductController extends BaseController {
         return response;
     }
 
+    @PostMapping("/uploadPicture")
+    public BaseModelJson<String> uploadPicture(@RequestParam(name = "fileName", required = false) MultipartFile uploadFile, HttpServletRequest request){
+        String result = productService.uploadPicture(uploadFile, request);
+        BaseModelJson<String> response = new BaseModelJson<>();
+        response.setSuccess();
+        response.setData(result);
+        return response;
+    }
+
     @PostMapping("/updateProduct")
-    public BaseModel updateProduct(@RequestParam String productStr, @RequestParam("fileName") MultipartFile file){
+    public BaseModel updateProduct(@RequestBody ProductVO productVO){
         BaseModel response = new BaseModel();
-        ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
+//        ProductVO productvo = JSONObject.parseObject(productStr,ProductVO.class);
 //        System.out.println("INFO"+productvo.getWarranty());
-        if(productService.updateProduct(productvo, file)==1){
+        if(productService.updateProduct(productVO)==1){
             response.setSuccess();
         }else{
             response.setFailure();

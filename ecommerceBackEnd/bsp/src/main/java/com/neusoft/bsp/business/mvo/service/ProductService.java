@@ -6,6 +6,7 @@ import com.neusoft.bsp.business.vo.ProductVO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -25,13 +26,15 @@ public interface ProductService {
 
     List<ProductVO> getProducts(User user);
 
-    int addProduct(ProductVO productvo, MultipartFile file);
+    int addProduct(ProductVO productvo);
 
-    int updateProduct(ProductVO productvo, MultipartFile file);
+    int updateProduct(ProductVO productvo);
 
     int deleteProduct(Product product);
 
     int updateSts(Product product);
 
     List<ProductVO> getProductsOnShelf(User user);
+
+    String uploadPicture(MultipartFile picture, HttpServletRequest request);
 }
