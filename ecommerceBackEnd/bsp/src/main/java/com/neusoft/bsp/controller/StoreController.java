@@ -74,8 +74,8 @@ public class StoreController extends BaseController {
      *用id获取
      */
     @PostMapping("/getStoreByUserID")
-    public BaseModelJson<List<Store>> getStoreByUserID(@RequestBody int user_id) {
-        User user = userService.getById(user_id);
+    public BaseModelJson<List<Store>> getStoreByUserID(@RequestBody User us) {
+        User user = userService.getById(us.getUser_id());
         BaseModelJson<List<Store>> result = new BaseModelJson<>();
         if(user==null){   //用户id不存在
             throw BusinessException.USERNAME_NOT_EXISTS;

@@ -7,7 +7,7 @@
     <div v-show="emptyShow" class="empty-box">
       <img style="width:25rem" :src="emptyImage" alt />
       <span>There is no company information.</span>
-      <el-button type="danger" @click="drawer=true">Fill Company info</el-button>
+      <el-button type="danger" @click="drawer=true">Fill Company information</el-button>
     </div>
 
     <div v-show="mainShow" class="main-box-top">
@@ -17,21 +17,21 @@
         <div class="info-flex">
           <p style="width:25rem">
             <i class="el-icon-office-building"></i>
-            Company Name：{{name}}
+            Company Name：{{name_en}}
           </p>
           <p style="width:25rem">
             <i class="el-icon-document"></i>
-            Brief Introduction：{{intr}}
+            Brief Introduction：{{description}}
           </p>
         </div>
         <div class="info-flex">
           <p style="width:25rem">
             <i class="el-icon-collection-tag"></i>
-            GMC Report Type：{{type}}
+            GMC Report Type：{{gmc_report_type}}
           </p>
           <p style="width:25rem">
             <i class="el-icon-link"></i>
-            GMC Report Url：{{url}}
+            GMC Report Url：{{gmc_report_url}}
           </p>
         </div>
         <br />
@@ -118,39 +118,39 @@
         <el-form :model="addComForm" ref="addComForm" label-width="150px" class="add-com-form">
           <el-form-item
             label="Company Name"
-            prop="name"
+            prop="name_en"
             :rules="[{ required: true, message: 'Please enter the Company Name'}]"
           >
-            <el-input style="width:35rem" v-model="addComForm.name" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addComForm.name_en" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
             label="Brief Introduction"
-            prop="intr"
+            prop="description"
             :rules="[{ required: true, message: 'Please enter the Brief Introduction'}]"
           >
             <el-input
               style="width:35rem"
               type="textarea"
-              v-model="addComForm.intr"
+              v-model="addComForm.description"
               autocomplete="off"
             ></el-input>
           </el-form-item>
           <br />
           <el-form-item
             label="GMC Report Type"
-            prop="type"
+            prop="gmc_report_type"
             :rules="[{ required: true, message: 'Please enter the GMC Report Type'}]"
           >
-            <el-input style="width:35rem" v-model="addComForm.type" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addComForm.gmc_report_type" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
             label="GMC Report Url"
-            prop="url"
+            prop="gmc_report_url"
             :rules="[{ required: true, message: 'Please enter the GMC Report Url'}]"
           >
-            <el-input style="width:35rem" v-model="addComForm.url" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="addComForm.gmc_report_url" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item class="com-form-button">
@@ -176,20 +176,47 @@ export default {
       emptyShow: true,
       mainShow: false,
       drawer: false,
-      name: "",
-      intr: "",
-      type: "",
-      url: "",
+      man_id: "",
+      name_en: "",
+      description: "",
+      gmc_report_type: "",
+      gmc_report_url: "",
       tableData: [{ name: 1 },{ name: 2 }],
       addComForm: {
-        name: "",
-        intr: "",
-        type: "",
-        url: ""
+        name_en: "",
+        description: "",
+        gmc_report_type: "",
+        gmc_report_url: ""
       }
     };
   },
+  mounted(){
+    this.checkCompany();
+  },
   methods: {
+    checkCompany(){  //查詢用戶是否有公司信息
+      this.$post("/mvo/getManufacturerByUserID",{
+            user_id: sessionStorage.getItem("user_id"),
+          }).then(res => {
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+              this.emptyShow = true;
+              this.mainShow = false;
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success("Successfully get company info!");
+              console.log(res);
+              this.man_id = res.data.man_id;
+              this.name_en = res.data.name_en;
+              this.description = res.data.description;
+              this.gmc_report_type = res.data.gmc_report_type;
+              this.gmc_report_url = res.data.gmc_report_url;
+              this.emptyShow = false;
+              this.mainShow = true;   
+            }
+          })
+    },
     diaCancel(){
       this.dialogVisible = false;
       this.brandname = "";
@@ -217,13 +244,51 @@ export default {
       this.dialogVisible = false;
     },
     search() {},
-    submitForm(formName) {
+    submitForm(formName) {    //增加及修改company info
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.addComForm);
+          if(!this.mainShow){
+            this.$post("/mvo/addManufacturer",{
+            user_id: sessionStorage.getItem("user_id"),
+            name_en: this.addComForm.name_en,
+            gmc_report_type: this.addComForm.gmc_report_type,
+            gmc_report_url: this.addComForm.gmc_report_url,
+            description: this.addComForm.description
+          }).then(res => {
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success("Successfully added new company!");
+              this.checkCompany();
+            }
+          })
+          }
+          if(this.mainShow){
+            this.$post("/mvo/updateManufacturer",{
+            man_id: this.man_id,
+            name_en: this.addComForm.name_en,
+            gmc_report_type: this.addComForm.gmc_report_type,
+            gmc_report_url: this.addComForm.gmc_report_url,
+            description: this.addComForm.description
+          }).then(res => {
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success("Successfully updated company info!");
+              this.checkCompany();
+            }
+          })
+          }
+
+
+          // console.log(this.addComForm);
           this.drawer = false;
-          this.emptyShow = false;
-          this.mainShow = true;
+          // this.emptyShow = false;
+          // this.mainShow = true;
         } else {
           return false;
         }

@@ -33,7 +33,7 @@
       <el-table-column label="operation">
         <template slot-scope="scope">
           <el-button type="danger" size="mini" @click="detail(scope.row)">Details</el-button>
-          <el-button type="danger" size="mini" @click="remove(scope.row)">Remove</el-button>
+          <el-button type="danger" size="mini" @click="star(scope.row)">Remove</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -50,7 +50,7 @@
             <p>{{chooseItem.name}}</p>
             <el-link :underline="false" type="danger">{{chooseItem.price}} ¥</el-link>
             <p>Brand: {{chooseItem.brand}}</p>
-            <p>Stock: {{chooseItem.brand}}</p>
+            <p>Stock: {{chooseItem.stock}}</p>
             <el-popover placement="bottom" v-model="dialogVisible">
               <div class="check">
                 <el-checkbox
@@ -98,8 +98,8 @@
         </div>
         <br />
         <el-tabs v-model="activeName" class="tab">
-          <el-tab-pane label="Amazon description" name="first">{{chooseItem.description}}</el-tab-pane>
-          <el-tab-pane label="ebay description" name="second">{{chooseItem.description}}</el-tab-pane>
+          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazondescription}}</el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebaydescription}}</el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>
@@ -133,56 +133,86 @@ export default {
       search_name: "",
       type: "",
       goods: [
-        {
-          name: "Mac book",
-          src:
-            "http://img1.imgtn.bdimg.com/it/u=1524275480,3404163321&fm=26&gp=0.jpg",
-          price: 3333,
-          star: 1
-        },
-        {
-          name: "iPhone",
-          src:
-            "http://img2.imgtn.bdimg.com/it/u=2221061121,1432349285&fm=26&gp=0.jpg",
-          price: 3333,
-          star: 2
-        }
       ]
     };
   },
+  mounted: function () {
+    this.loadData()
+  },
   methods: {
-    EhandleCheckAllChange(val) {
+  loadData () {
+       this.$post("/wit/getWishlist", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        let temp = [];
+        console.log(res.data)
+        for (var i = 0; i <  res.data.number; i++) { 
+      temp.push(
+                {
+          name: res.data.product[i].title,
+          src: res.data.product[i].remark,
+          price: res.data.product[i].retail_price,
+          brand:res.data.brand[i].name_en,
+          stock:res.data.product[i].replenishment_period,
+          amazondescription:res.data.packageinfo[i].amazon_description,
+          ebaydescription:res.data.packageinfo[i].ebay_description,
+          witid:res.data.wishlist[i].wit_id,
+          star: 1,
+          proid:res.data.product[i].pro_id
+        }
+                )
+ } 
+        this.goods = temp;
+      })
+    },
+
+    EhandleCheckAllChange(val) { 
       this.checkedEStores = val ? this.Estores : [];
       this.EisIndeterminate = false;
     },
+
     handleCheckAllChange(val) {
       this.checkedAStores = val ? this.Astores : [];
       this.isIndeterminate = false;
     },
+
     handleCheckedEStoresChange(value) {
       let checkedCount = value.length;
       this.EcheckAll = checkedCount === this.Estores.length;
       this.EisIndeterminate =
         checkedCount > 0 && checkedCount < this.Estores.length;
     },
+
     handleCheckedAStoresChange(value) {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.Astores.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.Astores.length;
     },
-    remove(item) {},
     pushShip() {
       this.dialogVisible = false;
       this.$notify.success("Successfull");
     },
+
     star(item) {
       if (item.star == 1) {
+        this.$post("/wit/deletedWishlist", {
+        wit_id: item.witid
+      }).then(res => {
         item.star = 2;
+        this.loadData()         
+      })
         return;
       }
-      item.star = 1;
+       this.$post("/wit/addWishlist", {
+        user_id:sessionStorage.getItem("user_id"),
+        pro_id:item.proid,
+      }).then(res => {
+        item.star = 1;
+        this.loadData()         
+      })
     },
+
     detail(item) {
       this.chooseItem = item;
       this.drawer = true;

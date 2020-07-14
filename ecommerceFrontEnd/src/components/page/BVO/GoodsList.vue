@@ -136,35 +136,37 @@ export default {
       ],
       search_name: "",
       type: "",
-      goods: []
+      goods: [],
+      wishlist: []
     };
   },
-  mounted(){
+  mounted() {
     this.$post("/product/getProductOnShelf", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {
-      if(res.code == 504){
+      if (res.code == 504) {
         this.$notify.warning(res.message);
         return;
       }
-      if(res.code == 200){
+      if (res.code == 200) {
         this.goods = res.data;
+        console.log(res);
       }
-    })
+    });
   },
   methods: {
-    refresh(){
+    refresh() {
       this.$post("/product/getProductOnShelf", {
-      user_id: sessionStorage.getItem("user_id")
+        user_id: sessionStorage.getItem("user_id")
       }).then(res => {
-        if(res.code == 504){
+        if (res.code == 504) {
           this.$notify.warning(res.message);
           return;
         }
-        if(res.code == 200){
+        if (res.code == 200) {
           this.goods = res.data;
         }
-      })
+      });
     },
     EhandleCheckAllChange(val) {
       this.checkedEStores = val ? this.Estores : [];
@@ -191,21 +193,60 @@ export default {
       this.$notify.success("Successfull");
     },
     //添加到心愿单，记得调refresh()刷新一下
+    async getWishList() {
+      await this.$post("/wit/getWishlist", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        let temp = [];
+        for (var i = 0; i < res.data.number; i++) {
+          temp.push({
+            name: res.data.product[i].title,
+            src: res.data.product[i].remark,
+            price: res.data.product[i].retail_price,
+            brand: res.data.brand[i].name_en,
+            stock: res.data.product[i].replenishment_period,
+            amazondescription: res.data.packageinfo[i].amazon_description,
+            ebaydescription: res.data.packageinfo[i].ebay_description,
+            witid: res.data.wishlist[i].wit_id,
+            star: 1,
+            proid: res.data.product[i].pro_id
+          });
+        }
+        this.wishlist = temp;
+      });
+    },
     star(item) {
-      if (item.star == 1) {
-        item.star = 2;
-        return;
-      }
-      item.star = 1;
+      this.getWishList().then(r => {
+        var witid;
+        for (var i = 0; i < this.wishlist.length; i++) {
+          if (item.pro_id == this.wishlist[i].proid) {
+            witid = this.wishlist[i].witid;
+          }
+        }
+        if (item.star == 1) {
+          this.$post("/wit/deletedWishlist", {
+            wit_id: witid
+          }).then(res => {
+            item.star = 2;
+            this.refresh;
+          });
+          return;
+        } else {
+          this.$post("/wit/addWishlist", {
+            user_id: sessionStorage.getItem("user_id"),
+            pro_id: item.pro_id
+          }).then(res => {
+            item.star = 1;
+            this.refresh;
+          });
+        }
+      });
     },
     detail(item) {
-      console.log(item);
       this.chooseItem = item;
       this.drawer = true;
     },
-    search() {
-      console.log(1);
-    }
+    search() {}
   }
 };
 </script>

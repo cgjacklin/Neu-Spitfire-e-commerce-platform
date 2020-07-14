@@ -8,9 +8,9 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
   datasource:
-    username: root
+    username: dbs
     password: root
-    url: jdbc:mysql://127.0.0.1:3306/dbs?useUnicode=true&characterEncoding=utf-8&serverTimezone=CTT
+    url: jdbc:mysql://39.99.161.110:3306/dbs?characterEncoding=utf-8&serverTimezone=CTT
     driver-class-name: com.mysql.cj.jdbc.Driver
     ###################以下为druid增加的配置###########################
     type: com.alibaba.druid.pool.DruidDataSource
