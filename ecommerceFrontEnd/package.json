@@ -24,7 +24,6 @@
     "module": "^1.2.5",
     "v-charts": "^1.19.0",
     "vue": "^2.5.2",
-    "vue-country-selector": "^1.0.2",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
