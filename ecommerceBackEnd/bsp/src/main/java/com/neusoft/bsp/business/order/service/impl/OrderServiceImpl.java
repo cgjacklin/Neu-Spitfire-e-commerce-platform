@@ -103,9 +103,19 @@ public class OrderServiceImpl implements OrderService {
         if(!new_order.getSts_cd().equals("2")){
             throw BusinessException.ORDER_STATUS_WRONG;
         }
+
+        //生成tracking number
+        StringBuffer sBuffer = new StringBuffer("");
+
+        for(int i=0;i<10;i ++) {
+            int tmp = (int)(10*(Math.random()));
+            sBuffer.append(tmp);
+        }
+
         new_order.setSts_cd("3");
-        new_order.setTracking_number(order.getTracking_number());
+        new_order.setTracking_number(sBuffer.toString());
         new_order.setTracking_company(order.getTracking_company());
+
 
         long time = System.currentTimeMillis();
         Timestamp datetime = new java.sql.Timestamp(time);

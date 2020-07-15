@@ -22,19 +22,24 @@
       <el-table-column label="operation">
         <template slot-scope="scope">
           <el-button type="danger" size="mini" icon="el-icon-edit" @click="edit(scope.row)">Edit</el-button>
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="remove(scope.$index, tableData)">Delete</el-button>
+          <el-button
+            type="danger"
+            size="mini"
+            icon="el-icon-delete"
+            @click="remove(scope.$index, tableData)"
+          >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog title="Menu info" :visible.sync="dialog" width="30%">
-      <el-form :model="userForm" ref="userForm" label-width="130px">
+      <el-form :model="menuForm" ref="menuForm" label-width="130px">
         <el-form-item
           label="Menu title"
           prop="menu_name"
           :rules="[{ required: true, message: 'Please enter the Menu title'}]"
         >
-          <el-input style="width:20rem" v-model="userForm.menu_name" autocomplete="off"></el-input>
+          <el-input style="width:20rem" v-model="menuForm.menu_name" autocomplete="off"></el-input>
         </el-form-item>
         <br />
         <el-form-item
@@ -42,7 +47,7 @@
           prop="menu_url"
           :rules="[{ required: true, message: 'Please enter the index'}]"
         >
-          <el-input style="width:20rem" v-model="userForm.menu_url" autocomplete="off"></el-input>
+          <el-input style="width:20rem" v-model="menuForm.menu_url" autocomplete="off"></el-input>
         </el-form-item>
         <br />
         <el-form-item
@@ -50,12 +55,12 @@
           prop="menu_icon"
           :rules="[{ required: true, message: 'Please enter the icon'}]"
         >
-          <el-input style="width:20rem" v-model="userForm.menu_icon" autocomplete="off"></el-input>
+          <el-input style="width:20rem" v-model="menuForm.menu_icon" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancel('userForm')">cancel</el-button>
-        <el-button type="danger" @click="submitForm('userForm')">Submit</el-button>
+        <el-button @click="cancel('menuForm')">cancel</el-button>
+        <el-button type="danger" @click="submitForm('menuForm')">Submit</el-button>
       </span>
     </el-dialog>
   </div>
@@ -68,42 +73,46 @@ export default {
       title: "",
       dialog: false,
       tableData: [],
-      isAdd:false,
-      userForm: {
-        menu_id:"",
+      table: [],
+      isAdd: false,
+      menuForm: {
+        menu_id: "",
         menu_name: "",
         menu_icon: "",
         menu_url: ""
       }
     };
   },
-  mounted(){
-    this.getData();
+  mounted() {
+    this.getData().then(r => {
+      this.table = this.tableData;
+    });
   },
   methods: {
-    search() {},
-    getData(){
-      this.$post("/menu/getAllMenuList", {
-       user_id: sessionStorage.getItem("user_id")
+    search() {
+      this.tableData = this.table.filter(e => e.menu_name.match(this.title));
+    },
+    async getData() {
+      await this.$post("/menu/getAllMenuList", {
+        user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         if (res.code == 504) {
           this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
-          this.tableData = res.data
+          this.tableData = res.data;
         }
       });
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(!this.isAdd){
-            console.log("1");
-            this.$post("/menu/updateMenuInfo",{
+          if (!this.isAdd) {
+            this.$post("/menu/updateMenuInfo", {
               user_id: sessionStorage.getItem("user_id"),
-              menu_id: this.userForm.menu_id,
-              menu_name: this.userForm.menu_name
+              menu_id: this.menuForm.menu_id,
+              menu_name: this.menuForm.menu_name
             }).then(res => {
               if (res.code == 504) {
                 this.$message.warning(res.message);
@@ -113,19 +122,25 @@ export default {
                 this.$message.success(res.message);
                 this.getData();
               }
-            })
-           
-            this.dialogVisible = false;
-            this.$refs[formName].resetFields();
+            });
+            this.menuForm = {
+              menu_id: "",
+              menu_name: "",
+              menu_icon: "",
+              menu_url: ""
+            };
           }
-          // if(this.isAdd){                //虚假的增加方法待填
-          //   this.isAdd = false;
-          
-            
-          //   this.dialogVisible = false;
-          //   this.$refs[formName].resetFields()
-          // }
-          console.log(this.userForm);
+          if (this.isAdd) {
+            this.isAdd = false;
+            this.tableData.push(this.menuForm);
+            this.menuForm = {
+              menu_id: "",
+              menu_name: "",
+              menu_icon: "",
+              menu_url: ""
+            };
+          }
+
           this.dialog = false;
         } else {
           return false;
@@ -133,8 +148,8 @@ export default {
       });
     },
     cancel(formName) {
-      this.userForm = {
-        menu_id:"",
+      this.menuForm = {
+        menu_id: "",
         menu_name: "",
         menu_icon: "",
         menu_url: ""
@@ -148,12 +163,13 @@ export default {
         menu_name: row.menu_name,
         menu_icon: row.menu_icon,
         menu_url: row.menu_url
-      }
-      this.userForm= temp;
+      };
+      this.menuForm = temp;
       this.dialog = true;
     },
     remove(index, rows) {
       rows.splice(index, 1);
+      this.$message.success("Delete success");
     }
   }
 };

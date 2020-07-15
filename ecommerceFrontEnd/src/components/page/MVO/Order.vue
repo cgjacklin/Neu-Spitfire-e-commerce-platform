@@ -26,7 +26,7 @@
           <el-table-column prop="qty" label="QTY"></el-table-column>
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
-          <el-table-column prop="order_created_time" label="Creation date"></el-table-column>
+          <el-table-column prop="order_created_time" label="Creation time"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Awaiting Shipment" name="second">
@@ -37,7 +37,7 @@
           <el-table-column prop="qty" label="QTY"></el-table-column>
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
-          <el-table-column prop="order_created_time" label="Creation date"></el-table-column>
+          <el-table-column prop="order_created_time" label="Creation time"></el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
               <el-button type="danger" size="small" @click="ship(scope.row, scope.$index)">Shipment</el-button>
@@ -53,7 +53,7 @@
           <el-table-column prop="qty" label="QTY"></el-table-column>
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
-          <el-table-column prop="order_created_time" label="Creation date"></el-table-column>
+          <el-table-column prop="order_created_time" label="Creation time"></el-table-column>
           <el-table-column prop="tracking_number" label="Tracking No"></el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
@@ -69,7 +69,7 @@
           <el-table-column prop="qty" label="QTY"></el-table-column>
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
-          <el-table-column prop="order_created_time" label="Creation date"></el-table-column>
+          <el-table-column prop="order_created_time" label="Creation time"></el-table-column>
           <el-table-column prop="tracking_number" label="Tracking No"></el-table-column>
         </el-table>
       </el-tab-pane>
@@ -80,10 +80,28 @@
           <el-table-column prop="qty" label="QTY"></el-table-column>
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
-          <el-table-column prop="order_created_time" label="Creation date"></el-table-column>
+          <el-table-column prop="order_created_time" label="Creation time"></el-table-column>
         </el-table>
       </el-tab-pane>
     </el-tabs>
+
+    <el-dialog title="Tracking Company" :visible.sync="dialogVisible" width="30%">
+      <el-form :model="trackTable" ref="trackTable" label-width="130px">
+         <el-form-item
+            label="Company"
+            prop="trackingCompany"
+            :rules="[{ required: true, message: 'Please select tracking company'}]"
+          >
+            <el-radio v-model="trackTable.trackingCompany" label="SF Express">SF Express (Fast 1-2 days)</el-radio><br/>
+           <el-radio v-model="trackTable.trackingCompany" label="UPS">UPS (Slow 3-4 days)</el-radio>
+          </el-form-item>
+          <br/>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="submitForm('trackTable')">Ship</el-button>
+        <el-button @click="cancelForm('trackTable')">Cancel</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -92,9 +110,15 @@ export default {
   data() {
     return {
       tableData: [],
+      dialogVisible: false,
       search_title: "",
       activeName: "first",
-      sts_cd: ''
+      sts_cd: '',
+      opRow: '',
+      opIndex: '',
+      trackTable: {
+        trackingCompany: '',
+      }
     };
   },
   mounted(){
@@ -115,6 +139,10 @@ export default {
       });
   },
   methods: {
+    cancelForm(formName){
+      this.$refs[formName].resetFields();
+      this.dialogVisible = false;
+    },
     cancel(row, index) {
       this.$post("/order/cancelOrder",{
         or_id: row.or_id,
@@ -132,29 +160,44 @@ export default {
       })
     },
 
+    submitForm(formName){
+      this.$refs[formName].validate(valid => {
+        if(valid){
+          this.$post("/order/deliverOrder", {
+            or_id: this.opRow.or_id,
+            tracking_number: '',
+            tracking_company: this.trackTable.trackingCompany,
+          }).then(res => {
+            //处理response
+            console.log(res)
+            if (res.code == "504") {
+              this.$message.warning(res.message);
+              this.$refs[formName].resetFields();
+              return;
+            }
+            if (res.code == 200) {
+              // this.$root.user_id=res.data.user_id;
+              // this.tableData = res.data
+              this.tableData.splice(this.opIndex, 1);  
+              this.$refs[formName].resetFields();
+              this.dialogVisible = false;
+            }
+          });
+        }else{
+          return false;
+        }
+      })
+    },
+
     ship(row, index) {
       //应该是弹出shipment框填写shipment信息
-
-       this.$post("/order/deliverOrder", {
-        or_id: row.or_id,
-        tracking_number: '',
-        tracking_computer: ''
-      }).then(res => {
-        //处理response
-        console.log(res)
-        if (res.code == "504") {
-          this.$message.warning(res.message);
-          return;
-        }
-        if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          // this.tableData = res.data
-          this.tableData.splice(index, 1);  
-        }
-      });
+       this.dialogVisible = true;
+       this.opRow = row;
+       this.opIndex = index;
     
     },
     handleClick(tab) {
+      this.tableData="";
       console.log(tab.index);
       let tmpStscd = 0;
       if(tab.index == 0){
