@@ -1,7 +1,9 @@
 server:
   port: 8088
-prop:
-  upload-folder: E:/test/
+winPath: E:/test/
+winConfigPath: file:///E:/test/
+
+
 spring:
   servlet:
     multipart:

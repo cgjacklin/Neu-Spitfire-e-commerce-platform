@@ -94,8 +94,9 @@ public class WalletController extends BaseController {
     }
 
     @PostMapping("/getAvailable_money")
-    public BaseModel getAvailable_money(@RequestBody int user_id) {
+    public BaseModel getAvailable_money(@RequestBody User user1) {
         BaseModel result = new BaseModel();
+        int user_id = user1.getUser_id();
         User user = userService.getById(user_id);
         if (user == null) {
             throw BusinessException.USERNAME_NOT_EXISTS;

@@ -97,6 +97,16 @@
             <el-input style="width:35rem" v-model="payForm.name" autocomplete="off"></el-input>
           </el-form-item>
           <br />
+          <!-- <el-form-item
+            label="Country"
+            prop="country"
+            :rules="[{ required: true, message: 'Please enter the Country'}]"
+          >
+          <template>
+            <country-selector v-model="payForm.selected" width="260" ></country-selector>
+          </template>
+          </el-form-item>
+          <br /> -->
           <el-form-item
             label="Address"
             prop="address"
@@ -116,22 +126,55 @@
           <el-form-item
             label="Quantity"
             prop="num"
-            :rules="[{ required: true, message: 'Please enter the Quantity'}]"
           >
-            <el-input style="width:35rem" v-model="payForm.num" autocomplete="off"></el-input>
+            <el-input style="width:35rem" v-model="payForm.qty" :disabled="true" autocomplete="off"></el-input>
           </el-form-item>
-          <br />
+          <br/>
           <el-form-item class="pay-form-button">
-            <el-button type="danger" @click="submitForm('payForm')">Save</el-button>
+            <el-button type="danger" @click="payNow('payForm')">Pay Now</el-button>
             <el-button @click="drawer=false">Cancel</el-button>
           </el-form-item>
         </el-form>
       </div>
     </el-drawer>
+
+
+    <el-dialog title="Payment" :visible.sync="dialogVisible" width="30%">
+      <el-form :model="paymentForm" ref="paymentForm" label-width="130px">
+        <el-form-item
+          label="Total Money"
+          prop="totalMoney"
+        >
+          <el-input style="width:20rem" v-model="paymentForm.totalMoney" :disabled="true" autocomplete="off"></el-input>
+        </el-form-item>
+        <br />
+        <el-form-item
+          label="Available Money"
+          prop="availableMoney"
+        >
+          <el-input style="width:20rem" v-model="paymentForm.availableMoney" :disabled="true" autocomplete="off"></el-input>
+        </el-form-item>
+        <br />
+        <el-form-item
+          label="Password"
+          prop="password"
+          :rules="[{ required: true, message: 'Please enter the password'}]"
+        >
+        <el-input placeholder="Please enter password" v-model="paymentForm.password" show-password></el-input>
+        </el-form-item>
+        <br />
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="submitForm('paymentForm')">Sure</el-button>
+        <el-button @click="cancel">Cancel</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+// import CountrySelector from 'vue-country-selector';// import stylesheet
+// import '../../../../node_modules/vue-country-selector/dist/countryselector';
 export default {
   data() {
     return {
@@ -142,10 +185,18 @@ export default {
       search_title: "",
       activeName: "first",
       payForm: {
+        selected: '',
         name: "",
         address: "",
         phone: "",
-        num: ""
+        qty: "",
+        // trackingCompany: ""
+      },
+      dialogVisible: false,
+      paymentForm: {
+        password: '',
+        totalMoney: '',
+        availableMoney: ''
       }
     };
   },
@@ -170,20 +221,55 @@ export default {
     deleteRow(index){
       this.tableData.splice(index, 1)
     },
+
+    
+
+    payNow(formName){
+      console.log(this.payForm.trackingCompany)
+      this.$refs[formName].validate(valid => {
+        if(valid){
+          this.$post("/wal/getAvailable_money", {
+            user_id: sessionStorage.getItem("user_id")
+          }).then(res => {
+            if(res.code == 504){
+              this.$message.warning(res.message);
+              return;
+            }
+            if(res.code == 200){
+              this.paymentForm.availableMoney = res.message;
+              this.paymentForm.totalMoney = this.opRow.qty * this.opRow.sales_price;
+              this.dialogVisible = true;
+              this.$refs[formName].resetFields();
+
+            }
+          })
+          
+        }
+        else{
+          return false;
+        }
+      })
+      
+    },
+    cancel(){
+      this.dialogVisible = false;
+    },
     
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.payForm);
+          // console.log(this.payForm);
           this.drawer = false;
+          this.dialogVisible = false;
 
           this.$post("/order/payOrder",{
               or_id: this.opRow.or_id,
               user_id: sessionStorage.getItem("user_id"),
-              password: "account"
+              password: this.paymentForm.password
           }).then(res=>{
             if (res.code == 504) {
               this.$message.warning(res.message);
+              this.$refs[formName].resetFields()
               return;
             }
             if (res.code == 200) {
@@ -201,9 +287,11 @@ export default {
     pay(row, index) {
       this.drawer = true;
       this.opRow = row;
+      this.payForm.qty = row.qty;
       this.opIndex = index;
     },
     handleClick(tab) {
+      this.tableData="";
       console.log(tab.index);
       let tmpStscd = 0;
       if(tab.index == 0){

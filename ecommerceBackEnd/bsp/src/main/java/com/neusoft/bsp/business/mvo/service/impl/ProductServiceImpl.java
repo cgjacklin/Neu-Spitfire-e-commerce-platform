@@ -20,6 +20,7 @@ import com.neusoft.bsp.controller.WishlistController;
 import com.neusoft.bsp.utils.FileNameUtils;
 import com.neusoft.bsp.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +45,8 @@ public class ProductServiceImpl implements ProductService {
     PackageInfoService packageInfoService;
     @Autowired
     WishlistMapper wishlistMapper;
+    @Value("${winPath}")
+    String realPath;
 
     @Override
     public int insert(Product product) {
@@ -118,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String uploadPicture(MultipartFile uploadFile, HttpServletRequest request) {
         //构建文件上传所要保存的"文件夹路径"--这里是相对路径，保存到项目根路径的文件夹下
-        String realPath = "E:/Develop/Files/Photos/";
+
 //        String realPath = new String("ecommerceBackEnd/bsp/src/main/resources/static/upload");
         //存放上传文件的文件夹
         File file = new File(realPath);
@@ -136,6 +139,7 @@ public class ProductServiceImpl implements ProductService {
             File newFile = new File(file.getAbsolutePath() + File.separator + fileName);
             //转存文件到指定路径，如果文件名重复的话，将会覆盖掉之前的文件,这里是把文件上传到 “绝对路径”
             uploadFile.transferTo(newFile);
+//            uploadFile.transferTo(new File(tmp.getAbsoluteFile()+File.separator+fileName));
             String filePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/image/" + fileName;
 //            logger.info("-----------【"+ filePath +"】-----------");
             System.out.println(filePath);

@@ -5,6 +5,7 @@ import com.neusoft.bsp.common.base.BaseEntity;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class OrderResponse implements BaseEntity<Integer> {
     String title;
@@ -23,7 +24,7 @@ public class OrderResponse implements BaseEntity<Integer> {
     String tracking_number;
     String tracking_company;
     String sts_cd;
-    Timestamp order_created_time;
+    String order_created_time;
     Timestamp paid_time;
     Timestamp ship_time;
     Timestamp completed_time;
@@ -158,11 +159,11 @@ public class OrderResponse implements BaseEntity<Integer> {
         this.sts_cd = sts_cd;
     }
 
-    public Timestamp getOrder_created_time() {
+    public String getOrder_created_time() {
         return order_created_time;
     }
 
-    public void setOrder_created_time(Timestamp order_created_time) {
+    public void setOrder_created_time(String order_created_time) {
         this.order_created_time = order_created_time;
     }
 
@@ -223,7 +224,7 @@ public class OrderResponse implements BaseEntity<Integer> {
         this.tracking_number = order.getTracking_number();
         this.tracking_company = order.getTracking_company();
         this.sts_cd = order.getSts_cd();
-        this.order_created_time = order.getOrder_created_time();
+        this.order_created_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getOrder_created_time());
         this.paid_time = order.getPaid_time();
         this.ship_time = order.getShip_time();
         this.completed_time = order.getCompleted_time();
