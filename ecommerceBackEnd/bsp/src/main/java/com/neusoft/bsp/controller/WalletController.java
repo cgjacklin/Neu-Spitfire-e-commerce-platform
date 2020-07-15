@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,17 @@ public class WalletController extends BaseController {
         }
         return result;
     }
+    @PostMapping("/getroleid")
+    public BaseModel getRoleId (@RequestBody User user){
+        BaseModel result = new BaseModel();
+        int user_id = user.getUser_id();
+        user = userService.getById(user_id);
+        String roleid = user.getRole_id();
+        result.code = 200;
+        result.message = roleid;
 
+        return result;
+    }
     @PostMapping("/getPassword")
     public BaseModel getPassword (@RequestBody User user){
         BaseModel result = new BaseModel();
@@ -308,23 +319,25 @@ public class WalletController extends BaseController {
     }
 
     @PostMapping("/getAudit")
-    BaseModelJson<Map<String, Object>> getAudit(@RequestBody int user_id){
+    BaseModelJson<Map<String, Object>> getAudit(@RequestBody User user){
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
-        User user = userService.getById(user_id);
-        if(user==null){
+        int user_id = user.getUser_id();
+        user = userService.getById(user_id);
+        if(user_id==0){
             throw BusinessException.USERNAME_NOT_EXISTS;
         }
         String per = user.getRole_id();
         if(per.equals("0")) {
-
             HashMap<String, Object> res = new HashMap<>();
             List<WalletTransactionAudit> list = walletTransactionAuditService.getAll();
-            int j = 0;
-            for (WalletTransactionAudit walletTransactionAudit : list) {
-                String s = String.valueOf(j);
-                res.put("WalletTransactionAudit"+j, walletTransactionAudit);
-                j++;
+            List<String> namelist = new ArrayList<>();
+            for(WalletTransactionAudit walletTransactionAudit:list){
+                int id = walletTransactionAudit.getBuyer_id();
+                String name = userService.getById(id).getUsername();
+                namelist.add(name);
             }
+            res.put("WalletTransactionAudit", list);
+            res.put("name", namelist);
             response.code = 200;
             response.data = res;
             return response;

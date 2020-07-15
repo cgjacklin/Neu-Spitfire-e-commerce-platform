@@ -18,7 +18,7 @@
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="param_cd" label="Primary key"></el-table-column>
       <el-table-column prop="param_value" label="Parameter Value"></el-table-column>
-      <el-table-column prop="description" label="Description"></el-table-column>      
+      <el-table-column prop="description" label="Description"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
           <el-button type="danger" size="mini" @click="edit(scope.row)">Edit</el-button>
@@ -68,11 +68,11 @@ export default {
     return {
       dialogVisible: false,
       isAdd: false,
-      search_name: '',
-      search: '',
+      search_name: "",
       tableData: [],
-      opRow: '',
-      opIndex: '',
+      table:[],
+      opRow: "",
+      opIndex: "",
       paramForm: {
         param_cd: "",
         description: "",
@@ -80,46 +80,45 @@ export default {
       }
     };
   },
-  mounted(){
-    this.$post("/parameter/getParameters", {
-       
-      }).then(res => {
-        //处理response
-        console.log(res)
-        if (res.code == 504) {
-          this.$message.warning(res.message);
-          return;
-        }
-        if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          this.tableData = res.data
-        }
-      });
+  mounted() {
+    this.$post("/parameter/getParameters", {}).then(res => {
+      //处理response
+      console.log(res);
+      if (res.code == 504) {
+        this.$message.warning(res.message);
+        return;
+      }
+      if (res.code == 200) {
+        // this.$root.user_id=res.data.user_id;
+        this.tableData = res.data;
+      this.table = res.data;
+      }
+    });
   },
   methods: {
-    refresh(){
-      this.$post("/parameter/getParameters", {
-       
-      }).then(res => {
+    search(){
+      this.tableData = this.table.filter(e => e.param_cd.match(this.search_name));
+    },
+    refresh() {
+      this.$post("/parameter/getParameters", {}).then(res => {
         //处理response
-        console.log(res)
+        console.log(res);
         if (res.code == 504) {
           this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          // Vue.set()
-          this.tableData = res.data
+          this.tableData = res.data;
+          this.table = res.data;
         }
       });
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(!this.isAdd){
+          if (!this.isAdd) {
             // console.log(this.paramForm.param_value);
-            this.$post("/parameter/updateParameter",{
+            this.$post("/parameter/updateParameter", {
               user_id: sessionStorage.getItem("user_id"),
               par_id: this.opRow.par_id,
               param_value: this.paramForm.param_value,
@@ -136,17 +135,16 @@ export default {
               if (res.code == 200) {
                 // this.$root.user_id=res.data.user_id;
                 this.$message.success(res.message);
-                this.refresh()
+                this.refresh();
               }
-              
-            })
-           
+            });
+
             this.dialogVisible = false;
-            this.$refs[formName].resetFields()
+            this.$refs[formName].resetFields();
           }
-          if(this.isAdd){
+          if (this.isAdd) {
             this.isAdd = false;
-             this.$post("/parameter/addParameter",{
+            this.$post("/parameter/addParameter", {
               user_id: sessionStorage.getItem("user_id"),
               param_value: this.paramForm.param_value,
               description: this.paramForm.description,
@@ -161,19 +159,14 @@ export default {
                 this.$message.success(res.message);
                 this.refresh();
               }
-              
-            })
-            
-            this.dialogVisible = false;
-            this.$refs[formName].resetFields()
-          }
+            });
 
+            this.dialogVisible = false;
+            this.$refs[formName].resetFields();
+          }
         } else {
           return false;
         }
-
-
-
       });
     },
     cancel(formName) {
@@ -183,29 +176,26 @@ export default {
     edit(row) {
       this.opRow = row;
       this.dialogVisible = true;
-       this.$nextTick(function(){
+      this.$nextTick(function() {
         this.paramForm.param_cd = row.param_cd;
         this.paramForm.description = row.description;
         this.paramForm.param_value = row.param_value;
-      })
-
-     
-      
+      });
     },
     remove(row, index) {
       this.$post("/parameter/deleteParameter", {
         par_id: row.par_id
       }).then(res => {
-        if(res.code ==504){
+        if (res.code == 504) {
           this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
-              // this.$root.user_id=res.data.user_id;
-            this.$message.success(res.message);
-            this.tableData.splice(index);
+          this.$message.success(res.message);
+          // this.tableData.splice(index,1);
+          this.refresh();
         }
-      })
+      });
     }
   }
 };

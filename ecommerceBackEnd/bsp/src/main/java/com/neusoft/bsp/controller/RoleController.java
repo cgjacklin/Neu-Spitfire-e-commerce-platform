@@ -38,8 +38,9 @@ public class RoleController extends BaseController {
     UserService userService;
 
     @PostMapping("/getUsers")
-    public BaseModelJson<Map<String, Object>> getUsers(@Validated({SelectGroup.class}) @RequestBody int user_id) {
-        User user = userService.getById(user_id);
+    public BaseModelJson<Map<String, Object>> getUsers(@Validated({SelectGroup.class}) @RequestBody User user) {
+        int user_id = user.getUser_id();
+        user = userService.getById(user_id);
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
         if (user == null) {
             throw BusinessException.USERNAME_NOT_EXISTS;
@@ -49,12 +50,7 @@ public class RoleController extends BaseController {
             response.code = 200;
             HashMap<String, Object> res = new HashMap<>();
             List<User> list = userService.getAll();
-            int j = 0;
-            for (User i : list) {
-                String s = String.valueOf(j);
-                res.put("user" + s, i);
-                j++;
-            }
+            res.put("user", list);
             response.data = res;
         }else{
             throw BusinessException.PERMISSION_DENY;
@@ -105,14 +101,15 @@ public class RoleController extends BaseController {
             user1.setPassword(uau.getPassword());
             user1.setName(uau.getName());
             user1.setLast_login(Date.valueOf(now()).toString());
-            user1.setIp(uau.getIp());
-            user1.setStatus(uau.getStatus());
-            user1.setBz(uau.getBz());
-            user1.setSkin(uau.getSkin());
+//            user1.setIp(uau.getIp());
+//            user1.setStatus(uau.getStatus());
+//            user1.setBz(uau.getBz());
+//            user1.setSkin(uau.getSkin());
             user1.setEmail(uau.getEmail());
-            user1.setNumber(uau.getNumber());
+//            user1.setNumber(uau.getNumber());
             user1.setPhone(uau.getPhone());
-            user1.setMan_buyer_id(uau.getMan_buyer_id());
+            user1.setRole_id(uau.getRole_id());
+//            user1.setMan_buyer_id(uau.getMan_buyer_id());
             int i = userService.update(user1);
                 if(i!=1){
                     throw BusinessException.UPDATE_FAIL;

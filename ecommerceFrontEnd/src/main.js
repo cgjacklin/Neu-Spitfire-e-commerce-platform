@@ -12,9 +12,7 @@ import router from './router'
 import store from "./store/index";
 import locale from 'element-ui/lib/locale/lang/en'
 import { post, get, patch, put } from './utils/http'
-//country selector
-import CountrySelector from 'vue-country-selector';
-import 'vue-country-selector/dist/countryselector.css'
+
 
 
 //定义全局变量
@@ -26,7 +24,6 @@ Vue.prototype.$isCollapse = store;
 Vue.use(mavonEditor)
 Vue.use(VCharts)
 Vue.use(ElementUI, { locale });
-Vue.use(CountrySelector)
 Vue.config.productionTip = false
 // Vue.prototype.$axios = axios;
 /* eslint-disable no-new */

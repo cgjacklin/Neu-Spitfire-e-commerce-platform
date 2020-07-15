@@ -247,8 +247,16 @@ export default {
     };
   },
   mounted() {
+    this.$post("/wal/getroleid", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+    if(res.message=="2"||res.message=="0"){
     this.checkWallet();
     this.getRecord();
+    }else{
+      this.$message.warning("Permission denied");
+    } 
+    });
   },
   methods: {
     checkWallet() {
@@ -286,12 +294,20 @@ export default {
             res.data.WalletTransactionRecord[i].create_time.slice(0, 10) +
             " " +
             res.data.WalletTransactionRecord[i].create_time.slice(11, 19);
+             var st;
+              if ( res.data.WalletTransactionRecord[i].status == 1) {
+              st = "Applying";
+            } else if ( res.data.WalletTransactionRecord[i].status == 2) {
+              st = "Completed";
+            } else if ( res.data.WalletTransactionRecord[i].status == 0) {
+              st = "Failed";
+            } 
           this.tableData.push({
             num: res.data.WalletTransactionRecord[i].transaction_id,
             amount: res.data.WalletTransactionRecord[i].account_name,
             money: res.data.WalletTransactionRecord[i].transaction_money,
             time: date,
-            state: res.data.WalletTransactionRecord[i].status
+            state: st
           });
         }
       });

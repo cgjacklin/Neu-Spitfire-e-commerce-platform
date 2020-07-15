@@ -16,9 +16,10 @@
     <el-divider></el-divider>
     <el-table :data="tableData" style="width: 100%" class="table">
       <el-table-column type="selection" width="50"></el-table-column>
+       <el-table-column prop="userid" label="User id"></el-table-column>
       <el-table-column prop="username" label="User name"></el-table-column>
-      <el-table-column prop="role" label="Role"></el-table-column>
       <el-table-column prop="nickname" label="Nick name"></el-table-column>
+      <el-table-column prop="role" label="Role"></el-table-column>
       <el-table-column prop="phone" label="Phone number"></el-table-column>
       <el-table-column prop="email" label="E-mail"></el-table-column>
       <el-table-column label="operation">
@@ -83,8 +84,8 @@
             prop="role"
             :rules="[{ required: true, message: 'Please choose the Role'}]"
           >
-            <el-radio v-model="userForm.role" label="1">Brand-seller</el-radio>
-            <el-radio v-model="userForm.role" label="2">Borrow-seller</el-radio>
+            <el-radio v-model="userForm.role" label="MVO">Brand-seller</el-radio>
+            <el-radio v-model="userForm.role" label="BVO">Borrow-seller</el-radio>
           </el-form-item>
 
           <el-form-item class="user-form-button">
@@ -99,7 +100,7 @@
     <el-drawer title="drawer" :visible.sync="drawerPr" size="20%" :with-header="false">
       <div class="form-div">
         <h3>Permission Assignment</h3>
-        <div class="switch" v-for="item in menu" :key="item">
+        <div class="switch" v-for="item in menu" :key="item.index">
           <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8"></el-switch>
           <p class="p-menu">
             <i :class="item.icon"></i>
@@ -178,9 +179,10 @@ export default {
           title: "Fund check"
         }
       ],
+      search_name:"",
       drawerPr: false,
       drawer: false,
-      tableData: [{ username: "admin"}],
+      tableData: [],
       userForm: {
         username: "",
         nickname: "",
@@ -191,15 +193,73 @@ export default {
       }
     };
   },
+  mounted() {
+    this.$post("/wal/getroleid", {
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res => {
+      if (res.message == "0") {
+        this.getUsers();
+      } else {
+        this.$message.warning("Permission denied");
+      }
+    });
+  },
   methods: {
+    getUsers() {
+      this.tableData = [];
+      this.$post("/rle/getUsers", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 200) {
+          for (var i = 0; i < res.data.user.length; i++) {
+            var role;
+            if (res.data.user[i].role_id == 1) {
+              role = "MVO";
+            } else if (res.data.user[i].role_id == 2) {
+              role = "BVO";
+            } else if (res.data.user[i].role_id == 0) {
+              role = "Admin";
+            }
+            this.tableData.push({
+              userid: res.data.user[i].user_id,
+              username: res.data.user[i].username,
+              nickname: res.data.user[i].name,
+              role: role,
+              phone: res.data.user[i].phone,
+              email: res.data.user[i].email
+            });
+          }
+        } else {
+          if (res.message == "Permission denied") {
+            this.$message.warning("Permission denied");
+          }
+        }
+      });
+    },
     permissions(row) {
       this.drawerPr = true;
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.userForm);
+this.$post("/rle/updateUser", {
+        admin_id: sessionStorage.getItem("user_id"),
+        user_id:this.userForm.userid,
+        username:this.userForm.username,
+        password:this.userForm.password,
+        name:this.userForm.nickname,
+        email:this.userForm.email,
+        phone:this.userForm.phone,
+        role_id:this.userForm.role
+      }).then(res => {
+          if(res.code==200){
+            this.$message.success("Successfully update!");
+          }else{
+            this.$message.warning("Update failed");
+          }
           this.drawer = false;
+      })
+          
         } else {
           return false;
         }
@@ -211,9 +271,25 @@ export default {
     },
     edit(row) {
       this.userForm = row;
+      if(this.userForm.role=="Admin"){
+  this.$message.warning("Can't edit the admin account");
+  return;
+      }
       this.drawer = true;
     },
-    remove() {}
+    remove(row) {
+this.$post("/rle/deletedUser", {
+        user_id: sessionStorage.getItem("user_id"),
+        delete_id:row.userid
+      }).then(res => {
+        if(res.code==200){
+          this.getUsers();
+        }else{
+          this.$message.warning("Delete failed");
+        }
+      })
+    },
+    search(){}
   }
 };
 </script>

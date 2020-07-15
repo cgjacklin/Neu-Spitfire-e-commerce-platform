@@ -15,14 +15,23 @@ public class UserIdAndUpdate {
     String username;
     String password;
     String name;
-    String ip;
-    String status;
-    String bz;
-    String skin;
+//    String ip;
+//    String status;
+//    String bz;
+//    String skin;
     String email;
-    String number;
+//    String number;
     String phone;
-    int man_buyer_id;
+//    int man_buyer_id;
+    String role_id;
+
+    public String getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(String role_id) {
+        this.role_id = role_id;
+    }
 
     public int getUser_id() {
         return user_id;
@@ -62,38 +71,38 @@ public class UserIdAndUpdate {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getBz() {
-        return bz;
-    }
-
-    public void setBz(String bz) {
-        this.bz = bz;
-    }
-
-    public String getSkin() {
-        return skin;
-    }
-
-    public void setSkin(String skin) {
-        this.skin = skin;
-    }
+//
+//    public String getIp() {
+//        return ip;
+//    }
+//
+//    public void setIp(String ip) {
+//        this.ip = ip;
+//    }
+//
+//    public String getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(String status) {
+//        this.status = status;
+//    }
+//
+//    public String getBz() {
+//        return bz;
+//    }
+//
+//    public void setBz(String bz) {
+//        this.bz = bz;
+//    }
+//
+//    public String getSkin() {
+//        return skin;
+//    }
+//
+//    public void setSkin(String skin) {
+//        this.skin = skin;
+//    }
 
     public String getEmail() {
         return email;
@@ -103,13 +112,13 @@ public class UserIdAndUpdate {
         this.email = email;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
+//    public String getNumber() {
+//        return number;
+//    }
+//
+//    public void setNumber(String number) {
+//        this.number = number;
+//    }
 
     public String getPhone() {
         return phone;
@@ -119,13 +128,13 @@ public class UserIdAndUpdate {
         this.phone = phone;
     }
 
-    public int getMan_buyer_id() {
-        return man_buyer_id;
-    }
-
-    public void setMan_buyer_id(int man_buyer_id) {
-        this.man_buyer_id = man_buyer_id;
-    }
-
+//    public int getMan_buyer_id() {
+//        return man_buyer_id;
+//    }
+//
+//    public void setMan_buyer_id(int man_buyer_id) {
+//        this.man_buyer_id = man_buyer_id;
+//    }
+//
 
 }
