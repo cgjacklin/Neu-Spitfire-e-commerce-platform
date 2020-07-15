@@ -145,7 +145,6 @@ export default {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         let temp = [];
-        console.log(res.data)
         for (var i = 0; i <  res.data.number; i++) { 
       temp.push(
                 {
@@ -203,7 +202,7 @@ export default {
         this.loadData()         
       })
         return;
-      }
+      }else{
        this.$post("/wit/addWishlist", {
         user_id:sessionStorage.getItem("user_id"),
         pro_id:item.proid,
@@ -211,6 +210,7 @@ export default {
         item.star = 1;
         this.loadData()         
       })
+      }
     },
 
     detail(item) {

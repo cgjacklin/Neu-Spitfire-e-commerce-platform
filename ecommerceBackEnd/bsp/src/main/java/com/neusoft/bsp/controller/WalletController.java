@@ -14,6 +14,7 @@ import com.neusoft.bsp.admin.wallet.vo.Audit;
 import com.neusoft.bsp.admin.wallet.vo.Recharge;
 import com.neusoft.bsp.admin.wallet.vo.UseridAndAccount;
 import com.neusoft.bsp.admin.wallet.vo.Withdraw;
+import com.neusoft.bsp.business.vo.UserIdAndPassword;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
@@ -49,6 +50,48 @@ public class WalletController extends BaseController {
 
     @Autowired
     WalletTransactionAuditService walletTransactionAuditService;
+
+    @PostMapping("/getWallet")
+    public BaseModel getWallet (@RequestBody User user){
+        BaseModel result = new BaseModel();
+        WalletAccount walletAccount = walletAccountService.getById(user.getUser_id()) ;
+        String active = walletAccount.getIs_active();
+        if(active.equals("N")){
+            result.code = 504;
+        }else{
+            result.code = 200;
+            result.message = walletAccount.getAccount_name();
+        }
+        return result;
+    }
+
+    @PostMapping("/getPassword")
+    public BaseModel getPassword (@RequestBody User user){
+        BaseModel result = new BaseModel();
+        WalletAccount walletAccount = walletAccountService.getById(user.getUser_id()) ;
+        String active = walletAccount.getIs_active();
+        if(active.equals("N")){
+            result.code = 504;
+        }else{
+            result.code = 200;
+            result.message = walletAccount.getPassword();
+        }
+        return result;
+    }
+
+    @PostMapping("/updatePassword")
+    public BaseModel updatePassword (@RequestBody UserIdAndPassword userIdAndPassword){
+        BaseModel result = new BaseModel();
+        WalletAccount walletAccount = walletAccountService.getById(userIdAndPassword.getUser_id()) ;
+        walletAccount.setPassword(userIdAndPassword.getPassword());
+        int result_walletAccount = walletAccountService.update(walletAccount);
+        if(result_walletAccount !=1){
+            throw BusinessException.UPDATE_FAIL;
+        }
+        result.code = 200;
+        return result;
+    }
+
     @PostMapping("/activate")
     public BaseModel activate(@RequestBody UseridAndAccount uaa){
         BaseModel result = new BaseModel();
@@ -94,10 +137,10 @@ public class WalletController extends BaseController {
     }
 
     @PostMapping("/getAvailable_money")
-    public BaseModel getAvailable_money(@RequestBody int user_id) {
+    public BaseModel getAvailable_money(@RequestBody User user) {
         BaseModel result = new BaseModel();
-        User user = userService.getById(user_id);
-        if (user == null) {
+        int user_id = user.getUser_id();
+        if (user_id == 0) {
             throw BusinessException.USERNAME_NOT_EXISTS;
         }
         WalletAccount walletAccount = walletAccountService.getById(user_id);
@@ -190,6 +233,7 @@ public class WalletController extends BaseController {
             if(walletAccount.getPassword().equals(withdraw.getPassword())){
                 String name = walletAccount.getAccount_name();
                 WalletAccountFund walletAccountFund = walletAccountFundService.getById(withdraw.getUser_id());
+                BigDecimal origin = walletAccountFund.getWithdrawing_money();
                 walletAccountFund.setWithdrawing_money(walletAccountFund.getWithdrawing_money().add(withdraw.getWithdraw_money()));
                 walletAccountFund.setLast_update_by(user.getName());
                 Timestamp datetime = new Timestamp(System.currentTimeMillis());
@@ -224,6 +268,9 @@ public class WalletController extends BaseController {
                 walletTransactionAudit.setAvailable_money_after(walletAccountFund.getAvailable_money().subtract(withdraw.getWithdraw_money()));
                 BigDecimal zero = new BigDecimal(0);
                 if(walletTransactionAudit.getAvailable_money_after().compareTo(zero)<0){
+                    walletTransactionRecordService.delete(walletTransactionRecord.getTransaction_id());
+                    walletAccountFund.setWithdrawing_money(origin);
+                    walletAccountFundService.update(walletAccountFund);
                     throw BusinessException.NOT_SUFFICIENT_FUNDS;
                 }
                 walletTransactionAudit.setCreate_by(name);
@@ -245,20 +292,16 @@ public class WalletController extends BaseController {
     }
 
     @PostMapping("/getRecord")
-    BaseModelJson<Map<String, Object>> getRecord(@RequestBody int user_id){
+    BaseModelJson<Map<String, Object>> getRecord(@RequestBody  User user){
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
-        User user = userService.getById(user_id);
-        if(user==null){
+        int user_id = user.getUser_id();
+
+        if(user_id==0){
             throw BusinessException.USERNAME_NOT_EXISTS;
         }
         HashMap<String, Object> res = new HashMap<>();
         List<WalletTransactionRecord> list = walletTransactionRecordService.getAllById(user_id);
-        int j = 0;
-        for (WalletTransactionRecord walletTransactionRecord : list) {
-            String s = String.valueOf(j);
-            res.put("WalletTransactionRecord"+j, walletTransactionRecord);
-            j++;
-        }
+        res.put("WalletTransactionRecord", list);
         response.code = 200;
         response.data = res;
         return response;

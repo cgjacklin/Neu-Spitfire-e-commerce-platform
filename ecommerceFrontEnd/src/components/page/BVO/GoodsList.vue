@@ -228,7 +228,7 @@ export default {
             wit_id: witid
           }).then(res => {
             item.star = 2;
-            this.refresh;
+            this.refresh();
           });
           return;
         } else {
@@ -237,7 +237,7 @@ export default {
             pro_id: item.pro_id
           }).then(res => {
             item.star = 1;
-            this.refresh;
+            this.refresh();
           });
         }
       });

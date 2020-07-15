@@ -66,6 +66,7 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="num" label="Transaction Number"></el-table-column>
           <el-table-column prop="amount" label="amount"></el-table-column>
+          <el-table-column prop="money" label="money"></el-table-column>
           <el-table-column prop="time" label="Create Time"></el-table-column>
           <el-table-column prop="state" label="State">
             <template slot-scope="scope">
@@ -75,10 +76,14 @@
         </el-table>
       </div>
     </div>
+
     <el-dialog title="Deposit" :visible.sync="dialogDeposit" width="30%">
       <span slot="footer" class="dialog-footer">
+
+         <el-input v-model="Depositing_money"></el-input>
+
         <el-button @click="dialogDeposit = false">cancel</el-button>
-        <el-button type="danger" @click="dialogDeposit= false">sure</el-button>
+        <el-button type="danger" @click="deposit">sure</el-button>
       </span>
     </el-dialog>
 
@@ -217,7 +222,7 @@ export default {
       time: "",
       visible: false,
       visible1: false,
-      tableData: [{ state: 3 }],
+      tableData: [],
       dialogVisible: false,
       dialogDeposit: false,
       dialogAccount: false,
@@ -225,8 +230,9 @@ export default {
       validatePass2: validatePass2,
       validatePass3: validatePass3,
       validatePass4: validatePass4,
-      name: "bbb",
-      money: "1",
+      Depositing_money: "",
+      name: "",
+      money: "",
       password: "",
       passwordForm: {
         password: "",
@@ -240,28 +246,98 @@ export default {
       }
     };
   },
+  mounted() {
+    this.checkWallet();
+    this.getRecord();
+  },
   methods: {
-    DepositPass(){
-      if (this.password != "aaa") {
-        this.$message.warning("Password is wrong.");
-        return;
-      }
-      this.dialogDeposit = true;
-      this.visible1 = false;
+    checkWallet() {
+      this.$post("/wal/getWallet", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning("Your wallet hasn't been activated yet");
+          this.emptyShow = true;
+          this.mainShow = false;
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Successfully get wallet info!");
+          this.name = res.message;
+          this.$post("/wal/getAvailable_money", {
+            user_id: sessionStorage.getItem("user_id")
+          }).then(res => {
+            this.money = res.message;
+
+            this.password = res.message;
+            this.emptyShow = false;
+            this.mainShow = true;
+          });
+        }
+      });
     },
+    getRecord() {
+       this.tableData=[];
+      this.$post("/wal/getRecord", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        for (var i = 0; i < res.data.WalletTransactionRecord.length; i++) {
+          var date =
+            res.data.WalletTransactionRecord[i].create_time.slice(0, 10) +
+            " " +
+            res.data.WalletTransactionRecord[i].create_time.slice(11, 19);
+          this.tableData.push({
+            num: res.data.WalletTransactionRecord[i].transaction_id,
+            amount: res.data.WalletTransactionRecord[i].account_name,
+            money: res.data.WalletTransactionRecord[i].transaction_money,
+            time: date,
+            state: res.data.WalletTransactionRecord[i].status
+          });
+        }
+      });
+    },
+
+    DepositPass() {
+      var pass;
+      this.$post("/wal/getPassword", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        pass = res.message;
+        if (this.password != pass) {
+          this.$message.warning("Password is wrong.");
+          return;
+        }
+        this.dialogDeposit = true;
+        this.visible1 = false;
+      });
+    },
+
     AccountPass() {
-      if (this.password != "aaa") {
-        this.$message.warning("Password is wrong.");
-        return;
-      }
-      this.dialogAccount = true;
-      this.visible = false;
+      var pass;
+      this.$post("/wal/getPassword", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        pass = res.message;
+        if (this.password != pass) {
+          this.$message.warning("Password is wrong.");
+          return;
+        }
+        this.dialogAccount = true;
+        this.visible = false;
+      });
     },
     passwordSubForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.passwordForm);
-          this.dialogAccount = false;
+          this.$post("/wal/updatePassword", {
+            user_id: sessionStorage.getItem("user_id"),
+            password: this.passwordForm.password
+          }).then(res => {
+            if (res.code == 200) {
+              this.$message.success("Password changed successfully!");
+              this.dialogAccount = false;
+            }
+          });
         } else {
           return false;
         }
@@ -270,10 +346,27 @@ export default {
     regForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.walletRegForm);
-          this.dialogVisible = false;
-          this.emptyShow = false;
-          this.mainShow = true;
+          this.$post("/wal/activate", {
+            user_id: sessionStorage.getItem("user_id"),
+            account_name: this.walletRegForm.name,
+            password: this.walletRegForm.password
+          }).then(res => {
+            if (res.code == 504) {
+              this.$message.warning("Activation failed");
+              this.dialogVisible = false;
+              this.emptyShow = true;
+              this.mainShow = false;
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success("Activation complete");
+              this.name = this.walletRegForm.name;
+              this.money = 0;
+              this.dialogVisible = false;
+              this.emptyShow = false;
+              this.mainShow = true;
+            }
+          });
         } else {
           return false;
         }
@@ -283,6 +376,27 @@ export default {
       this.$refs[formName].resetFields();
       this.dialogVisible = false;
       this.dialogAccount = false;
+    },
+    deposit() {
+      var pass;
+      this.$post("/wal/getPassword", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        pass = res.message;
+        this.$post("/wal/recharge", {
+          user_id: sessionStorage.getItem("user_id"),
+          depositing_money: this.Depositing_money,
+          password: pass
+        }).then(res => {
+          if (res.code == 200) {
+            this.$message.success("Deposit complete");
+          } else if (res.code == 504) {
+            this.$message.warning("Deposit failed");
+          }
+          this.dialogDeposit = false;
+          this.getRecord();
+        });
+      });
     }
   }
 };
