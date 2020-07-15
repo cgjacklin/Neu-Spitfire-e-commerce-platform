@@ -1,0 +1,38 @@
+###test getDictionary
+POST http://127.0.0.1:8088/dictionary/getDictionaries
+Content-Type: application/json
+
+{
+
+
+}
+
+###test add dictionary
+POST http://127.0.0.1:8088/dictionary/addDictionary
+Content-Type: application/json
+
+{
+"code_type": "aaa"
+
+}
+
+###test update dictionary
+POST http://127.0.0.1:8088/dictionary/updateDictionary
+Content-Type: application/json
+
+{
+  "cdm_id": "14",
+  "code_type": "bbb"
+
+}
+
+###test delete dictionary
+POST http://127.0.0.1:8088/dictionary/deleteDictionary
+Content-Type: application/json
+
+{
+  "cdm_id": "14"
+
+}
+
+###
