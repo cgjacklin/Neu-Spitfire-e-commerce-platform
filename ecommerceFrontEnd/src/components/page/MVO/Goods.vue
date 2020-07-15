@@ -357,17 +357,13 @@ export default {
     this.$post("brd/getBrand",{
       user_id: sessionStorage.getItem("user_id")
     }).then(res=>{
-      // console.log(res)
-      // console.log(res.data.length)
+
       let tmpBrands = [];
       for(let i = 0; i < res.data.length; i++){
-        // console.log(res.data[i].name_en);
         tmpBrands[i] = {value: res.data[i].brd_id, 
                       label: res.data[i].name_en}
       }
-      // console.log("DFD"+this.brand_options);
       this.brand_options = tmpBrands;
-      // console.log(this.brand_options)
     }),
     this.$post("/product/getProducts", {
         user_id: sessionStorage.getItem("user_id")
@@ -383,10 +379,11 @@ export default {
   },
   methods: {
     add(){
+      console.log(this.addGoodsForm)
+      this.addGoodsForm.brd_id="";
+      // this.addGoodsForm
       this.isAdd = true;
-      this.addGoodsForm = this.ori_form;
       this.drawer = true;
-
     },
 
     remove(row, index){
@@ -422,32 +419,34 @@ export default {
           this.isAdd = false;
           this.$post("/product/addProduct", {
             brd_id: this.addGoodsForm.brd_id,
-              retail_price: this.addGoodsForm.retail_price,
-              sku_cd: this.addGoodsForm.sku_cd,
-              title: this.addGoodsForm.title,
-              upc: this.addGoodsForm.upc,
-              ean: this.addGoodsForm.ean,
-              name_en: this.addGoodsForm.name_en,
-              ebay_description: this.addGoodsForm.ebay_description,
-              amazon_description: this.addGoodsForm.amazon_description,
-              key_words: this.addGoodsForm.key_words,
-              width: this.addGoodsForm.width,
-              height: this.addGoodsForm.height,
-              weight: this.addGoodsForm.weight,
-              length: this.addGoodsForm.length,
-              model: this.addGoodsForm.model,
-              replenishment_period: this.addGoodsForm.replenishment_period,
-              warranty_day: this.addGoodsForm.warranty_day,
-              remark: res.data,
-              user_id: sessionStorage.getItem("user_id")
+            retail_price: this.addGoodsForm.retail_price,
+            sku_cd: this.addGoodsForm.sku_cd,
+            title: this.addGoodsForm.title,
+            upc: this.addGoodsForm.upc,
+            ean: this.addGoodsForm.ean,
+            name_en: this.addGoodsForm.name_en,
+            ebay_description: this.addGoodsForm.ebay_description,
+            amazon_description: this.addGoodsForm.amazon_description,
+            key_words: this.addGoodsForm.key_words,
+            width: this.addGoodsForm.width,
+            height: this.addGoodsForm.height,
+            weight: this.addGoodsForm.weight,
+            length: this.addGoodsForm.length,
+            model: this.addGoodsForm.model,
+            replenishment_period: this.addGoodsForm.replenishment_period,
+            warranty_day: this.addGoodsForm.warranty_day,
+            remark: res.data,
+            user_id: sessionStorage.getItem("user_id")
         }).then(res => {
           if(res.code == 504){
             this.$message.warning(res.message);
+            this.$refs[formName].resetFields();
             return;
           }
           if(res.code == 200){
             this.$message.success(res.message);
             this.refresh();
+            this.$refs[formName].resetFields();
           }
         })
         }
@@ -456,23 +455,23 @@ export default {
             brd_id: this.addGoodsForm.brd_id,
             retail_price: this.addGoodsForm.retail_price,
             sku_cd: this.addGoodsForm.sku_cd,
-              title: this.addGoodsForm.title,
-              upc: this.addGoodsForm.upc,
-              ean: this.addGoodsForm.ean,
-              name_en: this.addGoodsForm.name_en,
-              ebay_description: this.addGoodsForm.ebay_description,
-              amazon_description: this.addGoodsForm.amazon_description,
-              key_words: this.addGoodsForm.key_words,
-              width: this.addGoodsForm.width,
-              height: this.addGoodsForm.height,
-              weight: this.addGoodsForm.weight,
-              length: this.addGoodsForm.length,
-              model: this.addGoodsForm.model,
-              replenishment_period: this.addGoodsForm.replenishment_period,
-              warranty_day: this.addGoodsForm.warranty_day,
-              remark: res.data,
-              user_id: sessionStorage.getItem("user_id"),
-              pro_id: this.addGoodsForm.pro_id
+            title: this.addGoodsForm.title,
+            upc: this.addGoodsForm.upc,
+            ean: this.addGoodsForm.ean,
+            name_en: this.addGoodsForm.name_en,
+            ebay_description: this.addGoodsForm.ebay_description,
+            amazon_description: this.addGoodsForm.amazon_description,
+            key_words: this.addGoodsForm.key_words,
+            width: this.addGoodsForm.width,
+            height: this.addGoodsForm.height,
+            weight: this.addGoodsForm.weight,
+            length: this.addGoodsForm.length,
+            model: this.addGoodsForm.model,
+            replenishment_period: this.addGoodsForm.replenishment_period,
+            warranty_day: this.addGoodsForm.warranty_day,
+            remark: res.data,
+            user_id: sessionStorage.getItem("user_id"),
+            pro_id: this.addGoodsForm.pro_id
           }).then(res => {
             if(res.code == 504){
               this.$message.warning(res.message);
@@ -491,10 +490,8 @@ export default {
     },
 
     submitForm(formName) {
-      // console.log(JSON.stringify(this.addGoodsForm));
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // console.log(this.addGoodsForm);
           if (this.count == 0) {
             this.$message.warning("Please upload goods picture");
             return;
@@ -516,6 +513,7 @@ export default {
       this.drawer = true;
       this.$nextTick(function(){
           this.addGoodsForm = JSON.parse(JSON.stringify(row));
+          
       })
 
       
@@ -536,15 +534,11 @@ export default {
       this.$post("/product/getProducts", {
           user_id: sessionStorage.getItem("user_id")
       }).then(res => {
-        //处理response
-        // console.log(res)
         if (res.code == 504) {
           this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          // Vue.set()
           this.tableData = res.data
         }
       });
