@@ -188,6 +188,7 @@ public class ProductServiceImpl implements ProductService {
         product.setLast_update_date(date);
         product.setSts_cd("Not in warehouse");
 
+
         product.setRemark(productvo.getRemark());
 
         insert(product);
@@ -231,7 +232,9 @@ public class ProductServiceImpl implements ProductService {
         packageInfo.setLength(productvo.getLength());
         packageInfo.setWidth(productvo.getWidth());
 
-        product.setRemark(productvo.getRemark());
+        if(productvo.getRemark()!=null){
+            product.setRemark(productvo.getRemark());
+        }
         update(product);
         packageInfoService.update(packageInfo);
         return 1;
