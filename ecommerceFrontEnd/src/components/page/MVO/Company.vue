@@ -290,7 +290,6 @@ for (var i = 0; i < res.data.length; i++) {
 
 handleSuccess(res){
 this.remake = res.data;
-console.log(this.remake)
 },
     remove(row){
       this.$post("/brd/deleteBrand",{
@@ -341,7 +340,7 @@ console.log(this.remake)
       this.$post("/brd/addBrand",{
           user_id: sessionStorage.getItem("user_id"),
           name_en:this.brandname,
-          remark:"https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
+          remark:this.remake
           }).then(res => {
             if(res.code==200){
                this.$message.success("Successfully add!");
@@ -367,7 +366,7 @@ submitUpdate() {
           brd_id: this.brd_id,
           user_id: sessionStorage.getItem("user_id"),
           name_en:this.brandname,
-          remark:"https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
+          remark:this.remake
           }).then(res => {
             if(res.code==200){
                this.$message.success("Successfully update!");
