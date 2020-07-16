@@ -85,7 +85,8 @@ public class BrandController extends BaseController {
     }
 
     @PostMapping("/deleteBrand")
-    public BaseModel deleteBrand(@RequestBody int brd_id) {
+    public BaseModel deleteBrand(@RequestBody Brand brd) {
+        int brd_id = brd.getBrd_id();
         int i = brandService.delete(brd_id);
         BaseModel result = new BaseModel();
         if(i!=1){
