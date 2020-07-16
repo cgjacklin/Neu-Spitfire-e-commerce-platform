@@ -1,6 +1,8 @@
 package com.neusoft.bsp.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.ProductVO;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -87,6 +90,20 @@ public class ProductController extends BaseController {
         }else{
             response.setFailure();
         }
+        return response;
+    }
+
+    @PostMapping("/deleteProduts")
+    public BaseModel deleteProducrs(@RequestBody Map<String, String> products){
+        BaseModel response = new BaseModel();
+        JSONArray jsonArray = JSONArray.parseArray(products.get("products"));
+        for(int i=0; i<jsonArray.size(); i++){
+            JSONObject obj = jsonArray.getJSONObject(i);
+            int pro_id = Integer.parseInt(obj.getString("pro_id"));
+            Product product = new Product(pro_id);
+            productService.deleteProduct(product);
+        }
+        response.setSuccess();
         return response;
     }
 

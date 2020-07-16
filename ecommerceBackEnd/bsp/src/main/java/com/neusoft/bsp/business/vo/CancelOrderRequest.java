@@ -12,6 +12,14 @@ public class CancelOrderRequest extends OrderRequest{
                 '}';
     }
 
+    public CancelOrderRequest(){}
+
+    public CancelOrderRequest(int user_id, int or_id){}
+
+    public CancelOrderRequest(int or_id) {
+        this.or_id = or_id;
+    }
+
     public int getUser_id() {
         return user_id;
     }

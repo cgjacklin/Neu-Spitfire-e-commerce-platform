@@ -96,6 +96,10 @@ public class Product implements BaseEntity<Integer> {
         this.call_cnt = call_cnt;
     }
 
+    public Product(int pro_id){
+        this.pro_id = pro_id;
+    }
+
     public Product(ProductVO productVO) {
         this.pro_id = productVO.getPro_id();
         this.sku_cd = productVO.getSku_cd();

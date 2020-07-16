@@ -1,5 +1,6 @@
 package com.neusoft.bsp.business.order.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.CancelOrderRequest;
 import com.neusoft.bsp.business.vo.OrderRequest;
@@ -29,4 +30,6 @@ public interface OrderService {
     int cancelOrder(CancelOrderRequest cancelOrderRequest);
 
     int payOrder(PayOrderRequest order);
+
+    int paySelectedOrders(Map<String, String> map);
 }
