@@ -23,6 +23,9 @@ public class Brand implements BaseEntity<Integer> {
         this.remark = remark;
     }
 
+    public Brand() {
+    }
+
     public Brand(int brd_id, int man_id, String name_en, String name_cn, String created_by, Date creation_date, String last_update_by, Date last_update_date, int call_cnt, String remark, String sts_cd) {
         this.brd_id = brd_id;
         this.man_id = man_id;
