@@ -40,7 +40,11 @@
     <el-dialog title="Add new store" :visible.sync="dialogVisible" width="25.5%">
       <span>
         Store Name：
-        <el-input style="width:20rem" v-model="store_name" placeholder="Please enter the store name."></el-input>
+        <el-input
+          style="width:20rem"
+          v-model="store_name"
+          placeholder="Please enter the store name."
+        ></el-input>
       </span>
       <br />
       <br />
@@ -85,47 +89,43 @@ export default {
       eList: []
     };
   },
-  mounted(){
+  mounted() {
     this.getStoreList();
   },
   methods: {
-    getStoreList(){
-      this.$post("/str/getStoreByUserID",{
-            user_id: sessionStorage.getItem("user_id"),
-          }).then(res => {
-            if (res.code == 504) {
-              this.$message.warning(res.message);
-              return;
-            }
-            if (res.code == 200) {
-              this.$message.success("Successfully get store List!");
-              for(let i=0;i<res.data.length;i++){
-                if(res.data[i].plataeform_type == 1){
-                  this.aList.push(res.data[i]);
-                }
-                if(res.data[i].plataeform_type == 2){
-                  this.eList.push(res.data[i]);
-                }
-              }
-            }
-          })
+    getStoreList() {
+      this.$post("/str/getStoreByUserID", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$message.success("Successfully get store List!");
+          console.log(res.data);
+          this.aList = res.data.filter(e => e.plataeform_type == 1);
+
+          this.eList = res.data.filter(e => e.plataeform_type == 2);
+        }
+      });
     },
     add() {
-      this.$post("/str/addStore",{
-            user_id: sessionStorage.getItem("user_id"),
-            plataeform_type: this.plataeform_type,
-            store_name: this.store_name,
-            store_sts_cd: this.store_sts_cd,
-          }).then(res => {
-            if (res.code == 504) {
-              this.$message.warning(res.message);
-              return;
-            }
-            if (res.code == 200) {
-              this.$message.success("Successfully added new store!");
-              this.getStoreList();
-            }
-          })
+      this.$post("/str/addStore", {
+        user_id: sessionStorage.getItem("user_id"),
+        plataeform_type: this.plataeform_type,
+        store_name: this.store_name,
+        store_sts_cd: this.store_sts_cd
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Successfully added new store!");
+          this.getStoreList();
+        }
+      });
 
       this.dialogVisible = false;
     }
