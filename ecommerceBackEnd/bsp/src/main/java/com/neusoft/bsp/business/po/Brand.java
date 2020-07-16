@@ -18,6 +18,8 @@ public class Brand implements BaseEntity<Integer> {
     String remark;
     String sts_cd;
 
+    public Brand(){}
+
     public Brand(String name_en,String remark) {
         this.name_en = name_en;
         this.remark = remark;
@@ -36,8 +38,6 @@ public class Brand implements BaseEntity<Integer> {
         this.remark = remark;
         this.sts_cd = sts_cd;
     }
-
-    public Brand(){}
 
     public int getBrd_id() {
         return brd_id;
