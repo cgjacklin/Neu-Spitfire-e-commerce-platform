@@ -19,7 +19,12 @@
     <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true; isAdd = true">Add</el-button>
 
     <el-divider></el-divider>
-    <el-table :data="tableData" style="width: 100%" class="table">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      class="table"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="code_type" label="Dictionary type"></el-table-column>
       <el-table-column prop="description" label="Description"></el-table-column>
@@ -32,7 +37,8 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <br />
+    <el-button type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-dialog title="Data dictionary info" :visible.sync="dialogVisible" width="30%">
       <el-form :model="dataForm" ref="dataForm" label-width="120px">
         <el-form-item
@@ -86,6 +92,7 @@ export default {
       table: [],
       isAdd: false,
       opRow: "",
+      multipleSelection: [],
       dataForm: {
         code_type: "",
         description: "",
@@ -114,6 +121,9 @@ export default {
       this.tableData = this.table.filter(e =>
         e.code_type.match(this.search_name)
       );
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     refresh() {
       this.$post("/dictionary/getDictionaries", {}).then(res => {
@@ -202,6 +212,22 @@ export default {
         this.dataForm.code_val = row.code_val;
       });
     },
+    removeMore() {
+      this.multipleSelection.forEach(element => {
+        this.$post("/dictionary/deleteDictionary", {
+          cdm_id: element.cdm_id
+        }).then(res => {
+          if (res.code == 504) {
+            this.$message.warning(res.message);
+            return;
+          }
+          if (res.code == 200) {
+            this.refresh();
+          }
+        });
+      });
+      this.$message.success("Delete success");
+    },
     remove(row, index) {
       this.$post("/dictionary/deleteDictionary", {
         cdm_id: row.cdm_id
@@ -211,9 +237,8 @@ export default {
           return;
         }
         if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
           this.$message.success(res.message);
-          // this.tableData.splice(index);
+
           this.refresh();
         }
       });
