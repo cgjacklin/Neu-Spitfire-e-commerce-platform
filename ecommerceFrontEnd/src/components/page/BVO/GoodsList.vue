@@ -141,6 +141,19 @@ export default {
     };
   },
   mounted() {
+      this.$post("/str/getStoreByUserID", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          console.log(res.data);
+          this.Astores = res.data.filter(e => e.plataeform_type == 1).map(e => e.store_name);
+          this.Estores = res.data.filter(e => e.plataeform_type == 2).map(e => e.store_name);
+        }
+      });
     this.$post("/product/getProductOnShelf", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {

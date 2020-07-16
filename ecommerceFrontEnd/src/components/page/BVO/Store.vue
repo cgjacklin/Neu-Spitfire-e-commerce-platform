@@ -102,7 +102,6 @@ export default {
           return;
         }
         if (res.code == 200) {
-          // this.$message.success("Successfully get store List!");
           console.log(res.data);
           this.aList = res.data.filter(e => e.plataeform_type == 1);
 
