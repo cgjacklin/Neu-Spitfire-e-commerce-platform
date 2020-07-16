@@ -58,18 +58,14 @@
           <el-table-column prop="name" label="Brand Name"></el-table-column>
           <!-- <el-table-column prop="logo" label="Brand Logo"></el-table-column> -->
           <el-table-column prop="logo" label="Brand Logo">
-        <template slot-scope="scope">
-          <img :src="scope.row.logo" width="60" height="50" />
-        </template>
-      </el-table-column>
+            <template slot-scope="scope">
+              <img :src="scope.row.logo" width="60" height="50" />
+            </template>
+          </el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
-              <el-button
-                type="danger"
-                size="mini"
-                @click="change(scope.$index, scope.row)"
-              >change</el-button>
-              <el-button type="danger" size="mini" @click="remove(scope.row)">delete</el-button>
+              <el-button type="success" size="mini" icon="el-icon-edit" @click="change(scope.$index, scope.row)">edit</el-button>
+              <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(scope.row)">delete</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -90,9 +86,9 @@
         ref="upload"
         drag
         action="http://localhost:8088/product/uploadPicture"
-        :name=fileName
+        :name="fileName"
         :file-list="fileList"
-         :on-success="handleSuccess"
+        :on-success="handleSuccess"
         :on-change="fileChange"
         :auto-upload="false"
         list-type="picture"
@@ -114,8 +110,7 @@
       </span>
     </el-dialog>
 
-
-<el-dialog title="Update Brand information" :visible.sync="dialogVisible1" width="23%">
+    <el-dialog title="Update Brand information" :visible.sync="dialogVisible1" width="23%">
       <span>
         Brand Name：
         <el-input style="width:250px" v-model="brandname" placeholder></el-input>
@@ -129,9 +124,9 @@
         ref="upload"
         drag
         action="http://localhost:8088/product/uploadPicture"
-        :name=fileName
+        :name="fileName"
         :file-list="fileList"
-         :on-success="handleSuccess"
+        :on-success="handleSuccess"
         :on-change="fileChange"
         :auto-upload="false"
         list-type="picture"
@@ -152,7 +147,6 @@
         <el-button type="danger" @click="submitUpdate">sure</el-button>
       </span>
     </el-dialog>
-
 
     <el-drawer
       title="drawer"
@@ -225,15 +219,16 @@ export default {
       emptyShow: true,
       mainShow: false,
       drawer: false,
-      brd_id:"",
+      brd_id: "",
       man_id: "",
       name_en: "",
       description: "",
-      remake:"",
+      remake: "",
       fileName: "fileName",
       gmc_report_type: "",
       gmc_report_url: "",
       tableData: [],
+      table:[],
       addComForm: {
         name_en: "",
         description: "",
@@ -242,66 +237,70 @@ export default {
       }
     };
   },
-  mounted(){
+  mounted() {
     this.checkCompany();
-    
   },
   methods: {
-    checkCompany(){  //查詢用戶是否有公司信息
-      this.$post("/mvo/getManufacturerByUserID",{
-            user_id: sessionStorage.getItem("user_id"),
-          }).then(res => {
-            if (res.code == 504) {
-              this.$message.warning(res.message);
-              this.emptyShow = true;
-              this.mainShow = false;
-              return;
-            }
-            if (res.code == 200) {
-              this.$message.success("Successfully get company info!");
-              this.man_id = res.data.man_id;
-              this.name_en = res.data.name_en;
-              this.description = res.data.description;
-              this.gmc_report_type = res.data.gmc_report_type;
-              this.gmc_report_url = res.data.gmc_report_url;
-              this.emptyShow = false;
-              this.mainShow = true;   
-              this.getBrand();
-            }
-          })
+    checkCompany() {
+      //查詢用戶是否有公司信息
+      this.$post("/mvo/getManufacturerByUserID", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          this.emptyShow = true;
+          this.mainShow = false;
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Successfully get company info!");
+          this.man_id = res.data.man_id;
+          this.name_en = res.data.name_en;
+          this.description = res.data.description;
+          this.gmc_report_type = res.data.gmc_report_type;
+          this.gmc_report_url = res.data.gmc_report_url;
+          this.emptyShow = false;
+          this.mainShow = true;
+          this.getBrand();
+        }
+      });
     },
-    getBrand(){
-      this.tableData =[];
-    this.$post("/brd/getBrand",{
-            user_id: sessionStorage.getItem("user_id"),
-          }).then(res => {
-for (var i = 0; i < res.data.length; i++) {
-  this.tableData.push(
-    {
-      brdid:res.data[i].brd_id,
-      name:res.data[i].name_en,
-      logo:res.data[i].remark
-    }
-  )
-}
-})
+    getBrand() {
+      this.tableData = [];
+      this.table = [];
+      this.$post("/brd/getBrand", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        for (var i = 0; i < res.data.length; i++) {
+          this.tableData.push({
+            brdid: res.data[i].brd_id,
+            name: res.data[i].name_en,
+            logo: res.data[i].remark
+          });
+          this.table.push({
+            brdid: res.data[i].brd_id,
+            name: res.data[i].name_en,
+            logo: res.data[i].remark
+          });
+        }
+      });
     },
-handleSuccess(res){
-this.remake = res.data;
-},
-    remove(row){
-      this.$post("/brd/deleteBrand",{
-            brd_id:row.brdid
-          }).then(res => {
-            if(res.code==200){
-               this.$message.success("Successfully delete!");
-            }else{
-               this.$message.warning("Delete failed");
-            }
-            this.getBrand();
-          })
+    handleSuccess(res) {
+      this.remake = res.data;
     },
-    diaCancel(){
+    remove(row) {
+      this.$post("/brd/deleteBrand", {
+        brd_id: row.brdid
+      }).then(res => {
+        if (res.code == 200) {
+          this.$message.success("Successfully delete!");
+        } else {
+          this.$message.warning("Delete failed");
+        }
+        this.getBrand();
+      });
+    },
+    diaCancel() {
       this.dialogVisible = false;
       this.dialogVisible1 = false;
       this.brandname = "";
@@ -313,7 +312,7 @@ this.remake = res.data;
       this.dialogVisible = true;
       //通过改变filelist展示图片
     },
-    
+
     change(index, row) {
       this.brd_id = row.brdid;
       this.brandname = row.name;
@@ -333,21 +332,21 @@ this.remake = res.data;
       //   return;
       // }
       this.$refs.upload.submit();
-      this.$post("/brd/addBrand",{
-          user_id: sessionStorage.getItem("user_id"),
-          name_en:this.brandname,
-          remark:this.remake
-          }).then(res => {
-            if(res.code==200){
-               this.$message.success("Successfully add!");
-            }else{
-               this.$message.warning("Add failed");
-            }
-            this.getBrand();
-          })
+      this.$post("/brd/addBrand", {
+        user_id: sessionStorage.getItem("user_id"),
+        name_en: this.brandname,
+        remark: this.remake
+      }).then(res => {
+        if (res.code == 200) {
+          this.$message.success("Successfully add!");
+        } else {
+          this.$message.warning("Add failed");
+        }
+        this.getBrand();
+      });
       this.dialogVisible = false;
     },
-submitUpdate() {
+    submitUpdate() {
       if (this.brandname == "") {
         this.$message.warning("The brand name cannot be empty");
         return;
@@ -357,60 +356,65 @@ submitUpdate() {
       //   return;
       // }
       this.$refs.upload.submit();
-      this.$post("/brd/updateBrand",{
-          brd_id: this.brd_id,
-          user_id: sessionStorage.getItem("user_id"),
-          name_en:this.brandname,
-          remark:this.remake
-          }).then(res => {
-            if(res.code==200){
-               this.$message.success("Successfully update!");
-            }else{
-               this.$message.warning("Update failed");
-            }
-            this.getBrand();
-          })
+      this.$post("/brd/updateBrand", {
+        brd_id: this.brd_id,
+        user_id: sessionStorage.getItem("user_id"),
+        name_en: this.brandname,
+        remark: this.remake
+      }).then(res => {
+        if (res.code == 200) {
+          this.$message.success("Successfully update!");
+        } else {
+          this.$message.warning("Update failed");
+        }
+        this.getBrand();
+      });
       this.dialogVisible1 = false;
     },
-    search() {},
-    submitForm(formName) {    //增加及修改company info
+    search() {
+      this.tableData = this.table.filter(e =>
+        e.name.match(this.search_name)
+      );
+    },
+    submitForm(formName) {
+      //增加及修改company info
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(!this.mainShow){
-            this.$post("/mvo/addManufacturer",{
-            user_id: sessionStorage.getItem("user_id"),
-            name_en: this.addComForm.name_en,
-            gmc_report_type: this.addComForm.gmc_report_type,
-            gmc_report_url: this.addComForm.gmc_report_url,
-            description: this.addComForm.description
-          }).then(res => {
-            if (res.code == 504) {
-              this.$message.warning(res.message);
-              return;
-            }
-            if (res.code == 200) {
-              this.$message.success("Successfully added new company!");
-              this.checkCompany();
-            }
-          })
+          if (!this.mainShow) {
+            this.$post("/mvo/addManufacturer", {
+              user_id: sessionStorage.getItem("user_id"),
+              name_en: this.addComForm.name_en,
+              gmc_report_type: this.addComForm.gmc_report_type,
+              gmc_report_url: this.addComForm.gmc_report_url,
+              description: this.addComForm.description
+            }).then(res => {
+              if (res.code == 504) {
+                this.$message.warning(res.message);
+                return;
+              }
+              if (res.code == 200) {
+                this.$message.success("Successfully added new company!");
+                this.checkCompany();
+              }
+            });
           }
-          if(this.mainShow){
-            this.$post("/mvo/updateManufacturer",{
-            man_id: this.man_id,
-            name_en: this.addComForm.name_en,
-            gmc_report_type: this.addComForm.gmc_report_type,
-            gmc_report_url: this.addComForm.gmc_report_url,
-            description: this.addComForm.description
-          }).then(res => {
-            if (res.code == 504) {
-              this.$message.warning(res.message);
-              return;
-            }
-            if (res.code == 200) {
-              this.$message.success("Successfully updated company info!");
-              this.checkCompany();
-            }
-          })
+          if (this.mainShow) {
+            this.$post("/mvo/updateManufacturer", {
+              man_id: this.man_id,
+              name_en: this.addComForm.name_en,
+              gmc_report_type: this.addComForm.gmc_report_type,
+              gmc_report_url: this.addComForm.gmc_report_url,
+              description: this.addComForm.description
+            }).then(res => {
+              if (res.code == 504) {
+                this.$message.warning(res.message);
+                return;
+              }
+              if (res.code == 200) {
+                this.$message.success("Successfully updated company info!");
+                this.checkCompany();
+              }
+            });
           }
           // console.log(this.addComForm);
           this.drawer = false;
