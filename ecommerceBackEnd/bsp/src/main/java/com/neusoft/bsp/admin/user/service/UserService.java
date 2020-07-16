@@ -46,4 +46,6 @@ public interface UserService {
 
     User login(User user);
 
+    int updateBasicInfo(User user);
+
 }

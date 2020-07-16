@@ -82,32 +82,48 @@ export default {
     };
   },
   mounted() {
-    this.cardInfo = [
-      {
-        name: "Role",
-        num: "admin",
-        img: this.userImg,
-        class: "img-class1"
-      },
-      {
-        name: "Goods",
-        num: "200",
-        img: this.goodsImg,
-        class: "img-class2"
-      },
-      {
-        name: "Orders",
-        num: "12350",
-        img: this.orderImg,
-        class: "img-class1"
-      },
-      {
-        name: "Wallet",
-        num: "100$",
-        img: this.walletImg,
-        class: "img-class2"
-      }
+    this.$post("/mainPage/getInfo", {
+        user_id:sessionStorage.getItem("user_id")
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          this.cardInfo = [
+          {
+            name: "Role",
+            num: res.data.role,
+            img: this.userImg,
+            class: "img-class1"
+          },
+          {
+            name: "Goods",
+            num: res.data.goods,
+            img: this.goodsImg,
+            class: "img-class2"
+          },
+          {
+            name: "Orders",
+            num: res.data.orders,
+            img: this.orderImg,
+            class: "img-class1"
+          },
+          {
+            name: "Wallet",
+            num: "$"+res.data.wallet,
+            img: this.walletImg,
+            class: "img-class2"
+          }
     ];
+        }
+      });
+
+
+    
   },
   methods: {
     card() {}

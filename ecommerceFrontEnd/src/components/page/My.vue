@@ -76,11 +76,79 @@ export default {
       }
     };
   },
+  mounted(){
+    this.$post("/mainPage/getUserBasicInfo", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          if(res.data.role_id=="0"){this.role = "Admin";}
+          if(res.data.role_id=="1"){this.role = "Brand-seller";}
+          if(res.data.role_id=="2"){this.role = "Borrow-seller";}
+          this.username = res.data.username;
+          this.nickname = res.data.name;
+          this.phone = res.data.phone;
+          this.email = res.data.email;
+          // this.infoForm.nickname = res.data.name;
+          // this.infoForm.phone = res.data.phone;
+          // this.infoForm.email = res.data.email;
+        }
+      });
+  },
   methods: {
+    refresh(){
+      this.$post("/mainPage/getUserBasicInfo", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          if(res.data.role_id=="0"){this.role = "Admin";}
+          if(res.data.role_id=="1"){this.role = "Brand-seller";}
+          if(res.data.role_id=="2"){this.role = "Borrow-seller";}
+          this.username = res.data.username;
+          this.nickname = res.data.name;
+          this.phone = res.data.phone;
+          this.email = res.data.email;
+          // this.infoForm.nickname = res.data.name;
+          // this.infoForm.phone = res.data.phone;
+          // this.infoForm.email = res.data.email;
+        }
+      });
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.infoForm);
+          this.$post("/mainPage/updateUserBasicInfo", {
+              user_id: sessionStorage.getItem("user_id"),
+              name: this.infoForm.nickname,
+              phone: this.infoForm.phone,
+              email: this.infoForm.email
+          }).then(res => {
+            //处理response
+            console.log(res)
+            if (res.code == 504) {
+              this.$message.warning(res.message);
+               this.$refs[formName].resetFields()
+              return;
+            }
+            if (res.code == 200) {
+              this.$message.success(res.message);
+              this.$refs[formName].resetFields()
+              this.refresh();
+            }
+       });
         } else {
           return false;
         }

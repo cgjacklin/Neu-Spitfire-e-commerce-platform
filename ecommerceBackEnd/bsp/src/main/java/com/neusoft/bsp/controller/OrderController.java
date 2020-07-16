@@ -1,5 +1,7 @@
 package com.neusoft.bsp.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.neusoft.bsp.business.order.service.OrderService;
 import com.neusoft.bsp.business.po.Order;
 import com.neusoft.bsp.business.vo.CancelOrderRequest;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -34,6 +37,21 @@ public class OrderController extends BaseController {
         }
 
         return response;
+    }
+
+    @PostMapping("/test")
+    public void test(@RequestBody Map<String, String> orders){
+        JSONArray jsonArray = JSONArray.parseArray(orders.get("orders"));
+        for(int i=0; i<jsonArray.size(); i++){
+            JSONObject obj = jsonArray.getJSONObject(i);
+            int or_id = Integer.parseInt(obj.getString("or_id"));
+            String tracking_company = obj.getString("tracking_company");
+            
+        }
+
+//        for(Order order: orders){
+//            System.out.println(order.getTracking_company());
+//        }
     }
 
     @PostMapping("/deliverOrder")

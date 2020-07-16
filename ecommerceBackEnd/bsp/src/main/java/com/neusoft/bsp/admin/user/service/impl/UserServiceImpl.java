@@ -120,6 +120,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int updateBasicInfo(User user) {
+        return userMapper.updateBasicInfo(user);
+    }
+
+    @Override
     public User getByUserName(String userName) {
         return userMapper.getByUsername(userName);
     }

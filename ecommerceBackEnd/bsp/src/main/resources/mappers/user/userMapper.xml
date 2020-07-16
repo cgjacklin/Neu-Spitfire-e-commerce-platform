@@ -23,6 +23,11 @@
           ,number = #{number},phone = #{phone} ,man_buyer_id = #{man_buyer_id} where user_id = #{user_id}
     </update>
 
+    <update id="updateBasicInfo" parameterType="User">
+        update sys_user set name = #{name}, email = #{email}
+          ,phone = #{phone} where user_id = #{user_id}
+    </update>
+
     <delete id="delete" parameterType="java.lang.Integer">
         delete from sys_user where user_id = #{user_id}
     </delete>

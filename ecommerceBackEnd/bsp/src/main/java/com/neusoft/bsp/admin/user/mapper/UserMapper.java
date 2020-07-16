@@ -15,4 +15,6 @@ public interface UserMapper extends BaseMapper<Integer, User> {
     public User getByUsername(String username);
     @Cacheable()
     User getBuyerOrSeller(Map<String, Object> map);
+    @Cacheable()
+    int updateBasicInfo(User user);
 }

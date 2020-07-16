@@ -17,6 +17,7 @@
       ></el-input>
     </span>
     <el-button type="danger" icon="el-icon-search"></el-button>
+    <el-button type="danger" size="small" @click="operateSelected">Ship Selected</el-button>
 
     <el-tabs v-model="activeName" @tab-click="handleClick" class="order-tab">
       <el-tab-pane label="Awaiting Payment" name="first">
@@ -30,7 +31,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Awaiting Shipment" name="second">
-        <el-table :data="tableData" style="width: 100%" class="table">
+        <el-table ref="multipleTable" @selection-change="handleSelectionChange" :data="tableData" style="width: 100%" class="table">
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="title" label="Title"></el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -110,6 +111,7 @@ export default {
   data() {
     return {
       tableData: [],
+      selections: [],
       dialogVisible: false,
       search_title: "",
       activeName: "first",
@@ -139,6 +141,31 @@ export default {
       });
   },
   methods: {
+    operateSelected(){
+      this.dialogVisible = true;
+      
+      console.log(JSON.stringify(this.selections))
+      this.$post("/order/test", {
+        orders: JSON.stringify(this.selections)
+      }).then(res => {
+        //处理response
+        console.log(res)
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          // this.$root.user_id=res.data.user_id;
+          this.tableData = res.data
+        }
+      });
+    },
+    handleSelectionChange(val){
+      
+      // console.log(val);
+      this.selections = val;
+      console.log(this.selections)
+    },
     cancelForm(formName){
       this.$refs[formName].resetFields();
       this.dialogVisible = false;
