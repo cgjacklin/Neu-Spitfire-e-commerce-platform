@@ -14,7 +14,7 @@
     <el-button type="danger" icon="el-icon-search"></el-button>
     <el-divider></el-divider>
     <el-table :data="tableData" style="width: 100%" class="table">
-      <el-table-column type="selection" width="50"></el-table-column> 
+      <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="transaction_audit_id" label="Transaction audit id"></el-table-column>
       <el-table-column prop="user_id" label="User id"></el-table-column>
       <el-table-column prop="name" label="Account name"></el-table-column>
@@ -75,22 +75,22 @@ export default {
       dialogVisible: false,
       account: "",
       tableData: [],
-      tableData1:[],
+      table:[],
+      tableData1: [],
       reason: ""
     };
   },
 
   mounted() {
-     this.$post("/wal/getroleid", {
-        user_id: sessionStorage.getItem("user_id")
-      }).then(res => {
-    if(res.message=="0"){
-this.getAudit();
-    }else{
-      this.$message.warning("Permission denied");
-    } 
+    this.$post("/wal/getroleid", {
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res => {
+      if (res.message == "0") {
+        this.getAudit();
+      } else {
+        this.$message.warning("Permission denied");
+      }
     });
-    
   },
   methods: {
     getAudit() {
@@ -115,16 +115,27 @@ this.getAudit();
               ty = "Refund";
             }
             var st;
-              if (res.data.WalletTransactionAudit[i].status == 1) {
+            if (res.data.WalletTransactionAudit[i].status == 1) {
               st = "Applying";
             } else if (res.data.WalletTransactionAudit[i].status == 2) {
               st = "Completed";
             } else if (res.data.WalletTransactionAudit[i].status == 0) {
               st = "Failed";
-            } 
+            }
             this.tableData.push({
-              user_id:res.data.WalletTransactionAudit[i].buyer_id,
-              transaction_audit_id:res.data.WalletTransactionAudit[i].transaction_audit_id,
+              user_id: res.data.WalletTransactionAudit[i].buyer_id,
+              transaction_audit_id:
+                res.data.WalletTransactionAudit[i].transaction_audit_id,
+              name: res.data.name[i],
+              type: ty,
+              amount: res.data.WalletTransactionAudit[i].operate_money,
+              time: date,
+              state: st
+            });
+            this.table.push({
+              user_id: res.data.WalletTransactionAudit[i].buyer_id,
+              transaction_audit_id:
+                res.data.WalletTransactionAudit[i].transaction_audit_id,
               name: res.data.name[i],
               type: ty,
               amount: res.data.WalletTransactionAudit[i].operate_money,
@@ -148,21 +159,21 @@ this.getAudit();
       //   this.$message.warning("Please upload the order img");
       //   return;
       // }
-      console.log(this.tableData1)
-      if(this.tableData1.state == "Applying"){
-         this.$post("/wal/adminAudit", {
-        admin_id: sessionStorage.getItem("user_id"),
-        user_id:this.tableData1.user_id,
-        transaction_audit_id:this.tableData1.transaction_audit_id,
-        status:0
-      }).then(res => {
-          if(res.code ==200){
+      console.log(this.tableData1);
+      if (this.tableData1.state == "Applying") {
+        this.$post("/wal/adminAudit", {
+          admin_id: sessionStorage.getItem("user_id"),
+          user_id: this.tableData1.user_id,
+          transaction_audit_id: this.tableData1.transaction_audit_id,
+          status: 0
+        }).then(res => {
+          if (res.code == 200) {
             this.$message.success("Successfully refuse!");
             this.getAudit();
           }
-      })
-      }else{
-         this.$message.warning("Has been dealt with");
+        });
+      } else {
+        this.$message.warning("Has been dealt with");
       }
 
       this.dialogVisible = false;
@@ -173,22 +184,26 @@ this.getAudit();
       this.reason = "";
       this.fileList = [];
     },
-    search() {},
+    search() {
+      this.tableData = this.table.filter(e =>
+        e.name.match(this.account)
+      );
+    },
     pass(row) {
-      if(row.state == "Applying"){
-         this.$post("/wal/adminAudit", {
-        admin_id: sessionStorage.getItem("user_id"),
-        user_id:row.user_id,
-        transaction_audit_id:row.transaction_audit_id,
-        status:2
-      }).then(res => {
-          if(res.code ==200){
+      if (row.state == "Applying") {
+        this.$post("/wal/adminAudit", {
+          admin_id: sessionStorage.getItem("user_id"),
+          user_id: row.user_id,
+          transaction_audit_id: row.transaction_audit_id,
+          status: 2
+        }).then(res => {
+          if (res.code == 200) {
             this.$message.success("Successfully pass!");
             this.getAudit();
           }
-      })
-      }else{
-         this.$message.warning("Has been dealt with");
+        });
+      } else {
+        this.$message.warning("Has been dealt with");
       }
     },
     refuse(row) {
