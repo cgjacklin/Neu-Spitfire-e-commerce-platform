@@ -14,25 +14,19 @@
     <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true; isAdd=true">Add</el-button>
 
     <el-divider></el-divider>
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      class="table"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table :data="tableData" style="width: 100%" class="table">
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="param_cd" label="Primary key"></el-table-column>
       <el-table-column prop="param_value" label="Parameter Value"></el-table-column>
       <el-table-column prop="description" label="Description"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
-          <el-button type="success" icon="el-icon-edit" size="mini" @click="edit(scope.row)">Edit</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(scope.row, scope.$index)">Delete</el-button>
+          <el-button type="danger" size="mini" @click="edit(scope.row)">Edit</el-button>
+          <el-button type="danger" size="mini" @click="remove(scope.row, scope.$index)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <br />
-    <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
+
     <el-dialog title="Parameter info" :visible.sync="dialogVisible" width="30%">
       <el-form :model="paramForm" ref="paramForm" label-width="130px">
         <el-form-item
@@ -76,8 +70,7 @@ export default {
       isAdd: false,
       search_name: "",
       tableData: [],
-      multipleSelection: [],
-      table: [],
+      table:[],
       opRow: "",
       opIndex: "",
       paramForm: {
@@ -98,18 +91,13 @@ export default {
       if (res.code == 200) {
         // this.$root.user_id=res.data.user_id;
         this.tableData = res.data;
-        this.table = res.data;
+      this.table = res.data;
       }
     });
   },
   methods: {
-    search() {
-      this.tableData = this.table.filter(e =>
-        e.param_cd.match(this.search_name)
-      );
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    search(){
+      this.tableData = this.table.filter(e => e.param_cd.match(this.search_name));
     },
     refresh() {
       this.$post("/parameter/getParameters", {}).then(res => {
@@ -153,7 +141,6 @@ export default {
 
             this.dialogVisible = false;
             this.$refs[formName].resetFields();
-            return;
           }
           if (this.isAdd) {
             this.isAdd = false;
@@ -176,7 +163,6 @@ export default {
 
             this.dialogVisible = false;
             this.$refs[formName].resetFields();
-            return;
           }
         } else {
           return false;
@@ -196,22 +182,6 @@ export default {
         this.paramForm.param_value = row.param_value;
       });
     },
-    removeMore() {
-      this.multipleSelection.forEach(element => {
-        this.$post("/parameter/deleteParameter", {
-          par_id: element.par_id
-        }).then(res => {
-          if (res.code == 504) {
-            this.$message.warning(res.message);
-            return;
-          }
-          if (res.code == 200) {
-            this.refresh();
-          }
-        });
-      });
-      this.$message.success("Delete success");
-    },
     remove(row, index) {
       this.$post("/parameter/deleteParameter", {
         par_id: row.par_id
@@ -222,6 +192,7 @@ export default {
         }
         if (res.code == 200) {
           this.$message.success(res.message);
+          // this.tableData.splice(index,1);
           this.refresh();
         }
       });
