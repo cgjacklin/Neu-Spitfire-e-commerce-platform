@@ -14,7 +14,12 @@
     <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true; isAdd=true">Add</el-button>
 
     <el-divider></el-divider>
-    <el-table :data="tableData" style="width: 100%" class="table">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      class="table"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="param_cd" label="Primary key"></el-table-column>
       <el-table-column prop="param_value" label="Parameter Value"></el-table-column>
@@ -26,7 +31,8 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <br />
+    <el-button type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-dialog title="Parameter info" :visible.sync="dialogVisible" width="30%">
       <el-form :model="paramForm" ref="paramForm" label-width="130px">
         <el-form-item
@@ -70,7 +76,8 @@ export default {
       isAdd: false,
       search_name: "",
       tableData: [],
-      table:[],
+      multipleSelection: [],
+      table: [],
       opRow: "",
       opIndex: "",
       paramForm: {
@@ -91,18 +98,22 @@ export default {
       if (res.code == 200) {
         // this.$root.user_id=res.data.user_id;
         this.tableData = res.data;
-      this.table = res.data;
+        this.table = res.data;
       }
     });
   },
   methods: {
-    search(){
-      this.tableData = this.table.filter(e => e.param_cd.match(this.search_name));
+    search() {
+      this.tableData = this.table.filter(e =>
+        e.param_cd.match(this.search_name)
+      );
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     refresh() {
       this.$post("/parameter/getParameters", {}).then(res => {
         //处理response
-        console.log(res);
         if (res.code == 504) {
           this.$message.warning(res.message);
           return;
@@ -117,7 +128,6 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (!this.isAdd) {
-            // console.log(this.paramForm.param_value);
             this.$post("/parameter/updateParameter", {
               user_id: sessionStorage.getItem("user_id"),
               par_id: this.opRow.par_id,
@@ -125,9 +135,6 @@ export default {
               description: this.paramForm.description,
               param_cd: this.paramForm.param_cd
             }).then(res => {
-              // console.log(this.opRow.param_value);
-              // console.log(this.paramForm.param_value);
-              // console.log(res)
               if (res.code == 504) {
                 this.$message.warning(res.message);
                 return;
@@ -155,7 +162,6 @@ export default {
                 return;
               }
               if (res.code == 200) {
-                // this.$root.user_id=res.data.user_id;
                 this.$message.success(res.message);
                 this.refresh();
               }
@@ -182,7 +188,23 @@ export default {
         this.paramForm.param_value = row.param_value;
       });
     },
-    remove(row, index) {
+    removeMore() {
+      this.multipleSelection.forEach(element => {
+        this.$post("/parameter/deleteParameter", {
+          par_id: element.par_id
+        }).then(res => {
+          if (res.code == 504) {
+            this.$message.warning(res.message);
+            return;
+          }
+          if (res.code == 200) {
+            this.refresh();
+          }
+        });
+      });
+      this.$message.success("Delete success");
+    },
+    remove(row) {
       this.$post("/parameter/deleteParameter", {
         par_id: row.par_id
       }).then(res => {
@@ -192,7 +214,6 @@ export default {
         }
         if (res.code == 200) {
           this.$message.success(res.message);
-          // this.tableData.splice(index,1);
           this.refresh();
         }
       });
