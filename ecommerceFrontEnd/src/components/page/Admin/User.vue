@@ -16,7 +16,7 @@
     <el-divider></el-divider>
     <el-table :data="tableData" style="width: 100%" class="table">
       <el-table-column type="selection" width="50"></el-table-column>
-       <el-table-column prop="userid" label="User id"></el-table-column>
+      <el-table-column prop="userid" label="User id"></el-table-column>
       <el-table-column prop="username" label="User name"></el-table-column>
       <el-table-column prop="nickname" label="Nick name"></el-table-column>
       <el-table-column prop="role" label="Role"></el-table-column>
@@ -179,10 +179,11 @@ export default {
           title: "Fund check"
         }
       ],
-      search_name:"",
+      search_name: "",
       drawerPr: false,
       drawer: false,
       tableData: [],
+      table: [],
       userForm: {
         username: "",
         nickname: "",
@@ -224,6 +225,16 @@ export default {
               userid: res.data.user[i].user_id,
               username: res.data.user[i].username,
               nickname: res.data.user[i].name,
+              password: res.data.user[i].password,
+              role: role,
+              phone: res.data.user[i].phone,
+              email: res.data.user[i].email
+            });
+            this.table.push({
+              userid: res.data.user[i].user_id,
+              username: res.data.user[i].username,
+              nickname: res.data.user[i].name,
+              password: res.data.user[i].password,
               role: role,
               phone: res.data.user[i].phone,
               email: res.data.user[i].email
@@ -242,24 +253,23 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-this.$post("/rle/updateUser", {
-        admin_id: sessionStorage.getItem("user_id"),
-        user_id:this.userForm.userid,
-        username:this.userForm.username,
-        password:this.userForm.password,
-        name:this.userForm.nickname,
-        email:this.userForm.email,
-        phone:this.userForm.phone,
-        role_id:this.userForm.role
-      }).then(res => {
-          if(res.code==200){
-            this.$message.success("Successfully update!");
-          }else{
-            this.$message.warning("Update failed");
-          }
-          this.drawer = false;
-      })
-          
+          this.$post("/rle/updateUser", {
+            admin_id: sessionStorage.getItem("user_id"),
+            user_id: this.userForm.userid,
+            username: this.userForm.username,
+            password: this.userForm.password,
+            name: this.userForm.nickname,
+            email: this.userForm.email,
+            phone: this.userForm.phone,
+            role_id: this.userForm.role
+          }).then(res => {
+            if (res.code == 200) {
+              this.$message.success("Successfully update!");
+            } else {
+              this.$message.warning("Update failed");
+            }
+            this.drawer = false;
+          });
         } else {
           return false;
         }
@@ -271,25 +281,29 @@ this.$post("/rle/updateUser", {
     },
     edit(row) {
       this.userForm = row;
-      if(this.userForm.role=="Admin"){
-  this.$message.warning("Can't edit the admin account");
-  return;
+      if (this.userForm.role == "Admin") {
+        this.$message.warning("Can't edit the admin account");
+        return;
       }
       this.drawer = true;
     },
     remove(row) {
-this.$post("/rle/deletedUser", {
+      this.$post("/rle/deletedUser", {
         user_id: sessionStorage.getItem("user_id"),
-        delete_id:row.userid
+        delete_id: row.userid
       }).then(res => {
-        if(res.code==200){
+        if (res.code == 200) {
           this.getUsers();
-        }else{
+        } else {
           this.$message.warning("Delete failed");
         }
-      })
+      });
     },
-    search(){}
+    search() {
+      this.tableData = this.table.filter(e =>
+        e.username.match(this.search_name)
+      );
+    }
   }
 };
 </script>
