@@ -50,12 +50,18 @@
           ></el-input>
         </span>
         <el-button type="danger" icon="el-icon-search"></el-button>
-        <el-button type="danger" plain icon="el-icon-plus" @click="dialogVisible = true">Add</el-button>
+        <el-button type="danger" plain icon="el-icon-plus" @click="add">Add</el-button>
         <br />
         <br />
         <el-table :data="tableData" style="width: 100%">
+          <el-table-column prop="brdid" label="Brand Id"></el-table-column>
           <el-table-column prop="name" label="Brand Name"></el-table-column>
-          <el-table-column prop="logo" label="Brand Logo"></el-table-column>
+          <!-- <el-table-column prop="logo" label="Brand Logo"></el-table-column> -->
+          <el-table-column prop="logo" label="Brand Logo">
+        <template slot-scope="scope">
+          <img :src="scope.row.logo" width="60" height="50" />
+        </template>
+      </el-table-column>
           <el-table-column label="operation">
             <template slot-scope="scope">
               <el-button
@@ -63,14 +69,14 @@
                 size="mini"
                 @click="change(scope.$index, scope.row)"
               >change</el-button>
-              <el-button type="danger" size="mini">delete</el-button>
+              <el-button type="danger" size="mini" @click="remove(scope.row)">delete</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
 
-    <el-dialog title="Add brand information" :visible.sync="dialogVisible" width="23%">
+    <el-dialog title="Add Brand information" :visible.sync="dialogVisible" width="23%">
       <span>
         Brand Name：
         <el-input style="width:250px" v-model="brandname" placeholder></el-input>
@@ -83,8 +89,10 @@
       <el-upload
         ref="upload"
         drag
-        action="http://localhost:3000/api/file/up"
+        action="http://localhost:8088/product/uploadPicture"
+        :name=fileName
         :file-list="fileList"
+         :on-success="handleSuccess"
         :on-change="fileChange"
         :auto-upload="false"
         list-type="picture"
@@ -105,6 +113,46 @@
         <el-button type="danger" @click="submitUpload">sure</el-button>
       </span>
     </el-dialog>
+
+
+<el-dialog title="Update Brand information" :visible.sync="dialogVisible1" width="23%">
+      <span>
+        Brand Name：
+        <el-input style="width:250px" v-model="brandname" placeholder></el-input>
+      </span>
+      <br />
+      <br />
+      <span>Brand Logo：</span>
+      <br />
+      <br />
+      <el-upload
+        ref="upload"
+        drag
+        action="http://localhost:8088/product/uploadPicture"
+        :name=fileName
+        :file-list="fileList"
+         :on-success="handleSuccess"
+        :on-change="fileChange"
+        :auto-upload="false"
+        list-type="picture"
+        :limit="1"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          Drag the file here, or
+          <em>Click to upload</em>
+        </div>
+        <div
+          class="el-upload__tip"
+          slot="tip"
+        >It is recommended to upload JPG/PNG files and not exceed 500kb</div>
+      </el-upload>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="diaCancel">cancel</el-button>
+        <el-button type="danger" @click="submitUpdate">sure</el-button>
+      </span>
+    </el-dialog>
+
 
     <el-drawer
       title="drawer"
@@ -172,16 +220,20 @@ export default {
       fileList: [],
       search_name: "",
       dialogVisible: false,
+      dialogVisible1: false,
       emptyImage: require("../../../assets/empty.png"),
       emptyShow: true,
       mainShow: false,
       drawer: false,
+      brd_id:"",
       man_id: "",
       name_en: "",
       description: "",
+      remake:"",
+      fileName: "fileName",
       gmc_report_type: "",
       gmc_report_url: "",
-      tableData: [{ name: 1 },{ name: 2 }],
+      tableData: [],
       addComForm: {
         name_en: "",
         description: "",
@@ -192,6 +244,7 @@ export default {
   },
   mounted(){
     this.checkCompany();
+    
   },
   methods: {
     checkCompany(){  //查詢用戶是否有公司信息
@@ -206,7 +259,6 @@ export default {
             }
             if (res.code == 200) {
               this.$message.success("Successfully get company info!");
-              console.log(res);
               this.man_id = res.data.man_id;
               this.name_en = res.data.name_en;
               this.description = res.data.description;
@@ -214,18 +266,58 @@ export default {
               this.gmc_report_url = res.data.gmc_report_url;
               this.emptyShow = false;
               this.mainShow = true;   
+              this.getBrand();
             }
+          })
+    },
+    getBrand(){
+      this.tableData =[];
+    this.$post("/brd/getBrand",{
+            user_id: sessionStorage.getItem("user_id"),
+          }).then(res => {
+for (var i = 0; i < res.data.length; i++) {
+  this.tableData.push(
+    {
+      brdid:res.data[i].brd_id,
+      name:res.data[i].name_en,
+      logo:res.data[i].remark
+    }
+  )
+}
+})
+    },
+handleSuccess(res){
+this.remake = res.data;
+},
+    remove(row){
+      this.$post("/brd/deleteBrand",{
+            brd_id:row.brdid
+          }).then(res => {
+            if(res.code==200){
+               this.$message.success("Successfully delete!");
+            }else{
+               this.$message.warning("Delete failed");
+            }
+            this.getBrand();
           })
     },
     diaCancel(){
       this.dialogVisible = false;
+      this.dialogVisible1 = false;
       this.brandname = "";
       this.count = 0;
       this.fileList = [];
     },
-    change(index, row) {
-      this.brandname = row.name;
+    add() {
+      this.brandname = "";
       this.dialogVisible = true;
+      //通过改变filelist展示图片
+    },
+    
+    change(index, row) {
+      this.brd_id = row.brdid;
+      this.brandname = row.name;
+      this.dialogVisible1 = true;
       //通过改变filelist展示图片
     },
     fileChange() {
@@ -236,12 +328,49 @@ export default {
         this.$message.warning("The brand name cannot be empty");
         return;
       }
-      if (this.count == 0) {
-        this.$message.warning("Please upload the logo");
+      // if (this.count == 0) {
+      //   this.$message.warning("Please upload the logo");
+      //   return;
+      // }
+      this.$refs.upload.submit();
+      this.$post("/brd/addBrand",{
+          user_id: sessionStorage.getItem("user_id"),
+          name_en:this.brandname,
+          remark:this.remake
+          }).then(res => {
+            if(res.code==200){
+               this.$message.success("Successfully add!");
+            }else{
+               this.$message.warning("Add failed");
+            }
+            this.getBrand();
+          })
+      this.dialogVisible = false;
+    },
+submitUpdate() {
+      if (this.brandname == "") {
+        this.$message.warning("The brand name cannot be empty");
         return;
       }
+      // if (this.count == 0) {
+      //   this.$message.warning("Please upload the logo");
+      //   return;
+      // }
       this.$refs.upload.submit();
-      this.dialogVisible = false;
+      this.$post("/brd/updateBrand",{
+          brd_id: this.brd_id,
+          user_id: sessionStorage.getItem("user_id"),
+          name_en:this.brandname,
+          remark:this.remake
+          }).then(res => {
+            if(res.code==200){
+               this.$message.success("Successfully update!");
+            }else{
+               this.$message.warning("Update failed");
+            }
+            this.getBrand();
+          })
+      this.dialogVisible1 = false;
     },
     search() {},
     submitForm(formName) {    //增加及修改company info
@@ -283,8 +412,6 @@ export default {
             }
           })
           }
-
-
           // console.log(this.addComForm);
           this.drawer = false;
           // this.emptyShow = false;
