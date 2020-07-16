@@ -21,7 +21,7 @@
       <el-table-column prop="menu_icon" label="icon"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" icon="el-icon-edit" @click="edit(scope.row)">Edit</el-button>
+          <el-button type="success" size="mini" icon="el-icon-edit" @click="edit(scope.row)">Edit</el-button>
           <el-button
             type="danger"
             size="mini"

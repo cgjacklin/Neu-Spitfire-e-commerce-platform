@@ -11,6 +11,15 @@
       Search：
       <el-input style="width:15rem" placeholder="Account name" @input="search" v-model="account"></el-input>
     </span>
+    <el-date-picker
+      v-model="value"
+      type="daterange"
+      start-placeholder="start date"
+      end-placeholder="end date"
+      value-format="yyyy-MM-dd"
+      :default-time="['00:00:00', '23:59:59']"
+      @change="search"
+    ></el-date-picker>
     <el-button type="danger" icon="el-icon-search"></el-button>
     <el-divider></el-divider>
     <el-table :data="tableData" style="width: 100%" class="table">
@@ -18,10 +27,20 @@
       <el-table-column prop="transaction_audit_id" label="Transaction audit id"></el-table-column>
       <el-table-column prop="user_id" label="User id"></el-table-column>
       <el-table-column prop="name" label="Account name"></el-table-column>
-      <el-table-column prop="type" label="Business types"></el-table-column>
+      <el-table-column
+        prop="type"
+        label="Business types"
+        :filter-method="filterHandler"
+        :filters="[{ text: 'Deposit', value: 'Deposit' }, { text: 'Withdraw', value: 'Withdraw' }]"
+      ></el-table-column>
       <el-table-column prop="amount" label="Amount"></el-table-column>
       <el-table-column prop="time" label="Apply time"></el-table-column>
-      <el-table-column prop="state" label="State"></el-table-column>
+      <el-table-column
+        prop="state"
+        label="State"
+        :filter-method="filterHandler"
+        :filters="[{ text: 'Applying', value: 'Applying' }, { text: 'Completed', value: 'Completed'}, { text: 'Failed', value: 'Failed'}]"
+      ></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
           <el-button type="success" size="mini" @click="pass(scope.row)">Pass</el-button>
@@ -70,12 +89,13 @@
 export default {
   data() {
     return {
+      value: "",
       count: 0,
       fileList: [],
       dialogVisible: false,
       account: "",
       tableData: [],
-      table:[],
+      table: [],
       tableData1: [],
       reason: ""
     };
@@ -184,9 +204,22 @@ export default {
       this.reason = "";
       this.fileList = [];
     },
+    filterHandler(value, row, column) {
+      const property = column["property"];
+      return row[property] === value;
+    },
     search() {
-      this.tableData = this.table.filter(e =>
-        e.name.match(this.account)
+      let timelist = [];
+      if (!this.value) {
+        timelist = ["1900-01-01", "2200-01-01"];
+      } else {
+        timelist = this.value;
+      }
+      this.tableData = this.table.filter(
+        e =>
+          e.name.match(this.account) &&
+          timelist[0] <= e.time.slice(0, 10) &&
+          e.time.slice(0, 10) <= timelist[1]
       );
     },
     pass(row) {

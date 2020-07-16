@@ -79,6 +79,9 @@ public class ParameterServiceImpl implements ParameterService {
         HashMap<String, Object> para = new HashMap<>();
         para.put("param_cd", parameter.getParam_cd());
         List<Parameter> checkExist = parameterMapper.getAllByFilter(para);
+        if(checkExist.size()==1){
+            throw BusinessException.DUPLICATE_PARAM_CD;
+        }
 
         long time = System.currentTimeMillis();
         Date date = new java.sql.Date(time);
