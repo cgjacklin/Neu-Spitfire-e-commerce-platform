@@ -27,6 +27,36 @@ public class Order implements BaseEntity<Integer> {
     Timestamp completed_time;
     Timestamp cancelled_time;
 
+    public Order(){}
+
+    public Order(int or_id, String tracking_company){
+        this.or_id = or_id;
+        this.tracking_company = tracking_company;
+    }
+
+    public Order(int or_id, int str_id, int man_id, int pro_id, int dsr_id, String order_id, BigDecimal sales_price, int qty, String sku_no, String receive_name, String receive_address, String receive_phone, String tracking_number, String tracking_company, String sts_cd, Timestamp order_created_time, Timestamp paid_time, Timestamp ship_time, Timestamp completed_time, Timestamp cancelled_time) {
+        this.or_id = or_id;
+        this.str_id = str_id;
+        this.man_id = man_id;
+        this.pro_id = pro_id;
+        this.dsr_id = dsr_id;
+        this.order_id = order_id;
+        this.sales_price = sales_price;
+        this.qty = qty;
+        this.sku_no = sku_no;
+        this.receive_name = receive_name;
+        this.receive_address = receive_address;
+        this.receive_phone = receive_phone;
+        this.tracking_number = tracking_number;
+        this.tracking_company = tracking_company;
+        this.sts_cd = sts_cd;
+        this.order_created_time = order_created_time;
+        this.paid_time = paid_time;
+        this.ship_time = ship_time;
+        this.completed_time = completed_time;
+        this.cancelled_time = cancelled_time;
+    }
+
     @Override
     public String toString() {
         return "Order{" +

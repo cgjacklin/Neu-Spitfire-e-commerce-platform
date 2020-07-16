@@ -40,6 +40,8 @@ public class Brand implements BaseEntity<Integer> {
         this.sts_cd = sts_cd;
     }
 
+    public Brand(){}
+
     public int getBrd_id() {
         return brd_id;
     }

@@ -39,15 +39,21 @@ public class OrderController extends BaseController {
         return response;
     }
 
-    @PostMapping("/test")
-    public void test(@RequestBody Map<String, String> orders){
+    @PostMapping("/shipSelected")
+    public BaseModel test(@RequestBody Map<String, String> orders){
+        BaseModel response = new BaseModel();
         JSONArray jsonArray = JSONArray.parseArray(orders.get("orders"));
+        String tracking_company = orders.get("tracking_company");
+        System.out.println(jsonArray);
+        System.out.println(tracking_company);
         for(int i=0; i<jsonArray.size(); i++){
             JSONObject obj = jsonArray.getJSONObject(i);
             int or_id = Integer.parseInt(obj.getString("or_id"));
-            String tracking_company = obj.getString("tracking_company");
-            
+            Order order = new Order(or_id, tracking_company);
+            orderService.deliverOrder(order);
         }
+        response.setSuccess();
+        return response;
 
 //        for(Order order: orders){
 //            System.out.println(order.getTracking_company());
