@@ -1,7 +1,5 @@
 package com.neusoft.bsp.business.order.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.neusoft.bsp.admin.user.mapper.UserMapper;
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.wallet.po.WalletAccount;
@@ -278,21 +276,6 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.update(order);
     }
 
-    @Override
-    public int paySelectedOrders(Map<String, String> payOrderRequests) {
-        JSONArray jsonArray = JSONArray.parseArray(payOrderRequests.get("payOrderRequests"));
-        int user_id = Integer.parseInt(payOrderRequests.get("user_id"));
-        String password = payOrderRequests.get("password");
-        BigDecimal totalMoney = new BigDecimal(payOrderRequests.get("totalMoney"));
 
-        
 
-        for(int i=0; i<jsonArray.size(); i++){
-            JSONObject obj = jsonArray.getJSONObject(i);
-            int or_id = Integer.parseInt(obj.getString("or_id"));
-            PayOrderRequest payOrderRequest = new PayOrderRequest(user_id, or_id, password);
-            payOrder(payOrderRequest);
-        }
-        return 1;
-    }
 }

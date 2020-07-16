@@ -20,10 +20,6 @@ public class Parameter implements BaseEntity<Integer> {
 
     public Parameter(){}
 
-    public Parameter(int par_id){
-        this.par_id = par_id;
-    }
-
     public Parameter(ParameterVO parameterVO){
         this.par_id = parameterVO.getPar_id();
         this.param_cd = parameterVO.getParam_cd();

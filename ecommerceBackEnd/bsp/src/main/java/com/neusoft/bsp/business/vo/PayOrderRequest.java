@@ -17,21 +17,6 @@ public class PayOrderRequest extends OrderRequest{
                 '}';
     }
 
-    public PayOrderRequest(){}
-
-    public PayOrderRequest(int or_id, String password, BigDecimal paid_money) {
-        this.or_id = or_id;
-        this.password = password;
-        this.paid_money = paid_money;
-    }
-
-    public PayOrderRequest(int user_id, int or_id, String password) {
-        this.user_id = user_id;
-        this.or_id = or_id;
-        this.password = password;
-//        this.paid_money = paid_money;
-    }
-
     public int getUser_id() {
         return user_id;
     }

@@ -1,10 +1,7 @@
 package com.neusoft.bsp.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.neusoft.bsp.admin.parameter.po.Parameter;
 import com.neusoft.bsp.admin.parameter.service.ParameterService;
-import com.neusoft.bsp.business.po.Product;
 import com.neusoft.bsp.business.vo.ParameterVO;
 import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
@@ -14,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -68,20 +64,6 @@ public class ParameterController extends BaseController {
         }else{
             response.setFailure();
         }
-        return response;
-    }
-
-    @PostMapping("deleteParameters")
-    public BaseModel deleteParameters(@RequestBody Map<String, String> parameters){
-        BaseModel response = new BaseModel();
-        JSONArray jsonArray = JSONArray.parseArray(parameters.get("parameters"));
-        for(int i=0; i<jsonArray.size(); i++){
-            JSONObject obj = jsonArray.getJSONObject(i);
-            int par_id = Integer.parseInt(obj.getString("par_id"));
-//            Parameter parameter = new Parameter(par_id);
-            parameterService.delete(par_id);
-        }
-        response.setSuccess();
         return response;
     }
 }

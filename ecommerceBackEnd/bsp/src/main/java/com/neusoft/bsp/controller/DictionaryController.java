@@ -1,7 +1,5 @@
 package com.neusoft.bsp.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.neusoft.bsp.admin.dictionary.po.Dictionary;
 import com.neusoft.bsp.admin.dictionary.service.DictionaryService;
 
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -67,20 +64,6 @@ public class DictionaryController extends BaseController {
         }else{
             response.setFailure();
         }
-        return response;
-    }
-
-    @PostMapping("/deleteDictionary")
-    public BaseModel deleteParameters(@RequestBody Map<String, String> dictionaries){
-        BaseModel response = new BaseModel();
-        JSONArray jsonArray = JSONArray.parseArray(dictionaries.get("dictionaries"));
-        for(int i=0; i<jsonArray.size(); i++){
-            JSONObject obj = jsonArray.getJSONObject(i);
-            int dir_id = Integer.parseInt(obj.getString("dir_id"));
-//            Parameter parameter = new Parameter(par_id);
-            dictionaryService.delete(dir_id);
-        }
-        response.setSuccess();
         return response;
     }
 }

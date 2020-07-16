@@ -54,6 +54,10 @@ public class OrderController extends BaseController {
         }
         response.setSuccess();
         return response;
+
+//        for(Order order: orders){
+//            System.out.println(order.getTracking_company());
+//        }
     }
 
     @PostMapping("/deliverOrder")
@@ -78,39 +82,12 @@ public class OrderController extends BaseController {
         return response;
     }
 
-    @PostMapping("/cancelSelected")
-    public BaseModel cancelSelected(@RequestBody Map<String, String> cancelOrderRequests){
-        JSONArray jsonArray = JSONArray.parseArray(cancelOrderRequests.get("cancelOrderRequest"));
-        BaseModel response = new BaseModel();
-        int user_id = Integer.parseInt(cancelOrderRequests.get("user_id"));
-        for(int i=0; i<jsonArray.size(); i++){
-            JSONObject obj = jsonArray.getJSONObject(i);
-            int or_id = Integer.parseInt(obj.getString("or_id"));
-            CancelOrderRequest cancelOrderRequest = new CancelOrderRequest(user_id, or_id);
-            orderService.cancelOrder(cancelOrderRequest);
-        }
-        response.setSuccess();
-        return response;
-    }
-
     @PostMapping("/payOrder")
     public BaseModel payOrder(@RequestBody PayOrderRequest payOrderRequest){
         BaseModel response = new BaseModel();
         if(orderService.payOrder(payOrderRequest)==1){
             response.setSuccess();
         }else{
-            response.setFailure();
-        }
-        return response;
-    }
-
-    @PostMapping("/paySelected")
-    public BaseModel paySelected(@RequestBody Map<String, String> payOrderRequests){
-        BaseModel response = new BaseModel();
-        if(orderService.paySelectedOrders(payOrderRequests)==1){
-            response.setSuccess();
-        }
-        else{
             response.setFailure();
         }
         return response;
