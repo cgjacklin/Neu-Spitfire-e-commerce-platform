@@ -32,13 +32,13 @@
       <el-table-column prop="code_val" label="Code value"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" @click="edit(scope.row)">Edit</el-button>
-          <el-button type="danger" size="mini" @click="remove(scope.row, scope.$index)">Delete</el-button>
+          <el-button type="success" icon="el-icon-edit" size="mini" @click="edit(scope.row)">Edit</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="remove(scope.row, scope.$index)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
     <br />
-    <el-button type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
+    <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-dialog title="Data dictionary info" :visible.sync="dialogVisible" width="30%">
       <el-form :model="dataForm" ref="dataForm" label-width="120px">
         <el-form-item

@@ -36,7 +36,7 @@
       </el-table-column>
     </el-table>
     <br />
-    <el-button type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
+    <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-drawer title="drawer" :visible.sync="drawer" size="35%" :with-header="false">
       <div class="form-div">
         <h3>User info</h3>
