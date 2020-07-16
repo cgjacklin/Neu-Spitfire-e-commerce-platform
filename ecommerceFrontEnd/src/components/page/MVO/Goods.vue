@@ -178,7 +178,6 @@
                 drag
                 action="http://localhost:8088/product/uploadPicture"
                 :name=fileName
-                :data=addGoodsForm
                 :file-list="fileList"
                 :on-success="handleSuccess"
                 :on-change="fileChange"
@@ -357,7 +356,6 @@ export default {
     this.$post("brd/getBrand",{
       user_id: sessionStorage.getItem("user_id")
     }).then(res=>{
-
       let tmpBrands = [];
       for(let i = 0; i < res.data.length; i++){
         tmpBrands[i] = {value: res.data[i].brd_id, 
@@ -385,13 +383,13 @@ export default {
       this.isAdd = true;
       this.drawer = true;
     },
-
     remove(row, index){
       this.$post("/product/deleteProduct", {
         pro_id: row.pro_id
       }).then (res=> {
         if(res.code == 504){
           this.$message.warning(res.message);
+          this.refresh();
           return;
         }
         if(res.code == 200){
@@ -400,7 +398,6 @@ export default {
         }
       })
     },
-
     darCancel(formName) {
       this.addGoodsForm.ebay_description = "";
       this.addGoodsForm.amazon_description = "";
@@ -412,7 +409,6 @@ export default {
     fileChange() {
       this.count++;
     },
-
     handleSuccess(res){
         if(this.isAdd){
           console.log(this.addGoodsForm.brd_id)
@@ -440,17 +436,28 @@ export default {
         }).then(res => {
           if(res.code == 504){
             this.$message.warning(res.message);
-            this.$refs[formName].resetFields();
+            this.$refs["addGoodsForm"].resetFields();
+            this.addGoodsForm.ebay_description = "";
+            this.addGoodsForm.amazon_description = "";
+            this.count = 0;
+            this.fileList = [];
             return;
           }
           if(res.code == 200){
             this.$message.success(res.message);
             this.refresh();
-            this.$refs[formName].resetFields();
+            this.$refs["addGoodsForm"].resetFields();
+            this.addGoodsForm.ebay_description = "";
+            this.addGoodsForm.amazon_description = "";
+            this.count = 0;
+            this.fileList = [];
+            return;
           }
         })
         }
         if(!this.isAdd){
+          console.log("update")
+          console.log(this.addGoodsForm);
           this.$post("/product/updateProduct", {
             brd_id: this.addGoodsForm.brd_id,
             retail_price: this.addGoodsForm.retail_price,
@@ -475,20 +482,28 @@ export default {
           }).then(res => {
             if(res.code == 504){
               this.$message.warning(res.message);
-              this.$refs[formName].resetFields();
+              this.$refs["addGoodsForm"].resetFields();
+              this.addGoodsForm.ebay_description = "";
+              this.addGoodsForm.amazon_description = "";
+              this.count = 0;
+              this.fileList = [];
               return;
             }
             if(res.code == 200){
               this.$message.success(res.message);
               this.refresh();
-              this.$refs[formName].resetFields();
+              this.$refs["addGoodsForm"].resetFields();
+              this.addGoodsForm.ebay_description = "";
+              this.addGoodsForm.amazon_description = "";
+              this.count = 0;
+              this.fileList = [];
+              return
             }
           })
         }
         this.drawer = false;
         
     },
-
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -503,6 +518,7 @@ export default {
             this.$message.warning("Please enter the description");
             return;
           }
+          console.log(this.addGoodsForm);
           this.$refs.upload.submit();
         } else {
           return false;
@@ -510,12 +526,15 @@ export default {
       });
     },
     edit(row) {
+      
       this.drawer = true;
       this.$nextTick(function(){
-          this.addGoodsForm = JSON.parse(JSON.stringify(row));
-          
+          // this.addGoodsForm = JSON.parse(JSON.stringify(row));     
+          this.addGoodsForm = row 
       })
-
+      console.log("add")
+      console.log(this.addGoodsForm)
+      console.log(this.addGoodsForm.pro_id);
       
     },
     btn(msg) {
@@ -529,13 +548,13 @@ export default {
       if (msg == "On shelf") return "success";
     },
     search() {},
-
     refresh(){
       this.$post("/product/getProducts", {
           user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         if (res.code == 504) {
           this.$message.warning(res.message);
+          this.tableData = res.data
           return;
         }
         if (res.code == 200) {
@@ -543,7 +562,6 @@ export default {
         }
       });
     },
-
     operate(row){
       let nextStage = '';
       if(row.sts_cd == "Not in warehouse"){
