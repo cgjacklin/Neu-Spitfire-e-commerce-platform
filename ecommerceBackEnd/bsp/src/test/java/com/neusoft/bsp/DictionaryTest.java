@@ -1,6 +1,7 @@
 package com.neusoft.bsp;
 
 import com.neusoft.bsp.admin.dictionary.po.Dictionary;
+import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
 import com.neusoft.bsp.controller.DictionaryController;
@@ -34,11 +35,39 @@ class DictionaryTest {
     @Test
     void TestgetDictionaries_nothing() {
         assertThrows(BusinessException.class, () -> {
-            int user_id = 1;
+
             BaseModelJson<List<Dictionary>> bmj = dictionaryController.getDictionaries();
         });
     }
 
+    @Test
+    void TestaddDictionary_success() {
+        Dictionary dictionary =new Dictionary();
+        dictionary.setCode_type("2");
+        BaseModel bm = dictionaryController.addDictionary(dictionary);
+        assertEquals(200, bm.code);
+    }
+//update dictionary
+    @Test
+    void TestupdateDictionary_success() {
+        Dictionary dictionary =new Dictionary();
+        dictionary.setCdm_id(13);
+        dictionary.setCode_type("3");
+
+        BaseModel bm = dictionaryController.updateDictionary(dictionary);
+        assertEquals(200, bm.code);
+    }
+
+//delete dictionary
+    @Test
+    void TestdeleteDictionary_success() {
+        Dictionary dictionary =new Dictionary();
+        dictionary.setCdm_id(13);
+        dictionary.setCode_type("3");
+
+        BaseModel bm = dictionaryController.deleteDictionary(dictionary);
+        assertEquals(200, bm.code);
+    }
 
 
 

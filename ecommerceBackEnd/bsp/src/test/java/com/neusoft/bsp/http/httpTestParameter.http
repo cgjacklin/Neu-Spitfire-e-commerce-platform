@@ -1,0 +1,61 @@
+###test getParameters
+POST http://127.0.0.1:8088/parameter/getParameters
+Content-Type: application/json
+
+{
+
+
+}
+
+###test addParameter success
+POST http://127.0.0.1:8088/parameter/addParameter
+Content-Type: application/json
+
+{
+  "user_id": 1,
+"param_cd": "ajj"
+
+}
+
+###test addParameter same cd
+POST http://127.0.0.1:8088/parameter/addParameter
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "param_cd": "ajj"
+
+}
+
+###test updateParameter success
+POST http://127.0.0.1:8088/parameter/updateParameter
+Content-Type: application/json
+
+{
+"par_id": 19,
+  "param_cd": "a",
+  "user_id": 1
+
+}
+###test updateParameter same cd
+POST http://127.0.0.1:8088/parameter/updateParameter
+Content-Type: application/json
+
+{
+  "par_id": 19,
+  "param_cd": "4124",
+  "user_id": 1
+
+}
+###test deleteParameter
+POST http://127.0.0.1:8088/parameter/deleteParameter
+Content-Type: application/json
+
+{
+  "par_id": 19,
+  "user_id": 1
+
+}
+
+###
+

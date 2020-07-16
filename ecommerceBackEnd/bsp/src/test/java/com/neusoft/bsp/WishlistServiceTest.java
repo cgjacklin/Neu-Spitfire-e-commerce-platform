@@ -23,15 +23,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes =BspApplication.class)
 class WishlistServiceTest {
 
-//    @Autowired
-//    UserMapper userMapper;
-//
-//    @Autowired
-//    WishlistController wishlistController;
-//
-//    @Autowired
-//    WishlistService wishlistService;
-//
+    @Autowired
+    UserMapper userMapper;
+
+    @Autowired
+    WishlistController wishlistController;
+
+    @Autowired
+    WishlistService wishlistService;
+
 //
 //    @Test
 //    void TestgetWishlist_success() {
@@ -64,10 +64,10 @@ class WishlistServiceTest {
 //    @Test
 //    public void TestaddWishlist_user_not_exist() {
 //        assertThrows(BusinessException.class, () -> {
-//        UserIdAndProId uap = new UserIdAndProId();
-//        uap.setPro_id(1);
-//        uap.setUser_id(10);
-//        BaseModel bm = wishlistController.addWishlist(uap,null);
+//            UserIdAndProId uap = new UserIdAndProId();
+//            uap.setPro_id(1);
+//            uap.setUser_id(10);
+//            BaseModel bm = wishlistController.addWishlist(uap,null);
 //        });
 //    }
 //

@@ -9,7 +9,12 @@
 
     <span>
       Search：
-      <el-input style="width:15rem" placeholder="Dictionary type" @input="search" v-model="search_name"></el-input>
+      <el-input
+        style="width:15rem"
+        placeholder="Dictionary type"
+        @input="search"
+        v-model="search_name"
+      ></el-input>
     </span>
     <el-button type="danger" icon="el-icon-plus" @click="dialogVisible = true; isAdd = true">Add</el-button>
 
@@ -75,10 +80,12 @@
 export default {
   data() {
     return {
+      search_name: "",
       dialogVisible: false,
       tableData: [],
+      table: [],
       isAdd: false,
-      opRow: '',
+      opRow: "",
       dataForm: {
         code_type: "",
         description: "",
@@ -87,47 +94,47 @@ export default {
       }
     };
   },
-   mounted(){
-    this.$post("/dictionary/getDictionaries", {
-       
-      }).then(res => {
-        //处理response
-        console.log(res)
-        if (res.code == 504) {
-          this.$message.warning(res.message);
-          return;
-        }
-        if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          this.tableData = res.data
-        }
-      });
+  mounted() {
+    this.$post("/dictionary/getDictionaries", {}).then(res => {
+      //处理response
+      console.log(res);
+      if (res.code == 504) {
+        this.$message.warning(res.message);
+        return;
+      }
+      if (res.code == 200) {
+        // this.$root.user_id=res.data.user_id;
+        this.tableData = res.data;
+        this.table = res.data;
+      }
+    });
   },
   methods: {
-    refresh(){
-      this.$post("/dictionary/getDictionaries", {
-       
-      }).then(res => {
+    search() {
+      this.tableData = this.table.filter(e =>
+        e.code_type.match(this.search_name)
+      );
+    },
+    refresh() {
+      this.$post("/dictionary/getDictionaries", {}).then(res => {
         //处理response
-        console.log(res)
+        console.log(res);
         if (res.code == 504) {
           this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          // Vue.set()
-          this.tableData = res.data
+          this.table = res.data;
+          this.tableData = res.data;
         }
       });
     },
-   submitForm(formName) {
+    submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(!this.isAdd){
-            
+          if (!this.isAdd) {
             // console.log(this.dataForm.param_value);
-            this.$post("/dictionary/updateDictionary",{
+            this.$post("/dictionary/updateDictionary", {
               user_id: sessionStorage.getItem("user_id"),
               cdm_id: this.opRow.cdm_id,
               code_type: this.dataForm.code_type,
@@ -145,17 +152,16 @@ export default {
               if (res.code == 200) {
                 // this.$root.user_id=res.data.user_id;
                 this.$message.success(res.message);
-                this.refresh()
+                this.refresh();
               }
-              
-            })
-           
+            });
+
             this.dialogVisible = false;
-            this.$refs[formName].resetFields()
+            this.$refs[formName].resetFields();
           }
-          if(this.isAdd){
+          if (this.isAdd) {
             this.isAdd = false;
-             this.$post("/dictionary/addDictionary",{
+            this.$post("/dictionary/addDictionary", {
               user_id: sessionStorage.getItem("user_id"),
               // cdm_id: this.opRow.cdm_id,
               code_type: this.dataForm.code_type,
@@ -172,19 +178,14 @@ export default {
                 this.$message.success(res.message);
                 this.refresh();
               }
-              
-            })
-            
-            this.dialogVisible = false;
-            this.$refs[formName].resetFields()
-          }
+            });
 
+            this.dialogVisible = false;
+            this.$refs[formName].resetFields();
+          }
         } else {
           return false;
         }
-
-
-
       });
     },
     cancel(formName) {
@@ -194,27 +195,28 @@ export default {
     edit(row) {
       this.opRow = row;
       this.dialogVisible = true;
-      this.$nextTick(function(){
+      this.$nextTick(function() {
         this.dataForm.code_type = row.code_type;
         this.dataForm.description = row.description;
         this.dataForm.type_cd = row.type_cd;
         this.dataForm.code_val = row.code_val;
-      })
+      });
     },
     remove(row, index) {
       this.$post("/dictionary/deleteDictionary", {
         cdm_id: row.cdm_id
       }).then(res => {
-        if(res.code ==504){
+        if (res.code == 504) {
           this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
-              // this.$root.user_id=res.data.user_id;
-            this.$message.success(res.message);
-            this.tableData.splice(index);
+          // this.$root.user_id=res.data.user_id;
+          this.$message.success(res.message);
+          // this.tableData.splice(index);
+          this.refresh();
         }
-      })
+      });
     }
   }
 };
