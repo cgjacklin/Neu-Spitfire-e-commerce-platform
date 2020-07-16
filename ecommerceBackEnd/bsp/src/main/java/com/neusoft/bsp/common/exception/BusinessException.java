@@ -30,7 +30,7 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException NO_ORDER = new BusinessException(504, "There is no order", new Object[0]);
     public static final BusinessException ORDER_STATUS_WRONG = new BusinessException(504, "Order status wrong", new Object[0]);
     public static final BusinessException WALLET_ACCOUNT_STATUS_WRONG = new BusinessException(504, "Wallet account is not activated", new Object[0]);
-
+    public static final BusinessException NO_DATA = new BusinessException(504, "There is no data here", new Object[0]);
 
     int code;
     String msg;
