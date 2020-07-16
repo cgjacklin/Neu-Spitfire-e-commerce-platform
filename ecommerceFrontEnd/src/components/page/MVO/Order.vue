@@ -17,7 +17,9 @@
       ></el-input>
     </span>
     <el-button type="danger" icon="el-icon-search"></el-button>
-    <el-button type="danger" size="small" @click="operateSelected">Ship Selected</el-button>
+    <el-button type="danger" size="small" @click="shipSelected" :style="{ display: visibleShip }">Ship Selected</el-button>
+    <el-button type="danger" size="small" @click="cancelSelected" :style="{ display: visibleCancel }">Cancel Selected</el-button>
+
 
     <el-tabs v-model="activeName" @tab-click="handleClick" class="order-tab">
       <el-tab-pane label="Awaiting Payment" name="first">
@@ -110,6 +112,8 @@
 export default {
   data() {
     return {
+      visibleShip: 'none', 
+      visibleCancel: 'none',
       tableData: [],
       selections: [],
       dialogVisible: false,
@@ -118,6 +122,8 @@ export default {
       sts_cd: '',
       opRow: '',
       opIndex: '',
+      tmpStscd: '',
+      multi: false,
       trackTable: {
         trackingCompany: '',
       }
@@ -141,24 +147,12 @@ export default {
       });
   },
   methods: {
-    operateSelected(){
-      this.dialogVisible = true;
-      
-      console.log(JSON.stringify(this.selections))
-      this.$post("/order/test", {
-        orders: JSON.stringify(this.selections)
-      }).then(res => {
-        //处理response
-        console.log(res)
-        if (res.code == 504) {
-          this.$message.warning(res.message);
-          return;
-        }
-        if (res.code == 200) {
-          // this.$root.user_id=res.data.user_id;
-          this.tableData = res.data
-        }
-      });
+    cancelSelected(){
+
+    },
+    shipSelected(){
+      this.dialogVisible = true;  
+      this.multi = true;
     },
     handleSelectionChange(val){
       
@@ -187,29 +181,69 @@ export default {
       })
     },
 
+    refresh(){
+      this.$post("/order/getOrders",{
+        user_id:  sessionStorage.getItem("user_id"),
+        sts_cd: this.tmpStscd
+      }).then(res=>{
+        console.log(res);
+        this.tableData = res.data;
+      });
+    },
+
     submitForm(formName){
       this.$refs[formName].validate(valid => {
         if(valid){
-          this.$post("/order/deliverOrder", {
-            or_id: this.opRow.or_id,
-            tracking_number: '',
-            tracking_company: this.trackTable.trackingCompany,
-          }).then(res => {
-            //处理response
-            console.log(res)
-            if (res.code == "504") {
-              this.$message.warning(res.message);
-              this.$refs[formName].resetFields();
-              return;
-            }
-            if (res.code == 200) {
-              // this.$root.user_id=res.data.user_id;
-              // this.tableData = res.data
-              this.tableData.splice(this.opIndex, 1);  
-              this.$refs[formName].resetFields();
-              this.dialogVisible = false;
-            }
-          });
+          if(this.multi){
+            this.multi = false;
+            console.log("JSON.stringify(this.selections)")
+            this.$post("/order/shipSelected", {
+              tracking_company: this.trackTable.trackingCompany,
+              orders: JSON.stringify(this.selections)
+            }).then(res => {
+              //处理response
+              console.log(res)
+              if (res.code == 504) {
+                this.$message.warning(res.message);
+                this.$refs[formName].resetFields();
+                return;
+              }
+              if (res.code == 200) {
+                // this.$root.user_id=res.data.user_id;
+                // this.tableData = res.data
+                this.$refs[formName].resetFields();
+                this.dialogVisible = false;
+                this.refresh();
+              }
+            });
+            this.dialogVisible = false;
+            return;
+          }if(!this.multi){
+              this.$post("/order/deliverOrder", {
+              or_id: this.opRow.or_id,
+              tracking_number: '',
+              tracking_company: this.trackTable.trackingCompany,
+            }).then(res => {
+              //处理response
+              console.log(res)
+              if (res.code == "504") {
+                this.$message.warning(res.message);
+                this.$refs[formName].resetFields();
+                return;
+              }
+              if (res.code == 200) {
+                // this.$root.user_id=res.data.user_id;
+                // this.tableData = res.data
+                // this.tableData.splice(this.opIndex, 1);  
+                this.$refs[formName].resetFields();
+                this.refresh();
+              }
+              
+            });
+            this.dialogVisible = false;
+            
+          }
+          
         }else{
           return false;
         }
@@ -226,25 +260,35 @@ export default {
     handleClick(tab) {
       this.tableData="";
       console.log(tab.index);
-      let tmpStscd = 0;
+      this.tmpStscd = 0;
       if(tab.index == 0){
-        tmpStscd = 1
+        this.visibleCancel = 'none';
+        this.visibleShip = 'none';
+        this.tmpStscd = 1
       }
       if(tab.index == 1 ){
-        tmpStscd = 2
+        this.visibleCancel = 'none';
+        this.visibleShip = '';
+        this.tmpStscd = 2
       }
       if(tab.index == 2){
-        tmpStscd = 3
+        this.visibleCancel = '';
+        this.visibleShip = 'none';
+        this.tmpStscd = 3
       }
       if(tab.index == 3){
-        tmpStscd = 4
+        this.visibleCancel = 'none';
+        this.visibleShip = 'none';
+        this.tmpStscd = 4
       }
       if(tab.index == 4){
-        tmpStscd = 0
+        this.visibleCancel = 'none';
+        this.visibleShip = 'none';
+        this.tmpStscd = 0
       }
       this.$post("/order/getOrders",{
         user_id:  sessionStorage.getItem("user_id"),
-        sts_cd: tmpStscd
+        sts_cd: this.tmpStscd
       }).then(res=>{
         console.log(res);
         this.tableData = res.data;
