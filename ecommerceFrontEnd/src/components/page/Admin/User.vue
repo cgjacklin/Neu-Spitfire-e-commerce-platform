@@ -14,12 +14,17 @@
     <el-button type="danger" icon="el-icon-plus" @click="drawer = true">Add</el-button>
 
     <el-divider></el-divider>
-    <el-table :data="tableData" style="width: 100%" class="table">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      class="table"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column prop="userid" label="User id"></el-table-column>
+      <el-table-column prop="user_id" label="User id"></el-table-column>
       <el-table-column prop="username" label="User name"></el-table-column>
-      <el-table-column prop="nickname" label="Nick name"></el-table-column>
-      <el-table-column prop="role" label="Role"></el-table-column>
+      <el-table-column prop="name" label="Nick name"></el-table-column>
+      <el-table-column prop="role_id" label="Role"></el-table-column>
       <el-table-column prop="phone" label="Phone number"></el-table-column>
       <el-table-column prop="email" label="E-mail"></el-table-column>
       <el-table-column label="operation">
@@ -30,6 +35,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <br />
+    <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-drawer title="drawer" :visible.sync="drawer" size="35%" :with-header="false">
       <div class="form-div">
         <h3>User info</h3>
@@ -44,10 +51,10 @@
           <br />
           <el-form-item
             label="Nick name"
-            prop="nickname"
+            prop="name"
             :rules="[{ required: true, message: 'Please enter the nickname'}]"
           >
-            <el-input style="width:20rem" v-model="userForm.nickname" autocomplete="off"></el-input>
+            <el-input style="width:20rem" v-model="userForm.name" autocomplete="off"></el-input>
           </el-form-item>
           <br />
           <el-form-item
@@ -81,11 +88,11 @@
           <el-form-item
             class="radio"
             label="Role"
-            prop="role"
+            prop="role_id"
             :rules="[{ required: true, message: 'Please choose the Role'}]"
           >
-            <el-radio v-model="userForm.role" label="MVO">Brand-seller</el-radio>
-            <el-radio v-model="userForm.role" label="BVO">Borrow-seller</el-radio>
+            <el-radio v-model="userForm.role_id" label="MVO">Brand-seller</el-radio>
+            <el-radio v-model="userForm.role_id" label="BVO">Borrow-seller</el-radio>
           </el-form-item>
 
           <el-form-item class="user-form-button">
@@ -184,13 +191,14 @@ export default {
       drawer: false,
       tableData: [],
       table: [],
+      multipleSelection: [],
       userForm: {
         username: "",
-        nickname: "",
+        name: "",
         password: "",
         phone: "",
         email: "",
-        role: ""
+        role_id: ""
       }
     };
   },
@@ -207,39 +215,12 @@ export default {
   },
   methods: {
     getUsers() {
-      this.tableData = [];
       this.$post("/rle/getUsers", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         if (res.code == 200) {
-          for (var i = 0; i < res.data.user.length; i++) {
-            var role;
-            if (res.data.user[i].role_id == 1) {
-              role = "MVO";
-            } else if (res.data.user[i].role_id == 2) {
-              role = "BVO";
-            } else if (res.data.user[i].role_id == 0) {
-              role = "Admin";
-            }
-            this.tableData.push({
-              userid: res.data.user[i].user_id,
-              username: res.data.user[i].username,
-              nickname: res.data.user[i].name,
-              password: res.data.user[i].password,
-              role: role,
-              phone: res.data.user[i].phone,
-              email: res.data.user[i].email
-            });
-            this.table.push({
-              userid: res.data.user[i].user_id,
-              username: res.data.user[i].username,
-              nickname: res.data.user[i].name,
-              password: res.data.user[i].password,
-              role: role,
-              phone: res.data.user[i].phone,
-              email: res.data.user[i].email
-            });
-          }
+          this.tableData = res.data.user;
+          this.table = res.data.user;
         } else {
           if (res.message == "Permission denied") {
             this.$message.warning("Permission denied");
@@ -290,14 +271,34 @@ export default {
     remove(row) {
       this.$post("/rle/deletedUser", {
         user_id: sessionStorage.getItem("user_id"),
-        delete_id: row.userid
+        delete_id: row.user_id
       }).then(res => {
         if (res.code == 200) {
           this.getUsers();
+          this.$message.success("Delete success");
         } else {
           this.$message.warning("Delete failed");
         }
       });
+    },
+    removeMore() {
+      this.multipleSelection.forEach(element => {
+        this.$post("/rle/deletedUser", {
+          user_id: sessionStorage.getItem("user_id"),
+          delete_id: element.user_id
+        }).then(res => {
+          if (res.code == 200) {
+            this.getUsers();
+          } else {
+            this.$message.warning("Delete failed");
+          }
+        });
+      });
+
+      this.$message.success("Delete success");
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     search() {
       this.tableData = this.table.filter(e =>
