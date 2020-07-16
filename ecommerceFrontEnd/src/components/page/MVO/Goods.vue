@@ -379,7 +379,7 @@ export default {
   },
   methods: {
     add(){
-      // console.log(this.addGoodsForm)
+      console.log(this.addGoodsForm)
       this.addGoodsForm.brd_id="";
       // this.addGoodsForm
       this.isAdd = true;
@@ -392,7 +392,6 @@ export default {
       }).then (res=> {
         if(res.code == 504){
           this.$message.warning(res.message);
-          this.refresh();
           return;
         }
         if(res.code == 200){
@@ -407,19 +406,16 @@ export default {
       this.addGoodsForm.amazon_description = "";
       this.$refs[formName].resetFields();
       this.drawer = false;
-      this.isAdd = false;
       this.count = 0;
       this.fileList = [];
     },
     fileChange() {
       this.count++;
-      // console.log(this.fileList)
     },
 
     handleSuccess(res){
-      // console.log(this.fileList.length)
         if(this.isAdd){
-          // console.log(this.addGoodsForm.brd_id)
+          console.log(this.addGoodsForm.brd_id)
           this.isAdd = false;
           this.$post("/product/addProduct", {
             brd_id: this.addGoodsForm.brd_id,
@@ -444,22 +440,13 @@ export default {
         }).then(res => {
           if(res.code == 504){
             this.$message.warning(res.message);
-            this.refresh();
-            this.addGoodsForm.ebay_description = "";
-            this.addGoodsForm.amazon_description = "";
-                 
-            this.$refs['addGoodsForm'].resetFields();
-            this.fileList = [];
+            this.$refs[formName].resetFields();
             return;
           }
           if(res.code == 200){
             this.$message.success(res.message);
             this.refresh();
-            this.addGoodsForm.ebay_description = "";
-            this.addGoodsForm.amazon_description = "";
-            this.$refs['addGoodsForm'].resetFields();
-            this.fileList = [];
-            return;
+            this.$refs[formName].resetFields();
           }
         })
         }
@@ -488,20 +475,13 @@ export default {
           }).then(res => {
             if(res.code == 504){
               this.$message.warning(res.message);
-              this.addGoodsForm.ebay_description = "";
-              this.addGoodsForm.amazon_description = "";
-              this.$refs['addGoodsForm'].resetFields();
-              this.fileList = [];
+              this.$refs[formName].resetFields();
               return;
             }
             if(res.code == 200){
               this.$message.success(res.message);
               this.refresh();
-              this.addGoodsForm.ebay_description = "";
-              this.addGoodsForm.amazon_description = "";
-              this.$refs['addGoodsForm'].resetFields();
-              this.fileList = [];
-              return;
+              this.$refs[formName].resetFields();
             }
           })
         }
@@ -512,10 +492,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(this.count)
-          console.log(!this.isAdd)
-          
-           if (this.count == 0) {
+          if (this.count == 0) {
             this.$message.warning("Please upload goods picture");
             return;
           }
@@ -527,7 +504,6 @@ export default {
             return;
           }
           this.$refs.upload.submit();
-
         } else {
           return false;
         }
@@ -560,7 +536,6 @@ export default {
       }).then(res => {
         if (res.code == 504) {
           this.$message.warning(res.message);
-          this.tableData = res.data
           return;
         }
         if (res.code == 200) {
