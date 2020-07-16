@@ -285,7 +285,7 @@ public class OrderServiceImpl implements OrderService {
         String password = payOrderRequests.get("password");
         BigDecimal totalMoney = new BigDecimal(payOrderRequests.get("totalMoney"));
 
-
+        
 
         for(int i=0; i<jsonArray.size(); i++){
             JSONObject obj = jsonArray.getJSONObject(i);

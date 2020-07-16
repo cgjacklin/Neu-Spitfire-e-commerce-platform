@@ -158,7 +158,6 @@ export default {
 
             this.dialogVisible = false;
             this.$refs[formName].resetFields();
-            return;
           }
           if (this.isAdd) {
             this.isAdd = false;
@@ -183,7 +182,6 @@ export default {
 
             this.dialogVisible = false;
             this.$refs[formName].resetFields();
-            return;
           }
         } else {
           return false;

@@ -437,19 +437,18 @@ export default {
             warranty_day: this.addGoodsForm.warranty_day,
             remark: res.data,
             user_id: sessionStorage.getItem("user_id")
-          }).then(res => {
-            if(res.code == 504){
-              this.$message.warning(res.message);
-              this.$refs[formName].resetFields();
-              return;
-            }
-            if(res.code == 200){
-              this.$message.success(res.message);
-              this.refresh();
-              this.$refs[formName].resetFields();
-            }
-          })
-          return;
+        }).then(res => {
+          if(res.code == 504){
+            this.$message.warning(res.message);
+            this.$refs[formName].resetFields();
+            return;
+          }
+          if(res.code == 200){
+            this.$message.success(res.message);
+            this.refresh();
+            this.$refs[formName].resetFields();
+          }
+        })
         }
         if(!this.isAdd){
           this.$post("/product/updateProduct", {
@@ -485,7 +484,6 @@ export default {
               this.$refs[formName].resetFields();
             }
           })
-          return;
         }
         this.drawer = false;
         
