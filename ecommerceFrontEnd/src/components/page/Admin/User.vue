@@ -107,11 +107,11 @@
     <el-drawer title="drawer" :visible.sync="drawerPr" size="20%" :with-header="false">
       <div class="form-div">
         <h3>Permission Assignment</h3>
-        <div class="switch" v-for="item in menu" :key="item.index">
-          <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8"></el-switch>
+        <div class="switch" v-for="item in menu" :key="item.menu_id">
+          <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8" @change="changePermission($event,item.menu_id)"></el-switch>
           <p class="p-menu">
-            <i :class="item.icon"></i>
-            {{item.title}}
+            <i :class="item.menu_icon"></i>
+            {{item.menu_name}}
           </p>
         </div>
       </div>
@@ -123,69 +123,8 @@
 export default {
   data() {
     return {
-      menu: [
-        {
-          icon: "el-icon-school",
-          index: "/company",
-          title: "Company information",
-          state: true
-        },
-        {
-          icon: "el-icon-goods",
-          index: "/goods",
-          title: "Goods management"
-        },
-        {
-          icon: "el-icon-s-order",
-          index: "/MVO/order",
-          title: "Order management"
-        },
-        {
-          icon: "el-icon-wallet",
-          index: "/MVO/wallet",
-          title: "Wallet"
-        },
-        {
-          icon: "el-icon-house",
-          index: "/store",
-          title: "Store management"
-        },
-        {
-          icon: "el-icon-goods",
-          index: "/goodslist",
-          title: "Goods list"
-        },
-        {
-          icon: "el-icon-star-off",
-          index: "/wishlist",
-          title: "Wish list"
-        },
-        {
-          icon: "el-icon-notebook-2",
-          index: "/menu",
-          title: "Menu management"
-        },
-        {
-          icon: "el-icon-user",
-          index: "/user",
-          title: "User management"
-        },
-        {
-          icon: "el-icon-notebook-1",
-          index: "/param",
-          title: "Parameter management"
-        },
-        {
-          icon: "el-icon-collection",
-          index: "/data",
-          title: "Data dictionary"
-        },
-        {
-          icon: "el-icon-document-checked",
-          index: "/check",
-          title: "Fund check"
-        }
-      ],
+      menu: [],
+      beingChangedUserID:0,
       search_name: "",
       drawerPr: false,
       drawer: false,
@@ -229,8 +168,57 @@ export default {
         }
       });
     },
-    permissions(row) {
+    permissions(row) {    //权限管理获取状态列表
+      this.$post("/menuList/getAllMenusWithState", {
+        user_id: row.user_id
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          this.menu = res.data;
+          this.beingChangedUserID = row.user_id;
+        }
+      });
+
       this.drawerPr = true;
+    },
+    changePermission(state,menu_id){  //权限改变回调函数
+      if(this.beingChangedUserID==0){
+        this.$message.warning("You are changing the wrong user, confirm user again.");
+      }
+      if(state == true){
+        this.$post("/menuList/addMenuList", {
+        user_id: this.beingChangedUserID,
+        menu_id: menu_id
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning("Permission modification failed, try again");
+          this.drawerPr = false;
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Success upgrade permission of current user!");
+        }
+      });
+      }
+      if(state == false){
+        this.$post("/menuList/deleteMenuList", {
+        user_id: this.beingChangedUserID,
+        menu_id: menu_id
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning("Permission modification failed, try again");
+          this.drawerPr = false;
+          return;
+        }
+        if (res.code == 200) {
+          this.$message.success("Success degrade permission of current user!");
+        }
+      });
+      }
+      console.log(state);
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
