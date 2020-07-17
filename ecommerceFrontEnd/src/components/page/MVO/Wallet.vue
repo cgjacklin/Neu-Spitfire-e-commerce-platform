@@ -308,6 +308,7 @@ export default {
             res.data.WalletTransactionRecord[i].create_time.slice(0, 10) +
             " " +
             res.data.WalletTransactionRecord[i].create_time.slice(11, 19);
+          console.log(res.data.WalletTransactionRecord[i].create_time)
           var st;
           if (res.data.WalletTransactionRecord[i].status == 1) {
             st = "Applying";
