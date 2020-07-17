@@ -102,7 +102,7 @@
           </el-table-column>
         </el-table>
         <br />
-        <el-button type="danger" size="medium" @click="cancelSelected">Cancel Selected</el-button>
+        <!-- <el-button type="danger" size="medium" @click="cancelSelected">Cancel Selected</el-button> -->
       </el-tab-pane>
       <el-tab-pane label="Completed Orders" name="fourth">
         <el-table :data="tableData" style="width: 100%" class="table">
@@ -255,7 +255,7 @@ export default {
       alert("a");
     },
     cancelSelected() {
-      if(this.selection == null){
+      if(this.selections.length==0){
         this.$message.warning("Please select item")
         return
       }
@@ -286,14 +286,12 @@ export default {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         console.log(res);
-        if (res.code == 504) {
-          this.$message.warning(res.message);
-          return;
-        }
         if (res.code == 200) {
           this.$message.success(res.message);
           this.tableData.splice(index, 1);
+          return;
         }
+        this.$message.warning(res.message);
       });
     },
 
