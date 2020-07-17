@@ -56,9 +56,7 @@
           v-model="time"
           @change="search"
           type="daterange"
-      
           unlink-panels
-          
           start-placeholder="Begin date"
           end-placeholder="End date"
           value-format="yyyy-MM-dd"
@@ -79,13 +77,20 @@
       </div>
     </div>
 
-    <el-dialog title="Deposit" :visible.sync="dialogDeposit" width="30%">
+    <el-dialog title="Deposit" :visible.sync="dialogDeposit" width="32%">
+      <div style="height:6rem">
+        <br />
+        <span>
+          Deposit amount：
+          <el-input style="width:200px" v-model="Depositing_money"></el-input>
+        </span>
+      </div>
       <span slot="footer" class="dialog-footer">
-
-         <el-input v-model="Depositing_money"></el-input>
-
         <el-button @click="dialogDeposit = false">cancel</el-button>
-        <el-button type="danger" @click="deposit">sure</el-button>
+        <el-popover placement="top-end" title="WeChart Pay" width="150" trigger="hover">
+          <img :src="imgSrc" style="width:150px" @click="wxpay" />
+          <el-button type="danger" slot="reference" @click="deposit">sure</el-button>
+        </el-popover>
       </span>
     </el-dialog>
 
@@ -218,6 +223,8 @@ export default {
       }
     };
     return {
+      pay: false,
+      imgSrc: require("../../../assets/pay.jpg"),
       emptyImage: require("../../../assets/empty-wallet.png"),
       emptyShow: true,
       mainShow: false,
@@ -251,14 +258,14 @@ export default {
   },
   mounted() {
     this.$post("/wal/getroleid", {
-        user_id: sessionStorage.getItem("user_id")
-      }).then(res => {
-    if(res.message=="2"||res.message=="0"){
-    this.checkWallet();
-    this.getRecord();
-    }else{
-      this.$message.warning("Permission denied");
-    } 
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res => {
+      if (res.message == "2" || res.message == "0") {
+        this.checkWallet();
+        this.getRecord();
+      } else {
+        this.$message.warning("Permission denied");
+      }
     });
   },
   methods: {
@@ -291,8 +298,7 @@ export default {
           this.$post("/wal/getAvailable_money", {
             user_id: sessionStorage.getItem("user_id")
           }).then(res => {
-            
-            this.money = res.message
+            this.money = res.message;
             this.emptyShow = false;
             this.mainShow = true;
           });
@@ -300,8 +306,8 @@ export default {
       });
     },
     getRecord() {
-       this.tableData=[];
-       this.table = [];
+      this.tableData = [];
+      this.table = [];
       this.$post("/wal/getRecord", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
@@ -310,21 +316,21 @@ export default {
             res.data.WalletTransactionRecord[i].create_time.slice(0, 10) +
             " " +
             res.data.WalletTransactionRecord[i].create_time.slice(11, 19);
-             var st;
-              if ( res.data.WalletTransactionRecord[i].status == 1) {
-              st = "Applying";
-            } else if ( res.data.WalletTransactionRecord[i].status == 2) {
-              st = "Completed";
-            } else if ( res.data.WalletTransactionRecord[i].status == 0) {
-              st = "Failed";
-            }
-            this.table.push({
+          var st;
+          if (res.data.WalletTransactionRecord[i].status == 1) {
+            st = "Applying";
+          } else if (res.data.WalletTransactionRecord[i].status == 2) {
+            st = "Completed";
+          } else if (res.data.WalletTransactionRecord[i].status == 0) {
+            st = "Failed";
+          }
+          this.table.push({
             num: res.data.WalletTransactionRecord[i].transaction_id,
             amount: res.data.WalletTransactionRecord[i].account_name,
             money: res.data.WalletTransactionRecord[i].transaction_money,
             time: date,
             state: st
-          }); 
+          });
           this.tableData.push({
             num: res.data.WalletTransactionRecord[i].transaction_id,
             amount: res.data.WalletTransactionRecord[i].account_name,
@@ -416,7 +422,14 @@ export default {
       this.dialogVisible = false;
       this.dialogAccount = false;
     },
+    wxpay() {
+      this.pay = true;
+    },
     deposit() {
+      if (!this.pay) {
+        this.$message.warning("Please scan the code to pay");
+        return;
+      }
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -428,7 +441,9 @@ export default {
           password: pass
         }).then(res => {
           if (res.code == 200) {
-            this.$message.success("Deposit complete");
+            this.$message.success(
+              "Deposit applying complete, Please wait for review."
+            );
           } else if (res.code == 504) {
             this.$message.warning("Deposit failed");
           }

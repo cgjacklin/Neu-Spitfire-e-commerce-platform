@@ -77,10 +77,12 @@
       </div>
     </div>
 
-    <el-dialog title="Withdraw" :visible.sync="dialogWithdraw" width="30%">
+    <el-dialog title="Withdraw" :visible.sync="dialogWithdraw" width="25%">
+      <span>
+        Withdraw amount：
+        <el-input style="width:200px" v-model="Withdraw_money"></el-input>
+      </span>
       <span slot="footer" class="dialog-footer">
-        <el-input v-model="Withdraw_money"></el-input>
-
         <el-button @click="dialogWithdraw = false">cancel</el-button>
         <el-button type="danger" @click="Withdraw">sure</el-button>
       </span>
@@ -424,7 +426,9 @@ export default {
           password: pass
         }).then(res => {
           if (res.code == 200) {
-            this.$message.success("Withdraw complete");
+            this.$message.success(
+              "Withdraw applying complete, Please wait for review."
+            );
           } else if (res.code == 504) {
             if (res.message == "Not sufficient funds") {
               this.$message.warning("Not sufficient funds");
