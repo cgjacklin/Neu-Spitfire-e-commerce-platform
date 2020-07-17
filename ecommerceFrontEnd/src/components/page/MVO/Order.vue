@@ -263,7 +263,8 @@ export default {
       this.multi = true;
     },
     shipSelected() {
-      if(this.selection == null){
+      // console.log(this.selections)
+      if(this.selections.length==0){
         this.$message.warning("Please select item")
         return
       }
@@ -289,7 +290,6 @@ export default {
           this.$message.warning(res.message);
           return;
         }
-
         if (res.code == 200) {
           this.$message.success(res.message);
           this.tableData.splice(index, 1);
@@ -353,6 +353,7 @@ export default {
                 // this.$root.user_id=res.data.user_id;
                 // this.tableData = res.data
                 // this.tableData.splice(this.opIndex, 1);
+                this.$message.success(res.message);
                 this.$refs[formName].resetFields();
                 this.refresh();
               }
