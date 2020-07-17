@@ -107,7 +107,24 @@
     <el-drawer title="drawer" :visible.sync="drawerPr" size="20%" :with-header="false">
       <div class="form-div">
         <h3>Permission Assignment</h3>
-        <div class="switch" v-for="item in menu" :key="item.menu_id">
+        <span>Admin：</span>
+        <div class="switch" v-for="item in menu0" :key="item.menu_id">
+          <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8" @change="changePermission($event,item.menu_id)"></el-switch>
+          <p class="p-menu">
+            <i :class="item.menu_icon"></i>
+            {{item.menu_name}}
+          </p>
+        </div>
+        <span>MVO：</span>
+        <div class="switch" v-for="item in menu1" :key="item.menu_id">
+          <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8" @change="changePermission($event,item.menu_id)"></el-switch>
+          <p class="p-menu">
+            <i :class="item.menu_icon"></i>
+            {{item.menu_name}}
+          </p>
+        </div>
+        <span>BVO：</span>
+        <div class="switch" v-for="item in menu2" :key="item.menu_id">
           <el-switch v-model="item.state" active-color="#13ce66" inactive-color="#D8D8D8" @change="changePermission($event,item.menu_id)"></el-switch>
           <p class="p-menu">
             <i :class="item.menu_icon"></i>
@@ -123,7 +140,9 @@
 export default {
   data() {
     return {
-      menu: [],
+      menu0: [],
+      menu1: [],
+      menu2: [],
       beingChangedUserID:0,
       search_name: "",
       drawerPr: false,
@@ -177,7 +196,9 @@ export default {
           return;
         }
         if (res.code == 200) {
-          this.menu = res.data;
+          this.menu0 = res.data.filter(e => e.parent_id == 0);
+          this.menu1 = res.data.filter(e => e.parent_id == 1);
+          this.menu2 = res.data.filter(e => e.parent_id == 2);
           this.beingChangedUserID = row.user_id;
         }
       });
