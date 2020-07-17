@@ -75,6 +75,7 @@
           label-width="150px"
           class="add-goods-form"
         >
+        <el-button type="danger" icon="el-icon-plus" @click="check">Check</el-button>
           <el-form-item
             label="Goods title"
             prop="title"
@@ -186,16 +187,17 @@
               <span>Goods picture:</span>
               <br />
               <br />
-              <el-upload
+              <!-- <el-upload
                 style="width:24rem"
                 ref="upload"
                 drag
-                action="http://localhost:8088/product/uploadPicture"
+                action="fakeurl"
                 :name="fileName"
                 :file-list="fileList"
                 :on-success="handleSuccess"
                 :on-change="fileChange"
-                :auto-upload="false"
+                :before-upload="uploadPicture"
+                :auto-upload="true"
                 list-type="picture"
                 :limit="1"
               >
@@ -208,7 +210,7 @@
                   class="el-upload__tip"
                   slot="tip"
                 >It is recommended to upload JPG/PNG files and not exceed 500kb</div>
-              </el-upload>
+              </el-upload> -->
             </div>
             <div>
               <span>Goods parameters:</span>
@@ -410,12 +412,12 @@ export default {
       }).then(res => {
         if (res.code == 504) {
           this.$message.warning(res.message);
-          this.refresh();
+          // this.refresh();
           return;
         }
         if (res.code == 200) {
           this.$message.success(res.message);
-          this.refresh();
+          // this.refresh();
         }
       });
     },
@@ -429,108 +431,130 @@ export default {
     },
     fileChange() {
       this.count++;
+      console.log("count");
+      console.log(this.count);
+    },
+    uploadPicture(file){
+      let fd = new FormData();//通过form数据格式来传
+      fd.append("fileName", file);
+      this.$post("/product/uploadPicture", fd,{
+        
+      }).then(res=>{
+        this.addGoodsForm.remark = res.data;
+        console.log(res.data);
+      })
     },
     handleSuccess(res) {
-      if (this.isAdd) {
-        console.log(this.addGoodsForm.brd_id);
-        this.isAdd = false;
-        this.$post("/product/addProduct", {
-          brd_id: this.addGoodsForm.brd_id,
-          retail_price: this.addGoodsForm.retail_price,
-          sku_cd: this.addGoodsForm.sku_cd,
-          title: this.addGoodsForm.title,
-          upc: this.addGoodsForm.upc,
-          ean: this.addGoodsForm.ean,
-          name_en: this.addGoodsForm.name_en,
-          ebay_description: this.addGoodsForm.ebay_description,
-          amazon_description: this.addGoodsForm.amazon_description,
-          key_words: this.addGoodsForm.key_words,
-          width: this.addGoodsForm.width,
-          height: this.addGoodsForm.height,
-          weight: this.addGoodsForm.weight,
-          length: this.addGoodsForm.length,
-          model: this.addGoodsForm.model,
-          replenishment_period: this.addGoodsForm.replenishment_period,
-          warranty_day: this.addGoodsForm.warranty_day,
-          remark: res.data,
-          user_id: sessionStorage.getItem("user_id")
-        }).then(res => {
-          if (res.code == 504) {
-            this.$message.warning(res.message);
-            this.$refs["addGoodsForm"].resetFields();
-            this.addGoodsForm.ebay_description = "";
-            this.addGoodsForm.amazon_description = "";
-            this.count = 0;
-            this.fileList = [];
-            return;
-          }
-          if (res.code == 200) {
-            this.$message.success(res.message);
-            this.refresh();
-            this.$refs["addGoodsForm"].resetFields();
-            this.addGoodsForm.ebay_description = "";
-            this.addGoodsForm.amazon_description = "";
-            this.count = 0;
-            this.fileList = [];
-            return;
-          }
-        });
-      }
-      if (!this.isAdd) {
-        console.log("update");
-        console.log(this.addGoodsForm);
-        this.$post("/product/updateProduct", {
-          brd_id: this.addGoodsForm.brd_id,
-          retail_price: this.addGoodsForm.retail_price,
-          sku_cd: this.addGoodsForm.sku_cd,
-          title: this.addGoodsForm.title,
-          upc: this.addGoodsForm.upc,
-          ean: this.addGoodsForm.ean,
-          name_en: this.addGoodsForm.name_en,
-          ebay_description: this.addGoodsForm.ebay_description,
-          amazon_description: this.addGoodsForm.amazon_description,
-          key_words: this.addGoodsForm.key_words,
-          width: this.addGoodsForm.width,
-          height: this.addGoodsForm.height,
-          weight: this.addGoodsForm.weight,
-          length: this.addGoodsForm.length,
-          model: this.addGoodsForm.model,
-          replenishment_period: this.addGoodsForm.replenishment_period,
-          warranty_day: this.addGoodsForm.warranty_day,
-          remark: res.data,
-          user_id: sessionStorage.getItem("user_id"),
-          pro_id: this.addGoodsForm.pro_id
-        }).then(res => {
-          if (res.code == 504) {
-            this.$message.warning(res.message);
-            this.$refs["addGoodsForm"].resetFields();
-            this.addGoodsForm.ebay_description = "";
-            this.addGoodsForm.amazon_description = "";
-            this.count = 0;
-            this.fileList = [];
-            return;
-          }
-          if (res.code == 200) {
-            this.$message.success(res.message);
-            this.refresh();
-            this.$refs["addGoodsForm"].resetFields();
-            this.addGoodsForm.ebay_description = "";
-            this.addGoodsForm.amazon_description = "";
-            this.count = 0;
-            this.fileList = [];
-            return;
-          }
-        });
-      }
-      this.drawer = false;
+    //   console.log("handlesuccess")
+    //   if (this.isAdd) {
+    //     console.log("add")
+    //     // console.log(this.addGoodsForm.brd_id);
+    //     this.isAdd = false;
+    //     this.$post("/product/addProduct", {
+    //       brd_id: this.addGoodsForm.brd_id,
+    //       retail_price: this.addGoodsForm.retail_price,
+    //       sku_cd: this.addGoodsForm.sku_cd,
+    //       title: this.addGoodsForm.title,
+    //       upc: this.addGoodsForm.upc,
+    //       ean: this.addGoodsForm.ean,
+    //       name_en: this.addGoodsForm.name_en,
+    //       ebay_description: this.addGoodsForm.ebay_description,
+    //       amazon_description: this.addGoodsForm.amazon_description,
+    //       key_words: this.addGoodsForm.key_words,
+    //       width: this.addGoodsForm.width,
+    //       height: this.addGoodsForm.height,
+    //       weight: this.addGoodsForm.weight,
+    //       length: this.addGoodsForm.length,
+    //       model: this.addGoodsForm.model,
+    //       replenishment_period: this.addGoodsForm.replenishment_period,
+    //       warranty_day: this.addGoodsForm.warranty_day,
+    //       remark: res.data,
+    //       user_id: sessionStorage.getItem("user_id")
+    //     }).then(res => {
+    //       if (res.code == 504) {
+    //         this.$message.warning(res.message);
+    //         this.$refs["addGoodsForm"].resetFields();
+    //         this.addGoodsForm.ebay_description = "";
+    //         this.addGoodsForm.amazon_description = "";
+    //         this.count = 0;
+    //         this.fileList = [];
+    //         return;
+    //       }
+    //       if (res.code == 200) {
+    //         this.$message.success(res.message);
+    //         this.refresh();
+    //         this.$refs["addGoodsForm"].resetFields();
+    //         this.addGoodsForm.ebay_description = "";
+    //         this.addGoodsForm.amazon_description = "";
+    //         this.count = 0;
+    //         this.fileList = [];
+    //         return;
+    //       }
+    //     });
+    //     this.drawer = false;
+    //     return;
+    //   }
+    //   if (!this.isAdd) {
+    //     console.log("update");
+    //     // console.log(this.addGoodsForm.title);
+    //     console.log(this.addGoodsForm)
+    //     let title = this.addGoodsForm.title;
+    //     console.log(title)
+    //     this.$post("/product/updateProduct", {
+    //       brd_id: this.addGoodsForm.brd_id,
+    //       retail_price: this.addGoodsForm.retail_price,
+    //       sku_cd: this.addGoodsForm.sku_cd,
+    //       title: title,
+    //       upc: this.addGoodsForm.upc,
+    //       ean: this.addGoodsForm.ean,
+    //       name_en: this.addGoodsForm.name_en,
+    //       ebay_description: this.addGoodsForm.ebay_description,
+    //       amazon_description: this.addGoodsForm.amazon_description,
+    //       key_words: this.addGoodsForm.key_words,
+    //       width: this.addGoodsForm.width,
+    //       height: this.addGoodsForm.height,
+    //       weight: this.addGoodsForm.weight,
+    //       length: this.addGoodsForm.length,
+    //       model: this.addGoodsForm.model,
+    //       replenishment_period: this.addGoodsForm.replenishment_period,
+    //       warranty_day: this.addGoodsForm.warranty_day,
+    //       remark: res.data,
+    //       user_id: sessionStorage.getItem("user_id"),
+    //       pro_id: this.addGoodsForm.pro_id
+    //     }).then(res => {
+    //       if (res.code == 504) {
+    //         this.$message.warning(res.message);
+    //         this.$refs["addGoodsForm"].resetFields();
+    //         this.addGoodsForm.ebay_description = "";
+    //         this.addGoodsForm.amazon_description = "";
+    //         this.count = 0;
+    //         this.fileList = [];
+    //         return;
+    //       }
+    //       if (res.code == 200) {
+    //         this.$message.success(res.message);
+    //         this.refresh();
+    //         this.$refs["addGoodsForm"].resetFields();
+    //         this.addGoodsForm.ebay_description = "";
+    //         this.addGoodsForm.amazon_description = "";
+    //         this.count = 0;
+    //         this.fileList = [];
+    //         return;
+    //       }
+    //     });
+    //     this.drawer = false;
+    //     return;
+    //   }
+      
     },
     submitForm(formName) {
+  
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if (this.count == 0) {
-            this.$message.warning("Please upload goods picture");
-            return;
-          }
+          // if (this.count == 0) {
+          //   this.$message.warning("Please upload goods picture");
+          //   return;
+          // }
           if (
             this.addGoodsForm.ebay_description == "" ||
             this.addGoodsForm.amazon_description == ""
@@ -538,22 +562,146 @@ export default {
             this.$message.warning("Please enter the description");
             return;
           }
-          console.log(this.addGoodsForm);
-          this.$refs.upload.submit();
+          // this.$refs.upload.submit();
+          // console.log("handlesuccess")
+          // if (this.isAdd) {
+          //   console.log("add")
+          //   // console.log(this.addGoodsForm.brd_id);
+          //   this.isAdd = false;
+          //   this.$post("/product/addProduct", {
+          //     brd_id: this.addGoodsForm.brd_id,
+          //     retail_price: this.addGoodsForm.retail_price,
+          //     sku_cd: this.addGoodsForm.sku_cd,
+          //     title: this.addGoodsForm.title,
+          //     upc: this.addGoodsForm.upc,
+          //     ean: this.addGoodsForm.ean,
+          //     name_en: this.addGoodsForm.name_en,
+          //     ebay_description: this.addGoodsForm.ebay_description,
+          //     amazon_description: this.addGoodsForm.amazon_description,
+          //     key_words: this.addGoodsForm.key_words,
+          //     width: this.addGoodsForm.width,
+          //     height: this.addGoodsForm.height,
+          //     weight: this.addGoodsForm.weight,
+          //     length: this.addGoodsForm.length,
+          //     model: this.addGoodsForm.model,
+          //     replenishment_period: this.addGoodsForm.replenishment_period,
+          //     warranty_day: this.addGoodsForm.warranty_day,
+          //     remark: this.addGoodsForm.remark,
+          //     user_id: sessionStorage.getItem("user_id")
+          //   }).then(res => {
+          //     if (res.code == 504) {
+          //       this.$message.warning(res.message);
+          //       this.$refs["addGoodsForm"].resetFields();
+          //       this.addGoodsForm.ebay_description = "";
+          //       this.addGoodsForm.amazon_description = "";
+          //       this.count = 0;
+          //       this.fileList = [];
+          //       return;
+          //     }
+          //     if (res.code == 200) {
+          //       this.$message.success(res.message);
+          //       this.refresh();
+          //       this.$refs["addGoodsForm"].resetFields();
+          //       this.addGoodsForm.ebay_description = "";
+          //       this.addGoodsForm.amazon_description = "";
+          //       this.count = 0;
+          //       this.fileList = [];
+          //       return;
+          //     }
+          //   });
+          //   this.drawer = false;
+          //   return;
+          // }
+          // if (!this.isAdd) {
+            console.log("update");
+            console.log(this.addGoodsForm.title);
+            console.log(this.addGoodsForm)
+            this.$post("/product/updateProduct", {
+              brd_id: this.addGoodsForm.brd_id,
+              retail_price: this.addGoodsForm.retail_price,
+              sku_cd: this.addGoodsForm.sku_cd,
+              title: this.title,
+              upc: this.addGoodsForm.upc,
+              ean: this.addGoodsForm.ean,
+              name_en: this.addGoodsForm.name_en,
+              ebay_description: this.addGoodsForm.ebay_description,
+              amazon_description: this.addGoodsForm.amazon_description,
+              key_words: this.addGoodsForm.key_words,
+              width: this.addGoodsForm.width,
+              height: this.addGoodsForm.height,
+              weight: this.addGoodsForm.weight,
+              length: this.addGoodsForm.length,
+              model: this.addGoodsForm.model,
+              replenishment_period: this.addGoodsForm.replenishment_period,
+              warranty_day: this.addGoodsForm.warranty_day,
+              remark: this.addGoodsForm.remark,
+              user_id: sessionStorage.getItem("user_id"),
+              pro_id: this.addGoodsForm.pro_id
+            }).then(res => {
+              if (res.code == 504) {
+                this.$message.warning(res.message);
+                this.$refs["addGoodsForm"].resetFields();
+                this.addGoodsForm.ebay_description = "";
+                this.addGoodsForm.amazon_description = "";
+                this.count = 0;
+                this.fileList = [];
+                return;
+              }
+              if (res.code == 200) {
+                this.$message.success(res.message);
+                // this.refresh();
+                // this.$refs["addGoodsForm"].resetFields();
+                // this.addGoodsForm.ebay_description = "";
+                // this.addGoodsForm.amazon_description = "";
+                // this.count = 0;
+                // this.fileList = [];
+                return;
+              }
+            });
+            // this.drawer = false;
+            return;
+          // }
         } else {
           return false;
         }
       });
     },
+    check(){
+      console.log(this.addGoodsForm.title)
+      console.log(this.addGoodsForm)
+    },
     edit(row) {
       this.drawer = true;
-      this.$nextTick(function() {
-        // this.addGoodsForm = JSON.parse(JSON.stringify(row));
-        this.addGoodsForm = row;
-      });
-      console.log("add");
-      console.log(this.addGoodsForm);
-      console.log(this.addGoodsForm.pro_id);
+      // this.$nextTick(function() {
+      //   this.addGoodsForm = JSON.parse(JSON.stringify(row));
+      //   // this.addGoodsForm = row;
+      // });
+      // this.addGoodsForm = row;
+      this.addGoodsForm = JSON.parse(JSON.stringify(row));
+      // console.log("add");
+      // console.log(this.addGoodsForm);
+      // console.log(this.addGoodsForm.pro_id);
+
+
+      // this.addGoodsForm.pro_id=row.pro_id;
+      // this.addGoodsForm.title=row.title;
+      // this.addGoodsForm.name_en=row.name_en;
+      // this.addGoodsForm.retail_price=row.retail_price;
+      // this.addGoodsForm.replenishment_period=row.replenishment_period;
+      // this.addGoodsForm.remark=row.remark;
+      // this.addGoodsForm.sku_cd=row.sku_cd;
+      // this.addGoodsForm.key_words=row.key_words;
+      // this.addGoodsForm.upc=row.upc;
+      // this.addGoodsForm.warranty_day=row.warranty_day;
+      // this.addGoodsForm.ean=row.ean;
+      // this.addGoodsForm.model=row.model;
+      // this.addGoodsForm.length=row.length;
+      // this.addGoodsForm.width=row.width;
+      // this.addGoodsForm.height=row.height;
+      // this.addGoodsForm.weight=row.weight;
+      // this.addGoodsForm.ebay_description=row.ebay_description;
+      // this.addGoodsForm.amazon_description=row.amazon_description;
+      // this.addGoodsForm.brd_id=row.brd_id;
     },
     btn(msg) {
       if (msg == "Not in warehouse") return "push";
@@ -605,7 +753,7 @@ export default {
           return;
         }
         if (res.code == 200) {
-          this.refresh();
+          // this.refresh();
         }
       });
     }
