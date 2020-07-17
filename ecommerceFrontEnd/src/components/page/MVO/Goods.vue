@@ -18,10 +18,13 @@
     </span>
     <el-button type="danger" icon="el-icon-search"></el-button>
     <el-button type="danger" plain icon="el-icon-plus" @click="add">Add</el-button>
-
-    <br />
-    <br />
-    <el-table :data="tableData" style="width: 100%" class="table-check">
+    <el-divider></el-divider>
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      class="table-check"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="title" label="Goods title"></el-table-column>
       <el-table-column
@@ -58,14 +61,18 @@
             @click="remove(scope.row, scope.$index)"
           ></el-button>
           <el-button
-            type="warning"
+            :type="btntag(scope.row.sts_cd)"
             size="small"
             @click="operate(scope.row)"
           >{{btn(scope.row.sts_cd)}}</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+    <br />
+    <span>Batch：</span>
+    <el-button @click="batch(msg[0])" type="danger">Push</el-button>
+    <el-button @click="batch(msg[1])" type="success">Shelve</el-button>
+    <el-button @click="batch(msg[2])" type="warning">Unshelve</el-button>
     <el-drawer title="drawer" :visible.sync="drawer" size="50%" :with-header="false" class="slip">
       <div class="form-div">
         <h3>Goods information</h3>
@@ -318,6 +325,8 @@ export default {
         { value: "Instrument", label: "Instrument" },
         { value: "Appliances", label: "Appliances" }
       ],
+      multipleSelection: [],
+      msg: ["Not in warehouse", "In warehouse", "On shelf"],
       addGoodsForm: {
         pro_id: "",
         title: "",
@@ -394,6 +403,47 @@ export default {
       });
   },
   methods: {
+    batch(msg) {
+      if (this.multipleSelection == 0) {
+        this.$message.warning("Please select item");
+        return;
+      }
+      if (
+        this.multipleSelection.filter(e => e.sts_cd == msg).length !=
+        this.multipleSelection.length
+      ) {
+        this.$message.warning(`Please select items that ${msg}`);
+        return;
+      }
+      let nextStage = "";
+      if (msg == "Not in warehouse") {
+        nextStage = "In warehouse";
+      }
+      if (msg == "In warehouse") {
+        nextStage = "On shelf";
+      }
+      if (msg == "On shelf") {
+        nextStage = "In warehouse";
+      }
+      this.multipleSelection.forEach(element => {
+        this.$post("/product/updateSts", {
+          pro_id: element.pro_id,
+          sts_cd: nextStage
+        }).then(res => {
+          if (res.code == 504) {
+            this.$message.warning(res.message);
+            return;
+          }
+          if (res.code == 200) {
+            this.refresh();
+          }
+        });
+      });
+      this.$message.success("Success");
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     filterHandler(value, row, column) {
       const property = column["property"];
       return row[property] === value;
@@ -433,20 +483,19 @@ export default {
       console.log("count");
       console.log(this.count);
     },
-    uploadPicture(file){
+    uploadPicture(file) {
       // let fd = new FormData();//通过form数据格式来传
       // fd.append("fileName", file);
       // this.$post("/product/uploadPicture", fd,{
-        
       // }).then(res=>{
       //   this.addGoodsForm.remark = res.data;
       //   console.log(res.data);
       // })
     },
     handleSuccess(res) {
-      console.log("handlesuccess")
+      console.log("handlesuccess");
       if (this.isAdd) {
-        console.log("add")
+        console.log("add");
         // console.log(this.addGoodsForm.brd_id);
         this.isAdd = false;
         this.$post("/product/addProduct", {
@@ -496,7 +545,7 @@ export default {
       if (!this.isAdd) {
         console.log("update");
         // console.log(this.addGoodsForm.title);
-        console.log(this.addGoodsForm)
+        console.log(this.addGoodsForm);
         // let title = this.addGoodsForm.title;
         // console.log(title)
         this.$post("/product/updateProduct", {
@@ -547,10 +596,8 @@ export default {
         this.drawer = false;
         return;
       }
-      
     },
     submitForm(formName) {
-  
       this.$refs[formName].validate(valid => {
         if (valid) {
           // if (this.count == 0) {
@@ -568,7 +615,7 @@ export default {
           if (!this.isAdd && this.count == 0) {
             console.log("update");
             // console.log(this.addGoodsForm.title);
-            console.log(this.addGoodsForm)
+            console.log(this.addGoodsForm);
             // let title = this.addGoodsForm.title;
             // console.log(title)
             this.$post("/product/updateProduct", {
@@ -620,7 +667,7 @@ export default {
             return;
           }
 
-          if(this.count == 0 && this.isAdd){
+          if (this.count == 0 && this.isAdd) {
             this.$message.warning("Please upload goods picture");
             return;
           }
@@ -724,16 +771,16 @@ export default {
           //     }
           //   });
           //   this.drawer = false;
-            // return;
+          // return;
           // }
         } else {
           return false;
         }
       });
     },
-    check(){
-      console.log(this.addGoodsForm.title)
-      console.log(this.addGoodsForm)
+    check() {
+      console.log(this.addGoodsForm.title);
+      console.log(this.addGoodsForm);
     },
     edit(row) {
       this.drawer = true;
@@ -746,7 +793,6 @@ export default {
       // console.log("add");
       // console.log(this.addGoodsForm);
       // console.log(this.addGoodsForm.pro_id);
-
 
       // this.addGoodsForm.pro_id=row.pro_id;
       // this.addGoodsForm.title=row.title;
@@ -768,8 +814,13 @@ export default {
       // this.addGoodsForm.amazon_description=row.amazon_description;
       // this.addGoodsForm.brd_id=row.brd_id;
     },
+    btntag(msg) {
+      if (msg == "Not in warehouse") return "danger";
+      if (msg == "In warehouse") return "success";
+      if (msg == "On shelf") return "warning";
+    },
     btn(msg) {
-      if (msg == "Not in warehouse") return "push";
+      if (msg == "Not in warehouse") return "Push";
       if (msg == "In warehouse") return "Shelve";
       if (msg == "On shelf") return "Unshelve";
     },
