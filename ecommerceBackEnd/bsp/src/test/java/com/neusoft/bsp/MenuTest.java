@@ -45,15 +45,4 @@ class MenuTest {
         });
     }
 
-    @Test
-    void TestupdateMenuInfo_noright() {
-
-        MenuWithUserID menuWithUserID =new MenuWithUserID();
-        menuWithUserID.setUser_id(1);
-        menuWithUserID.setMenu_id(1);
-        menuWithUserID.setMenu_name("compony Information");
-
-        BaseModel bmj = menuController.updateMenuInfo(menuWithUserID,null);
-        assertEquals(200, bmj.code);
-    }
 }
