@@ -35,7 +35,7 @@
           </p>
         </div>
         <br />
-        <el-button type="danger" @click="drawer=true">Change</el-button>
+        <el-button type="danger" @click="changeCompanyInfo">Change</el-button>
       </div>
       <div class="main-box-top">
         <el-link style="font-size:18px" :underline="false" type="success">Brand information</el-link>
@@ -241,6 +241,15 @@ export default {
     this.checkCompany();
   },
   methods: {
+    changeCompanyInfo(){
+      this.addComForm.name_en = this.name_en;
+      this.addComForm.description = this.description;
+      this.addComForm.gmc_report_type = this.gmc_report_type;
+      this.addComForm.gmc_report_url = this.gmc_report_url;
+    
+
+      this.drawer = true;
+    },
     checkCompany() {
       //查詢用戶是否有公司信息
       this.$post("/mvo/getManufacturerByUserID", {
