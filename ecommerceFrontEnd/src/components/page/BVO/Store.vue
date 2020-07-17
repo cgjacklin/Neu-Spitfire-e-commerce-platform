@@ -104,7 +104,6 @@ export default {
         if (res.code == 200) {
           console.log(res.data);
           this.aList = res.data.filter(e => e.plataeform_type == 1);
-
           this.eList = res.data.filter(e => e.plataeform_type == 2);
         }
       });
@@ -127,6 +126,7 @@ export default {
       });
 
       this.dialogVisible = false;
+      this.store_name = '';
     }
   }
 };
