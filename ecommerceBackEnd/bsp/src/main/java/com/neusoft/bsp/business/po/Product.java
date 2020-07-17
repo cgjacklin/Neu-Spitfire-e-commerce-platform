@@ -97,6 +97,7 @@ public class Product implements BaseEntity<Integer> {
     }
 
     public Product(ProductVO productVO) {
+        this.title = productVO.getTitle();
         this.pro_id = productVO.getPro_id();
         this.sku_cd = productVO.getSku_cd();
         this.brd_id = productVO.getBrd_id();
