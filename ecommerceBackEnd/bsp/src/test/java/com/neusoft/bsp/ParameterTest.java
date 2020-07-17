@@ -24,14 +24,14 @@ class ParameterTest {
     @Autowired
     ParameterController parameterController;
     @Test
-    void TestgetParameter_success() {
+    void test_getParameter_success() {
 
         BaseModelJson<List<Parameter>> bmj = parameterController.getParameter();
         assertEquals(200, bmj.code);
     }
 
     @Test
-    void TestaddParameter_success() {
+    void testaddParameter_success() {
         ParameterVO parameter=new ParameterVO();
         parameter.setParam_cd("aaa");
         parameter.setUser_id(1);
@@ -40,7 +40,7 @@ class ParameterTest {
     }
 
     @Test
-    void TestaddParameter_sameParam_cd() {
+    void test_addParameter_sameParam_cd() {
         ParameterVO parameter=new ParameterVO();
         parameter.setParam_cd("aaa");
         parameter.setUser_id(1);
@@ -60,7 +60,7 @@ class ParameterTest {
     }
 
     @Test
-    void Test_updateParameter_sameParam_cd() {
+    void test_updateParameter_sameParam_cd() {
         ParameterVO parameter=new ParameterVO();
         parameter.setParam_cd("ajj");
         parameter.setPar_id(18);
@@ -71,7 +71,7 @@ class ParameterTest {
     }
 
     @Test
-    void Test_deleteParameter_sameParam_cd() {
+    void test_deleteParameter_sameParam_cd() {
         ParameterVO parameter=new ParameterVO();
         parameter.setPar_id(18);
         parameter.setUser_id(1);

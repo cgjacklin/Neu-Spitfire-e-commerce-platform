@@ -1,0 +1,38 @@
+###test getDictionary
+POST http://127.0.0.1:8088/mainPage/getInfo
+Content-Type: application/json
+
+{
+  "user_id": "1"
+
+}
+
+###test get info no user
+POST http://127.0.0.1:8088/mainPage/getInfo
+Content-Type: application/json
+
+{
+  "user_id": "17"
+
+}
+
+###test User Basic Info
+POST http://127.0.0.1:8088/mainPage/getUserBasicInfo
+Content-Type: application/json
+
+{
+  "user_id": "17"
+
+}
+
+###
+###test User Basic Info
+POST http://127.0.0.1:8088/mainPage/getUserBasicInfo
+Content-Type: application/json
+
+{
+  "user_id": "1"
+
+}
+
+###
