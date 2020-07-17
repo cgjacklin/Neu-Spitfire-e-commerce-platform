@@ -54,13 +54,15 @@
         <span>Records time：</span>
         <el-date-picker
           v-model="time"
+          @change="search"
           type="daterange"
-          align="right"
+      
           unlink-panels
-          range-separator="to"
+          
           start-placeholder="Begin date"
           end-placeholder="End date"
           value-format="yyyy-MM-dd"
+          :default-time="['00:00:00', '23:59:59']"
         ></el-date-picker>
 
         <el-table :data="tableData" style="width: 100%" class="table">
@@ -223,6 +225,7 @@ export default {
       visible: false,
       visible1: false,
       tableData: [],
+      table: [],
       dialogVisible: false,
       dialogDeposit: false,
       dialogAccount: false,
@@ -259,6 +262,19 @@ export default {
     });
   },
   methods: {
+    search() {
+      let timelist = [];
+      if (!this.time) {
+        timelist = ["1900-01-01", "2200-01-01"];
+      } else {
+        timelist = this.time;
+      }
+      this.tableData = this.table.filter(
+        e =>
+          timelist[0] <= e.time.slice(0, 10) &&
+          e.time.slice(0, 10) <= timelist[1]
+      );
+    },
     checkWallet() {
       this.$post("/wal/getWallet", {
         user_id: sessionStorage.getItem("user_id")
@@ -275,9 +291,8 @@ export default {
           this.$post("/wal/getAvailable_money", {
             user_id: sessionStorage.getItem("user_id")
           }).then(res => {
-            this.money = res.message;
-
-            this.password = res.message;
+            
+            this.money = res.message
             this.emptyShow = false;
             this.mainShow = true;
           });
@@ -286,6 +301,7 @@ export default {
     },
     getRecord() {
        this.tableData=[];
+       this.table = [];
       this.$post("/wal/getRecord", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
@@ -301,7 +317,14 @@ export default {
               st = "Completed";
             } else if ( res.data.WalletTransactionRecord[i].status == 0) {
               st = "Failed";
-            } 
+            }
+            this.table.push({
+            num: res.data.WalletTransactionRecord[i].transaction_id,
+            amount: res.data.WalletTransactionRecord[i].account_name,
+            money: res.data.WalletTransactionRecord[i].transaction_money,
+            time: date,
+            state: st
+          }); 
           this.tableData.push({
             num: res.data.WalletTransactionRecord[i].transaction_id,
             amount: res.data.WalletTransactionRecord[i].account_name,
