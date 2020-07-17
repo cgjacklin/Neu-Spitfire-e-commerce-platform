@@ -411,12 +411,12 @@ export default {
       }).then(res => {
         if (res.code == 504) {
           this.$message.warning(res.message);
-          // this.refresh();
+          this.refresh();
           return;
         }
         if (res.code == 200) {
           this.$message.success(res.message);
-          // this.refresh();
+          this.refresh();
         }
       });
     },
@@ -818,7 +818,7 @@ export default {
           return;
         }
         if (res.code == 200) {
-          // this.refresh();
+          this.refresh();
         }
       });
     }
