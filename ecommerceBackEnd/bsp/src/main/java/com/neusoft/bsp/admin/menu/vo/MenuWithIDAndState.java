@@ -7,6 +7,7 @@ public class MenuWithIDAndState {
     String menu_url;
     String menu_icon;
     boolean state;
+    String parent_id;
 
     public int getMenu_id() {
         return menu_id;
@@ -46,5 +47,13 @@ public class MenuWithIDAndState {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public String getParent_id() {
+        return parent_id;
+    }
+
+    public void setParent_id(String parent_id) {
+        this.parent_id = parent_id;
     }
 }

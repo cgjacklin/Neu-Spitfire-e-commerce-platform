@@ -56,6 +56,7 @@ public class MenuListController {
             menuList.setMenu_icon(menu.getMenu_icon());
             menuList.setMenu_name(menu.getMenu_name());
             menuList.setMenu_url(menu.getMenu_url());
+            menuList.setParent_id(menu.getParent_id());
             MenuList menuList1 = menuListService.checkByUserAndMenuID(us.getUser_id(), menu.getMenu_id());
 
             if (menuList1 == null) {

@@ -40,13 +40,13 @@ class DictionaryTest {
         });
     }
 
-    @Test
-    void TestaddDictionary_success() {
-        Dictionary dictionary =new Dictionary();
-        dictionary.setCode_type("2");
-        BaseModel bm = dictionaryController.addDictionary(dictionary);
-        assertEquals(200, bm.code);
-    }
+//    @Test
+//    void TestaddDictionary_success() {
+//        Dictionary dictionary =new Dictionary();
+//        dictionary.setCode_type("2");
+//        BaseModel bm = dictionaryController.addDictionary(dictionary);
+//        assertEquals(200, bm.code);
+//    }
 //update dictionary
     @Test
     void TestupdateDictionary_success() {
@@ -59,15 +59,15 @@ class DictionaryTest {
     }
 
 //delete dictionary
-    @Test
-    void TestdeleteDictionary_success() {
-        Dictionary dictionary =new Dictionary();
-        dictionary.setCdm_id(13);
-        dictionary.setCode_type("3");
-
-        BaseModel bm = dictionaryController.deleteDictionary(dictionary);
-        assertEquals(200, bm.code);
-    }
+//    @Test
+//    void TestdeleteDictionary_success() {
+//        Dictionary dictionary =new Dictionary();
+//        dictionary.setCdm_id(13);
+//        dictionary.setCode_type("3");
+//
+//        BaseModel bm = dictionaryController.deleteDictionary(dictionary);
+//        assertEquals(200, bm.code);
+//    }
 
 
 

@@ -61,36 +61,36 @@ class UserTest {
 
 //test register
 
-    @Test
-    void TestRegister_MVOsuccess() {
-        User user=new User();
-        user.setUsername("4");
-        user.setPassword("4");
-        user.setRole_id("1");
-        BaseModel bmj = userController.register(user);
-        assertEquals(200, bmj.code);
-    }
-
-    @Test
-    void TestRegister_BVOsuccess() {
-        User user=new User();
-        user.setUsername("5");
-        user.setPassword("5");
-        user.setRole_id("2");
-        BaseModel bm = userController.register(user);
-        assertEquals(200, bm.code);
-    }
-
-    @Test
-    void TestRegister_sameUsername() {
-        User user=new User();
-        user.setUsername("5");
-        user.setPassword("5");
-        user.setRole_id("2");
-        assertThrows(BusinessException.class, () -> {
-            BaseModel bm = userController.register(user);
-        });
-    }
+//    @Test
+//    void TestRegister_MVOsuccess() {
+//        User user=new User();
+//        user.setUsername("4");
+//        user.setPassword("4");
+//        user.setRole_id("1");
+//        BaseModel bmj = userController.register(user);
+//        assertEquals(200, bmj.code);
+//    }
+//
+//    @Test
+//    void TestRegister_BVOsuccess() {
+//        User user=new User();
+//        user.setUsername("5");
+//        user.setPassword("5");
+//        user.setRole_id("2");
+//        BaseModel bm = userController.register(user);
+//        assertEquals(200, bm.code);
+//    }
+//
+//    @Test
+//    void TestRegister_sameUsername() {
+//        User user=new User();
+//        user.setUsername("5");
+//        user.setPassword("5");
+//        user.setRole_id("2");
+//        assertThrows(BusinessException.class, () -> {
+//            BaseModel bm = userController.register(user);
+//        });
+//    }
 
 
 
