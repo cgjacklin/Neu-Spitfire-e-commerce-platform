@@ -11,7 +11,7 @@
       Search：
       <el-input style="width:15rem" placeholder="User name" @input="search" v-model="search_name"></el-input>
     </span>
-    <el-button type="danger" icon="el-icon-plus" @click="drawer = true">Add</el-button>
+    <el-button type="danger" icon="el-icon-plus" @click="add">Add</el-button>
 
     <el-divider></el-divider>
     <el-table
@@ -189,6 +189,7 @@ export default {
       search_name: "",
       drawerPr: false,
       drawer: false,
+      isAdd: false,
       tableData: [],
       table: [],
       multipleSelection: [],
@@ -223,7 +224,7 @@ export default {
           this.table = res.data.user;
         } else {
           if (res.message == "Permission denied") {
-            this.$message.warning("Permission denied");
+            this.$message.warning("Permission denied"); 
           }
         }
       });
@@ -234,6 +235,10 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          if(this.isAdd){
+this.$message.warning("The system only supports adding users from the registration page");
+this.isAdd = false;
+          }else{
           this.$post("/rle/updateUser", {
             admin_id: sessionStorage.getItem("user_id"),
             user_id: this.userForm.userid,
@@ -249,8 +254,10 @@ export default {
             } else {
               this.$message.warning("Update failed");
             }
-            this.drawer = false;
+            
           });
+          }
+this.drawer = false;
         } else {
           return false;
         }
@@ -259,6 +266,11 @@ export default {
     cancel(formName) {
       this.$refs[formName].resetFields();
       this.drawer = false;
+    },
+    add(){
+        this.isAdd = true;
+        this.userForm = [];
+        this.drawer = true;
     },
     edit(row) {
       this.userForm = row;
