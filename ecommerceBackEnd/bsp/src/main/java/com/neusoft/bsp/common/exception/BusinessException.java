@@ -18,6 +18,7 @@ public class BusinessException extends RuntimeException {
     public static final BusinessException WALLET_NOT_EXISTS = new BusinessException(504, "Wallet doesn't exist", new Object[0]);
     public static final BusinessException HAVE_WALLET_FUND = new BusinessException(504, "Has wallet fund", new Object[0]);
     public static final BusinessException NOT_SUFFICIENT_FUNDS = new BusinessException(504, "Not sufficient funds", new Object[0]);
+    public static final BusinessException BUYER_NOT_SUFFICIENT_FUNDS = new BusinessException(504, "Not sufficient fund, please recharge", new Object[0]);
 
     public static final BusinessException NO_DSR_ID = new BusinessException(504, "Can't find corresponding dsr information", new Object[0]);
     public static final BusinessException NO_STORE_INFO = new BusinessException(504, "There's no store information", new Object[0]);

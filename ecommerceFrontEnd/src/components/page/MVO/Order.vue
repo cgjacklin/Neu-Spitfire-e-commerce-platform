@@ -32,7 +32,7 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info">{{scope.row.title}}</el-link>
+              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -53,7 +53,7 @@
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info">{{scope.row.title}}</el-link>
+              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -75,7 +75,7 @@
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info">{{scope.row.title}}</el-link>
+              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -108,7 +108,7 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info">{{scope.row.title}}</el-link>
+              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -135,7 +135,7 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info">{{scope.row.title}}</el-link>
+              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -146,6 +146,26 @@
         </el-table>
       </el-tab-pane>
     </el-tabs>
+
+    <el-drawer title="drawerDetail" :visible.sync="itemDrawer" size="50%" :with-header="false">
+      <div class="goods-div">
+        <h2>{{chooseItem.title}}</h2>
+        <div class="base-info">
+          <img :src="chooseItem.remark" class="img" />
+          <div style="width:25rem">
+            <p>{{chooseItem.title}}</p>
+            <el-link :underline="false" type="danger">¥ {{chooseItem.retail_price}}</el-link>
+            <p>Brand: {{chooseItem.name_en}}</p>
+            <p>Stock: {{chooseItem.replenishment_period}}</p>
+          </div>
+        </div>
+        <br />
+        <el-tabs v-model="activeNameDetail" class="tab">
+          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazon_description}}</el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebay_description}}</el-tab-pane>
+        </el-tabs>
+      </div>
+    </el-drawer>
 
     <el-dialog title="Tracking Company" :visible.sync="dialogVisible" width="30%">
       <el-form :model="trackTable" ref="trackTable" label-width="130px">
@@ -181,7 +201,10 @@ export default {
       selections: [],
       dialogVisible: false,
       search_title: "",
+      itemDrawer: false,
+      activeNameDetail: "first",
       activeName: "first",
+      chooseItem: '',
       sts_cd: "",
       opRow: "",
       opIndex: "",
@@ -211,6 +234,22 @@ export default {
     });
   },
   methods: {
+    showDetail(row){
+        
+        this.$post("/product/getProduct", {
+          pro_id : row.pro_id
+        }).then(res=>{
+          if(res.code==200){
+            this.chooseItem = res.data;
+            this.itemDrawer = true;
+          }
+          else{
+            this.$message.warning(res.message)
+          }
+          
+        })
+        
+    },
     a() {
       console.log("a");
       alert("a");
@@ -386,5 +425,35 @@ export default {
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   background-color: #f56c6c;
   border-color: #f56c6c;
+}
+
+.tab >>> .el-tabs__item.is-active {
+  color: #f56c6c;
+}
+.tab >>> .el-tabs__active-bar {
+  background-color: #f56c6c;
+}
+.goods-div {
+  margin-left: 3rem;
+  height: 60rem;
+}
+.base-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.img {
+  width: 20rem;
+  height: 20rem;
+}
+.goods-row {
+  width: 94%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.tab {
+  width: 50rem;
 }
 </style>

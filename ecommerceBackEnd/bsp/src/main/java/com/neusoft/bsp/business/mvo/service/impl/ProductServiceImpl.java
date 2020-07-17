@@ -209,6 +209,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductVO getProduct(Product product) {
+        int pro_id = product.getPro_id();
+        Product productReal = getById(pro_id);
+        ProductVO productVO = new ProductVO(getById(pro_id));
+        Brand brand = brandService.getById(productReal.getBrd_id());
+        PackageInfo packageInfo = packageInfoService.getByProduct(productReal.getPro_id());
+        //配置VO package
+        productVO.setAmazon_description(packageInfo.getAmazon_description());
+        productVO.setEbay_description(packageInfo.getEbay_description());
+        productVO.setWidth(packageInfo.getWidth());
+        productVO.setHeight(packageInfo.getHeight());
+        productVO.setLength(packageInfo.getLength());
+        productVO.setWeight(packageInfo.getWeight());
+        productVO.setName_en(brand.getName_en());
+        return  productVO;
+    }
+
+    @Override
     public int updateProduct(ProductVO productvo) {
         User user = userService.getById(productvo.getUser_id());
         PackageInfo packageInfo = packageInfoService.getByProduct(productvo.getPro_id());

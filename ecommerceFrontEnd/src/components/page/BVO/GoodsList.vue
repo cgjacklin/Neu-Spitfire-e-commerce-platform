@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="goods-row">
-                <el-link :underline="false" type="danger">{{item.retail_price}} ¥</el-link>
+                <el-link :underline="false" type="danger">¥ {{item.retail_price}}</el-link>
                 <el-button type="text" class="btn" @click="detail(item)">Details</el-button>
               </div>
             </div>

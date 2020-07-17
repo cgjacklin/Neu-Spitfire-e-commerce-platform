@@ -92,7 +92,9 @@ public class OrderServiceImpl implements OrderService {
         for(Order o:orders){
             Product product = productMapper.getById(o.getPro_id());
             String title = product.getTitle();
-            orderResponses.add(new OrderResponse(o, title));
+            OrderResponse orderResponse = new OrderResponse(o, title);
+            orderResponse.setRemark(product.getRemark());
+            orderResponses.add(orderResponse);
         }
         return orderResponses;
     }
@@ -225,7 +227,7 @@ public class OrderServiceImpl implements OrderService {
             throw BusinessException.PASSWORD_WRONG;
         }
         if(walletAccountFundBuyer.getAvailable_money().compareTo(paidMoney)<0){
-            throw BusinessException.NOT_SUFFICIENT_FUNDS;
+            throw BusinessException.BUYER_NOT_SUFFICIENT_FUNDS;
         }
         //公共业务逻辑
         Timestamp datetime = new Timestamp(System.currentTimeMillis());
