@@ -14,19 +14,23 @@
       <!-- 如果有子菜单 -->
       <template v-for="item in items">
         <template v-if="item.subs">
-          <el-submenu :index="item.index" :key="item.title">
+          <el-submenu :index="item.menu_url" :key="item.menu_url">
             <template slot="title">
-              <i :class="item.icon"></i>
-              <span slot="title">{{item.title}}</span>
+              <i :class="item.menu_icon"></i>
+              <span slot="title">{{item.menu_name}}</span>
             </template>
-            <el-menu-item v-for="sub in item.subs" :index="sub.index" :key="sub.title">{{sub.title}}</el-menu-item>
+            <el-menu-item
+              v-for="sub in item.subs"
+              :index="sub.menu_url"
+              :key="sub.menu_name"
+            >{{sub.menu_name}}</el-menu-item>
           </el-submenu>
         </template>
         <!-- 没有子菜单 -->
         <template v-else>
-          <el-menu-item :index="item.index" :key="item.title">
-            <i :class="item.icon"></i>
-            <span>{{ item.title }}</span>
+          <el-menu-item :index="item.menu_url" :key="item.menu_url">
+            <i :class="item.menu_icon"></i>
+            <span>{{ item.menu_name }}</span>
           </el-menu-item>
         </template>
       </template>
@@ -39,112 +43,136 @@ export default {
   data() {
     return {
       sharedState: this.$isCollapse,
+      role: "",
       items: [
         {
-          icon: "el-icon-s-home",
-          index: "/main",
-          title: "Home"
+          menu_icon: "el-icon-s-home",
+          menu_url: "/main",
+          menu_name: "Home"
         },
         {
-          icon: "el-icon-setting",
-          title: "Management",
-          index: "1",
+          menu_icon: "el-icon-setting",
+          menu_name: "Management",
+          menu_url: "1",
           subs: [
             {
-              icon: "el-icon-notebook-2",
-              index: "/menu",
-              title: "Menu management"
+              menu_icon: "el-icon-notebook-2",
+              menu_url: "/menu",
+              menu_name: "Menu manage"
             },
             {
-              icon: "el-icon-user",
-              index: "/user",
-              title: "User management"
+              menu_icon: "el-icon-user",
+              menu_url: "/user",
+              menu_name: "User manage"
             },
             {
-              icon: "el-icon-notebook-1",
-              index: "/param",
-              title: "Parameter management"
+              menu_icon: "el-icon-notebook-1",
+              menu_url: "/param",
+              menu_name: "Parameter manage"
             },
             {
-              icon: "el-icon-collection",
-              index: "/data",
-              title: "Data dictionary"
+              menu_icon: "el-icon-collection",
+              menu_url: "/data",
+              menu_name: "Data dictionary"
             },
             {
-              icon: "el-icon-document-checked",
-              index: "/check",
-              title: "Fund check"
-            },
-          ]
-        },
-        {
-          icon: "el-icon-office-building",
-          title: "MVO",
-          index: "2",
-          subs: [
-            {
-              icon: "el-icon-school",
-              index: "/company",
-              title: "Company information"
-            },
-            {
-              icon: "el-icon-goods",
-              index: "/goods",
-              title: "Goods management"
-            },
-            {
-              icon: "el-icon-s-order",
-              index: "/MVO/order",
-              title: "Order management"
-            },
-            {
-              icon: "el-icon-wallet",
-              index: "/MVO/wallet",
-              title: "Wallet"
+              menu_icon: "el-icon-document-checked",
+              menu_url: "/check",
+              menu_name: "Fund check"
             }
           ]
         },
         {
-          icon: "el-icon-s-shop",
-          title: "BVO",
-          index: "3",
+          menu_icon: "el-icon-office-building",
+          menu_name: "MVO",
+          menu_url: "2",
           subs: [
             {
-              icon: "el-icon-house",
-              index: "/store",
-              title: "Store management"
+              menu_icon: "el-icon-school",
+              menu_url: "/company",
+              menu_name: "Company info"
             },
             {
-              icon: "el-icon-goods",
-              index: "/goodslist",
-              title: "Goods list"
+              menu_icon: "el-icon-goods",
+              menu_url: "/goods",
+              menu_name: "Goods manage"
             },
             {
-              icon: "el-icon-star-off",
-              index: "/wishlist",
-              title: "Wish list"
+              menu_icon: "el-icon-s-order",
+              menu_url: "/MVO/order",
+              menu_name: "Order manage"
             },
             {
-              icon: "el-icon-s-order",
-              index: "/BVO/order",
-              title: "Order management"
+              menu_icon: "el-icon-wallet",
+              menu_url: "/MVO/wallet",
+              menu_name: "Wallet"
+            }
+          ]
+        },
+        {
+          menu_icon: "el-icon-s-shop",
+          menu_name: "BVO",
+          menu_url: "3",
+          subs: [
+            {
+              menu_icon: "el-icon-house",
+              menu_url: "/store",
+              menu_name: "Store manage"
             },
             {
-              icon: "el-icon-wallet",
-              index: "/BVO/wallet",
-              title: "Wallet"
+              menu_icon: "el-icon-goods",
+              menu_url: "/goodslist",
+              menu_name: "Goods list"
+            },
+            {
+              menu_icon: "el-icon-star-off",
+              menu_url: "/wishlist",
+              menu_name: "Wish list"
+            },
+            {
+              menu_icon: "el-icon-s-order",
+              menu_url: "/BVO/order",
+              menu_name: "Order manage"
+            },
+            {
+              menu_icon: "el-icon-wallet",
+              menu_url: "/BVO/wallet",
+              menu_name: "Wallet"
             }
           ]
         }
       ]
     };
   },
-  mounted(){
-    
+  mounted() {
+    this.$post("/mainPage/getInfo", {
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res => {
+      //处理response
+      console.log(res);
+      if (res.code == 504) {
+        this.$message.warning(res.message);
+        return;
+      }
+      if (res.code == 200) {
+        console.log(res.data.role);
+        if (res.data.role == "Admin") {
+          return;
+        }
+        this.$post("/menuList/getMenuListByID", {
+          user_id: sessionStorage.getItem("user_id")
+        }).then(res => {
+          this.items = res.data;
+          this.items.unshift({
+            menu_icon: "el-icon-s-home",
+            menu_url: "/main",
+            menu_name: "Home"
+          });
+        });
+      }
+    });
   },
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
 
