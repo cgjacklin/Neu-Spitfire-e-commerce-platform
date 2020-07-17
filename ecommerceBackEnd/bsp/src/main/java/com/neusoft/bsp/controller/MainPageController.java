@@ -7,10 +7,7 @@ import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +20,7 @@ public class MainPageController extends BaseController {
     MainPageService mainPageService;
     @Autowired
     UserService userService;
-    @RequestMapping("/getInfo")
+    @PostMapping("/getInfo")
     public BaseModelJson<Map<String, Object>> getInfo(@RequestBody User user){
         HashMap<String, Object> result = mainPageService.getInfo(user);
         BaseModelJson<Map<String, Object>> response = new BaseModelJson<>();
@@ -33,7 +30,7 @@ public class MainPageController extends BaseController {
 
     }
 
-    @RequestMapping("/getUserBasicInfo")
+    @PostMapping("/getUserBasicInfo")
     public BaseModelJson<User> getUserBasicInfo(@RequestBody User user){
         BaseModelJson<User> response = new BaseModelJson<>();
         User result = mainPageService.getUserBasicInfo(user);
@@ -42,7 +39,7 @@ public class MainPageController extends BaseController {
         return response;
     }
 
-    @RequestMapping("updateUserBasicInfo")
+    @PostMapping("updateUserBasicInfo")
     public BaseModel updateUserBasicInfo(@RequestBody User user){
         BaseModel response = new BaseModel();
         if(userService.updateBasicInfo(user)==1){
