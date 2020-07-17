@@ -254,8 +254,19 @@ export default {
       console.log("a");
       alert("a");
     },
-    cancelSelected() {},
+    cancelSelected() {
+      if(this.selection == null){
+        this.$message.warning("Please select item")
+        return
+      }
+      this.dialogVisible = true;
+      this.multi = true;
+    },
     shipSelected() {
+      if(this.selection == null){
+        this.$message.warning("Please select item")
+        return
+      }
       this.dialogVisible = true;
       this.multi = true;
     },
@@ -280,6 +291,7 @@ export default {
         }
 
         if (res.code == 200) {
+          this.$message.success(res.message);
           this.tableData.splice(index, 1);
         }
       });
@@ -363,6 +375,7 @@ export default {
       this.tableData = "";
       console.log(tab.index);
       this.tmpStscd = 0;
+      this.selections = [];
       if (tab.index == 0) {
         this.tmpStscd = 1;
       }
