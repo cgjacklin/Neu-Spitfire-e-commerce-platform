@@ -215,6 +215,10 @@ export default {
       });
     },
     removeMore() {
+      if(this.multipleSelection.length == 0){
+        this.$message.warning('Please select item');
+        return
+      }
       this.multipleSelection.forEach(element => {
         this.$post("/dictionary/deleteDictionary", {
           cdm_id: element.cdm_id
