@@ -11,7 +11,14 @@
       Search：
       <el-input style="width:15rem" placeholder="Goods name" @input="search" v-model="search_name"></el-input>
     </span>
-    <el-select style="width:15rem" placeholder="Goods type" v-model="type" autocomplete="off">
+    <el-select
+      style="width:15rem"
+      placeholder="Goods type"
+      v-model="type"
+      autocomplete="off"
+      @change="search"
+      clearable
+    >
       <el-option
         v-for="item in type_options"
         :key="item.value"
@@ -119,8 +126,8 @@ export default {
       EcheckAll: false,
       checkedAStores: [],
       checkedEStores: [],
-      Astores: ["Apple", "Nick"],
-      Estores: ["Apple", "Nick"],
+      Astores: [],
+      Estores: [],
       isIndeterminate: true,
       EisIndeterminate: true,
       //
@@ -137,23 +144,28 @@ export default {
       search_name: "",
       type: "",
       goods: [],
+      table: [],
       wishlist: []
     };
   },
   mounted() {
-      this.$post("/str/getStoreByUserID", {
-        user_id: sessionStorage.getItem("user_id")
-      }).then(res => {
-        if (res.code == 504) {
-          this.$message.warning(res.message);
-          return;
-        }
-        if (res.code == 200) {
-          console.log(res.data);
-          this.Astores = res.data.filter(e => e.plataeform_type == 1).map(e => e.store_name);
-          this.Estores = res.data.filter(e => e.plataeform_type == 2).map(e => e.store_name);
-        }
-      });
+    this.$post("/str/getStoreByUserID", {
+      user_id: sessionStorage.getItem("user_id")
+    }).then(res => {
+      if (res.code == 504) {
+        this.$message.warning(res.message);
+        return;
+      }
+      if (res.code == 200) {
+        console.log(res.data);
+        this.Astores = res.data
+          .filter(e => e.plataeform_type == 1)
+          .map(e => e.store_name);
+        this.Estores = res.data
+          .filter(e => e.plataeform_type == 2)
+          .map(e => e.store_name);
+      }
+    });
     this.$post("/product/getProductOnShelf", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {
@@ -163,7 +175,7 @@ export default {
       }
       if (res.code == 200) {
         this.goods = res.data;
-        console.log(res);
+        this.table = res.data;
       }
     });
   },
@@ -178,6 +190,7 @@ export default {
         }
         if (res.code == 200) {
           this.goods = res.data;
+          this.table = res.data;
         }
       });
     },
@@ -259,7 +272,11 @@ export default {
       this.chooseItem = item;
       this.drawer = true;
     },
-    search() {}
+    search() {
+      this.goods = this.table.filter(
+        e => e.title.match(this.search_name) && e.key_words.match(this.type)
+      );
+    }
   }
 };
 </script>

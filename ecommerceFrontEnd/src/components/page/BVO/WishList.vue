@@ -11,7 +11,14 @@
       Search：
       <el-input style="width:15rem" placeholder="Goods name" @input="search" v-model="search_name"></el-input>
     </span>
-    <el-select style="width:15rem" placeholder="Goods type" v-model="type" autocomplete="off">
+    <el-select
+      style="width:15rem"
+      placeholder="Goods type"
+      @change="search"
+      v-model="type"
+      autocomplete="off"
+      clearable
+    >
       <el-option
         v-for="item in type_options"
         :key="item.value"
@@ -21,23 +28,30 @@
     </el-select>
     <el-button type="danger" icon="el-icon-search"></el-button>
     <el-divider></el-divider>
-    <el-table :data="goods" style="width: 100%" class="check">
+    <el-table
+      :data="goods"
+      style="width: 100%"
+      class="check"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="src" label="Goods">
         <template slot-scope="scope">
-          <img :src="scope.row.src" width="100" />
+          <img :src="scope.row.src" width="100" @click="detail(scope.row)" />
         </template>
       </el-table-column>
       <el-table-column prop="name" label="Goods Name"></el-table-column>
+      <el-table-column prop="key_words" label="Goods type"></el-table-column>
       <el-table-column prop="price" label="Price"></el-table-column>
       <el-table-column label="operation">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" @click="detail(scope.row)">Details</el-button>
-          <el-button type="danger" size="mini" @click="star(scope.row)">Remove</el-button>
+          <el-button type="success" icon="el-icon-receiving" size="mini" @click="detail(scope.row)">Details</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="star(scope.row)">Remove</el-button>
         </template>
       </el-table-column>
     </el-table>
-
+    <br />
+    <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-drawer title="drawer" :visible.sync="drawer" size="50%" :with-header="false">
       <div class="goods-div">
         <h2>{{chooseItem.name}}</h2>
@@ -110,13 +124,13 @@
 export default {
   data() {
     return {
-      tableData: [{ name: 1 }, { name: 1 }],
+      tableData: [],
       checkAll: false,
       EcheckAll: false,
       checkedAStores: [],
       checkedEStores: [],
-      Astores: ["Apple", "Nick"],
-      Estores: ["Apple", "Nick"],
+      Astores: [],
+      Estores: [],
       isIndeterminate: true,
       EisIndeterminate: true,
       //
@@ -132,40 +146,54 @@ export default {
       ],
       search_name: "",
       type: "",
-      goods: [
-      ]
+      goods: [],
+      table: [],
+      multipleSelection: []
     };
   },
-  mounted: function () {
-    this.loadData()
+  mounted: function() {
+     this.$post("/str/getStoreByUserID", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        if (res.code == 200) {
+          console.log(res.data);
+          this.Astores = res.data.filter(e => e.plataeform_type == 1).map(e => e.store_name);
+          this.Estores = res.data.filter(e => e.plataeform_type == 2).map(e => e.store_name);
+        }
+      });
+    this.loadData();
   },
   methods: {
-  loadData () {
-       this.$post("/wit/getWishlist", {
+    loadData() {
+      this.$post("/wit/getWishlist", {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         let temp = [];
-        for (var i = 0; i <  res.data.number; i++) { 
-      temp.push(
-                {
-          name: res.data.product[i].title,
-          src: res.data.product[i].remark,
-          price: res.data.product[i].retail_price,
-          brand:res.data.brand[i].name_en,
-          stock:res.data.product[i].replenishment_period,
-          amazondescription:res.data.packageinfo[i].amazon_description,
-          ebaydescription:res.data.packageinfo[i].ebay_description,
-          witid:res.data.wishlist[i].wit_id,
-          star: 1,
-          proid:res.data.product[i].pro_id
+        for (var i = 0; i < res.data.number; i++) {
+          temp.push({
+            name: res.data.product[i].title,
+            src: res.data.product[i].remark,
+            price: res.data.product[i].retail_price,
+            key_words: res.data.product[i].key_words,
+            brand: res.data.brand[i].name_en,
+            stock: res.data.product[i].replenishment_period,
+            amazondescription: res.data.packageinfo[i].amazon_description,
+            ebaydescription: res.data.packageinfo[i].ebay_description,
+            witid: res.data.wishlist[i].wit_id,
+            star: 1,
+            proid: res.data.product[i].pro_id
+          });
         }
-                )
- } 
         this.goods = temp;
-      })
+        this.table = temp;
+      });
     },
 
-    EhandleCheckAllChange(val) { 
+    EhandleCheckAllChange(val) {
       this.checkedEStores = val ? this.Estores : [];
       this.EisIndeterminate = false;
     },
@@ -196,20 +224,20 @@ export default {
     star(item) {
       if (item.star == 1) {
         this.$post("/wit/deletedWishlist", {
-        wit_id: item.witid
-      }).then(res => {
-        item.star = 2;
-        this.loadData()         
-      })
+          wit_id: item.witid
+        }).then(res => {
+          item.star = 2;
+          this.loadData();
+        });
         return;
-      }else{
-       this.$post("/wit/addWishlist", {
-        user_id:sessionStorage.getItem("user_id"),
-        pro_id:item.proid,
-      }).then(res => {
-        item.star = 1;
-        this.loadData()         
-      })
+      } else {
+        this.$post("/wit/addWishlist", {
+          user_id: sessionStorage.getItem("user_id"),
+          pro_id: item.proid
+        }).then(res => {
+          item.star = 1;
+          this.loadData();
+        });
       }
     },
 
@@ -217,8 +245,23 @@ export default {
       this.chooseItem = item;
       this.drawer = true;
     },
+    removeMore() {
+      if (this.multipleSelection == 0) {
+        this.$message.warning("Please select item");
+        return;
+      }
+      this.multipleSelection.forEach(element => {
+        this.star(element);
+      });
+      this.$message.success("Remove success");
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     search() {
-      console.log(1);
+      this.goods = this.table.filter(
+        e => e.name.match(this.search_name) && e.key_words.match(this.type)
+      );
     }
   }
 };
