@@ -53,7 +53,7 @@
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
-          <el-table-column prop="tracking_no" label="Tracking No"></el-table-column>
+          <el-table-column prop="tracking_number" label="Tracking No"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Completed Orders" name="fourth">
@@ -64,7 +64,7 @@
           <el-table-column prop="sku_no" label="SKU"></el-table-column>
           <el-table-column prop="order_id" label="Order No"></el-table-column>
           <el-table-column prop="total" label="Total"></el-table-column>
-          <el-table-column prop="tracking_no" label="Tracking No"></el-table-column>
+          <el-table-column prop="tracking_number" label="Tracking No"></el-table-column>
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Cancelled Orders" name="fifth">
@@ -214,6 +214,7 @@ export default {
         if (res.code == 200) {
           // this.$root.user_id=res.data.user_id;
           this.tableData = res.data
+          console.log(res)
         }
       });
   },
