@@ -75,7 +75,6 @@
           label-width="150px"
           class="add-goods-form"
         >
-        <el-button type="danger" icon="el-icon-plus" @click="check">Check</el-button>
           <el-form-item
             label="Goods title"
             prop="title"
