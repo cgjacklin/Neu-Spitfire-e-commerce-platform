@@ -224,7 +224,7 @@ export default {
           this.table = res.data.user;
         } else {
           if (res.message == "Permission denied") {
-            this.$message.warning("Permission denied"); 
+            this.$message.warning("Permission denied");
           }
         }
       });
@@ -235,29 +235,30 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          if(this.isAdd){
-this.$message.warning("The system only supports adding users from the registration page");
-this.isAdd = false;
-          }else{
-          this.$post("/rle/updateUser", {
-            admin_id: sessionStorage.getItem("user_id"),
-            user_id: this.userForm.userid,
-            username: this.userForm.username,
-            password: this.userForm.password,
-            name: this.userForm.nickname,
-            email: this.userForm.email,
-            phone: this.userForm.phone,
-            role_id: this.userForm.role
-          }).then(res => {
-            if (res.code == 200) {
-              this.$message.success("Successfully update!");
-            } else {
-              this.$message.warning("Update failed");
-            }
-            
-          });
+          if (this.isAdd) {
+            this.$message.warning(
+              "The system only supports adding users from the registration page"
+            );
+            this.isAdd = false;
+          } else {
+            this.$post("/rle/updateUser", {
+              admin_id: sessionStorage.getItem("user_id"),
+              user_id: this.userForm.userid,
+              username: this.userForm.username,
+              password: this.userForm.password,
+              name: this.userForm.nickname,
+              email: this.userForm.email,
+              phone: this.userForm.phone,
+              role_id: this.userForm.role
+            }).then(res => {
+              if (res.code == 200) {
+                this.$message.success("Successfully update!");
+              } else {
+                this.$message.warning("Update failed");
+              }
+            });
           }
-this.drawer = false;
+          this.drawer = false;
         } else {
           return false;
         }
@@ -267,10 +268,10 @@ this.drawer = false;
       this.$refs[formName].resetFields();
       this.drawer = false;
     },
-    add(){
-        this.isAdd = true;
-        this.userForm = [];
-        this.drawer = true;
+    add() {
+      this.isAdd = true;
+      this.userForm = [];
+      this.drawer = true;
     },
     edit(row) {
       this.userForm = row;
@@ -294,6 +295,10 @@ this.drawer = false;
       });
     },
     removeMore() {
+      if (this.multipleSelection.length == 0) {
+        this.$message.warning("Please select item");
+        return;
+      }
       this.multipleSelection.forEach(element => {
         this.$post("/rle/deletedUser", {
           user_id: sessionStorage.getItem("user_id"),
