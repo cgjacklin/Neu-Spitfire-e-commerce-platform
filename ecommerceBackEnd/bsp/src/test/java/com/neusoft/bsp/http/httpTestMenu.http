@@ -1,0 +1,49 @@
+### 1. test update menu success
+POST http://127.0.0.1:8088/menu/updateMenuInfo
+Content-Type: application/json
+
+{
+  "menu_id": 1,
+  "user_id": 3,
+  "menu_name": "compony Information"
+
+}
+
+###2.  test update menu no right
+POST http://127.0.0.1:8088/menu/updateMenuInfo
+Content-Type: application/json
+
+{
+  "menu_id": 1,
+  "user_id": 3,
+  "menu_name": "Compony Information"
+
+}
+###3.  test update menu no menu
+POST http://127.0.0.1:8088/menu/updateMenuInfo
+Content-Type: application/json
+
+{
+  "menu_id": 12,
+  "user_id": 3,
+  "menu_name": "Compony Information"
+
+}
+###1.test get menu success
+POST http://127.0.0.1:8088/menu/getAllMenuList
+Content-Type: application/json
+
+{
+  "user_id": 3
+}
+
+###
+###2.test get menu no right
+POST http://127.0.0.1:8088/menu/getAllMenuList
+Content-Type: application/json
+
+{
+  "user_id": 1
+}
+
+###
