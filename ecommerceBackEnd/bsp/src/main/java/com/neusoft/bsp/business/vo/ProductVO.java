@@ -155,6 +155,46 @@ public class ProductVO implements BaseEntity<Integer> {
         this.call_cnt = product.getCall_cnt();
     }
 
+    @Override
+    public String toString() {
+        return "ProductVO{" +
+                "pro_id=" + pro_id +
+                ", sku_cd='" + sku_cd + '\'' +
+                ", brd_id=" + brd_id +
+                ", man_id=" + man_id +
+                ", title='" + title + '\'' +
+                ", upc='" + upc + '\'' +
+                ", ean='" + ean + '\'' +
+                ", model='" + model + '\'' +
+                ", warranty_day='" + warranty_day + '\'' +
+                ", retail_price=" + retail_price +
+                ", created_by='" + created_by + '\'' +
+                ", creation_date=" + creation_date +
+                ", last_update_by='" + last_update_by + '\'' +
+                ", last_update_date=" + last_update_date +
+                ", remark='" + remark + '\'' +
+                ", sts_cd='" + sts_cd + '\'' +
+                ", mininum_retail_price=" + mininum_retail_price +
+                ", replenishment_period=" + replenishment_period +
+                ", key_words='" + key_words + '\'' +
+                ", warranty='" + warranty + '\'' +
+                ", time_unit='" + time_unit + '\'' +
+                ", stockseting=" + stockseting +
+                ", call_cnt=" + call_cnt +
+                ", user_id=" + user_id +
+                ", width=" + width +
+                ", height=" + height +
+                ", length=" + length +
+                ", weight=" + weight +
+                ", description='" + description + '\'' +
+                ", platform_type='" + platform_type + '\'' +
+                ", ebay_description='" + ebay_description + '\'' +
+                ", amazon_description='" + amazon_description + '\'' +
+                ", name_en='" + name_en + '\'' +
+                ", star=" + star +
+                '}';
+    }
+
     public int getStar() {
         return star;
     }

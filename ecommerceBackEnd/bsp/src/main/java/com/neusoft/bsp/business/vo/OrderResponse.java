@@ -14,6 +14,7 @@ public class OrderResponse implements BaseEntity<Integer> {
     int man_id;
     int pro_id;
     int dsr_id;
+    String remark;
     String order_id;
     BigDecimal sales_price;
     int qty;
@@ -30,6 +31,15 @@ public class OrderResponse implements BaseEntity<Integer> {
     Timestamp completed_time;
     Timestamp cancelled_time;
     BigDecimal total;
+
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public BigDecimal getTotal() {
         return total;

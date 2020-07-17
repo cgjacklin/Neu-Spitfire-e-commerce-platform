@@ -115,4 +115,18 @@ public class ProductController extends BaseController {
         return response;
     }
 
+    @PostMapping("/getProduct")
+    public BaseModelJson<ProductVO> getProduct(@RequestBody Product product){
+        BaseModelJson<ProductVO> response = new BaseModelJson<>();
+        ProductVO productVO = productService.getProduct(product);
+        if(productVO!=null){
+            response.setSuccess();
+            response.setData(productVO);
+        }
+        else{
+            throw BusinessException.NO_PRODUCT;
+        }
+        return response;
+    }
+
 }

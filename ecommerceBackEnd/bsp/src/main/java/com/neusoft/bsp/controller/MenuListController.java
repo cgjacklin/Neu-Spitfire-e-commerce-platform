@@ -56,8 +56,10 @@ public class MenuListController {
             menuList.setMenu_icon(menu.getMenu_icon());
             menuList.setMenu_name(menu.getMenu_name());
             menuList.setMenu_url(menu.getMenu_url());
-            int j = menuListService.checkByUserAndMenuID(us.getUser_id(), menu.getMenu_id()).getList_id();
-            if (j == 0) {
+            menuList.setParent_id(menu.getParent_id());
+            MenuList menuList1 = menuListService.checkByUserAndMenuID(us.getUser_id(), menu.getMenu_id());
+
+            if (menuList1 == null) {
                 menuList.setState(false);         //标记状态
             } else {
                 menuList.setState(true);

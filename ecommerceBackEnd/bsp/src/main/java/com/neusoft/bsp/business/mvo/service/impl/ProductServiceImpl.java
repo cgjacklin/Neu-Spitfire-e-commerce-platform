@@ -209,20 +209,42 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductVO getProduct(Product product) {
+        int pro_id = product.getPro_id();
+        Product productReal = getById(pro_id);
+        ProductVO productVO = new ProductVO(getById(pro_id));
+        Brand brand = brandService.getById(productReal.getBrd_id());
+        PackageInfo packageInfo = packageInfoService.getByProduct(productReal.getPro_id());
+        //配置VO package
+        productVO.setAmazon_description(packageInfo.getAmazon_description());
+        productVO.setEbay_description(packageInfo.getEbay_description());
+        productVO.setWidth(packageInfo.getWidth());
+        productVO.setHeight(packageInfo.getHeight());
+        productVO.setLength(packageInfo.getLength());
+        productVO.setWeight(packageInfo.getWeight());
+        productVO.setName_en(brand.getName_en());
+        return  productVO;
+    }
+
+    @Override
     public int updateProduct(ProductVO productvo) {
         User user = userService.getById(productvo.getUser_id());
         PackageInfo packageInfo = packageInfoService.getByProduct(productvo.getPro_id());
         System.out.println();
         System.out.println();
-        System.out.println(packageInfo.toString());
+//        System.out.println(packageInfo.toString());
+        System.out.println();
+        System.out.println();
         //更新product信息
-        Product product = getById(productvo.getPro_id());
+        Product product = new Product(productvo);
         long time = System.currentTimeMillis();
         Date date = new java.sql.Date(time);
-        product.setCreation_date(date);
+//        product.setCreation_date(date);
         product.setLast_update_date(date);
         product.setLast_update_by(user.getUsername());
         product.setMan_id(user.getMan_buyer_id());
+        product.setTitle(productvo.getTitle());
+
         //存package信息
         packageInfo.setAmazon_description(productvo.getAmazon_description());
         packageInfo.setEbay_description(productvo.getEbay_description());

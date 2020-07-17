@@ -37,4 +37,6 @@ public interface ProductService {
     List<ProductVO> getProductsOnShelf(User user);
 
     String uploadPicture(MultipartFile picture, HttpServletRequest request);
+
+    ProductVO getProduct(Product product);
 }
