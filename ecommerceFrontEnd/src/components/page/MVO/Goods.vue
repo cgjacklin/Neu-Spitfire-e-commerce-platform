@@ -393,7 +393,7 @@ export default {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         if (res.code == 504) {
-          this.$notify.warning(res.message);
+          this.$message.warning(res.message);
           return;
         }
         if (res.code == 200) {
@@ -449,6 +449,10 @@ export default {
       return row[property] === value;
     },
     add() {
+      if(sessionStorage.getItem("user_id") == 3){
+        this.$message.warning("Admin can not operate")
+        return
+      }
       console.log(this.addGoodsForm);
       this.addGoodsForm.brd_id = "";
       // this.addGoodsForm

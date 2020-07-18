@@ -149,7 +149,8 @@ export default {
     };
   },
   mounted() {
-    this.$post("/str/getStoreByUserID", {
+    if(sessionStorage.getItem("user_id") != 3){
+      this.$post("/str/getStoreByUserID", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {
       if (res.code == 504) {
@@ -166,6 +167,8 @@ export default {
           .map(e => e.store_name);
       }
     });
+    }
+    
     this.$post("/product/getProductOnShelf", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {

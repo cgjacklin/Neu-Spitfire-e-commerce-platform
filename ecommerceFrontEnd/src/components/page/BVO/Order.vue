@@ -358,6 +358,10 @@ export default {
       });
     },
     pay(row, index) {
+      if(sessionStorage.getItem("user_id") == 3){
+        this.$message.warning("Admin can not operate")
+        return
+      }
       this.drawer = true;
       this.opRow = row;
       this.payForm.qty = row.qty;

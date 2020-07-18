@@ -21,7 +21,6 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column prop="user_id" label="User id"></el-table-column>
       <el-table-column prop="username" label="User name"></el-table-column>
       <el-table-column prop="name" label="Nick name"></el-table-column>
       <el-table-column prop="role_id" label="Role"></el-table-column>
@@ -188,6 +187,10 @@ export default {
       });
     },
     permissions(row) {    //权限管理获取状态列表
+      if(row.user_id == 3){
+        this.$message.warning("Can't edit the admin account");
+        return
+      }
       this.$post("/menuList/getAllMenusWithState", {
         user_id: row.user_id
       }).then(res => {
@@ -284,7 +287,7 @@ export default {
     },
     edit(row) {
       this.userForm = row;
-      if (this.userForm.role == "Admin") {
+      if (this.userForm.role_id == "Admin") {
         this.$message.warning("Can't edit the admin account");
         return;
       }

@@ -15,7 +15,6 @@
 
     <el-divider></el-divider>
     <el-table :data="tableData" style="width: 100%" class="table">
-      <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="menu_name" label="Menu title"></el-table-column>
       <el-table-column prop="menu_url" label="Index"></el-table-column>
       <el-table-column prop="menu_icon" label="icon"></el-table-column>
