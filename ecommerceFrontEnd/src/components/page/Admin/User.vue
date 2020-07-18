@@ -151,6 +151,7 @@ export default {
       table: [],
       multipleSelection: [],
       userForm: {
+        user_id: "",
         username: "",
         name: "",
         password: "",
@@ -248,22 +249,47 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.isAdd) {
-            this.$message.warning(
-              "The system only supports adding users from the registration page"
-            );
+            let tmp;
+            if(this.userForm.role_id=="Admin"){
+              tmp = "0"
+              return;
+            }
+            if(this.userForm.role_id=="MVO"){
+              tmp = "1";
+            }
+            if(this.userForm.role_id=="BVO"){
+              tmp = "2";
+            }
+            this.$post("/user/register", {
+            username: this.userForm.username,
+            password:this.userForm.password,
+            name:this.userForm.name,
+            phone:this.userForm.phone,
+            email:this.userForm.email,
+            role_id:tmp
+          }).then(res => {
+            if (res.code == 504) {
+              this.$notify.error("The user name already exists");
+            }
+            if (res.code == 200) {
+              this.getUsers();
+              this.$notify.success("Registered successfully");
+            }
+          });
             this.isAdd = false;
           } else {
             this.$post("/rle/updateUser", {
               admin_id: sessionStorage.getItem("user_id"),
-              user_id: this.userForm.userid,
+              user_id: this.userForm.user_id,
               username: this.userForm.username,
               password: this.userForm.password,
-              name: this.userForm.nickname,
+              name: this.userForm.name,
               email: this.userForm.email,
               phone: this.userForm.phone,
-              role_id: this.userForm.role
+              role_id: this.userForm.role_id
             }).then(res => {
               if (res.code == 200) {
+                this.getUsers();
                 this.$message.success("Successfully update!");
               } else {
                 this.$message.warning("Update failed");
@@ -286,7 +312,9 @@ export default {
       this.drawer = true;
     },
     edit(row) {
-      this.userForm = row;
+      this.isAdd = false;
+      this.userForm = JSON.parse(JSON.stringify(row));
+      console.log(row);
       if (this.userForm.role_id == "Admin") {
         this.$message.warning("Can't edit the admin account");
         return;

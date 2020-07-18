@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 还有坑，注册的时候判断是否为buyer，是的话自动增加
+ * 管理用户登录，注册
  */
 @Service("userService")
 public class UserServiceImpl implements UserService {

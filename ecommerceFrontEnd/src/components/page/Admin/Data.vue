@@ -206,6 +206,7 @@ export default {
     },
     edit(row) {
       this.opRow = row;
+      this.isAdd = false;
       this.dialogVisible = true;
       this.$nextTick(function() {
         this.dataForm.code_type = row.code_type;

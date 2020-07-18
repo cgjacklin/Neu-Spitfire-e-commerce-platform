@@ -114,7 +114,7 @@ export default {
           },
           {
             name: "Wallet",
-            num: "$"+res.data.wallet,
+            num: "￥"+res.data.wallet,
             img: this.walletImg,
             class: "img-class2"
           }

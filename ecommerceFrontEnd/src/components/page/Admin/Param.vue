@@ -156,7 +156,7 @@ export default {
             return;
           }
           if (this.isAdd) {
-            this.isAdd = false;
+            // this.isAdd = false;
             this.$post("/parameter/addParameter", {
               user_id: sessionStorage.getItem("user_id"),
               param_value: this.paramForm.param_value,
@@ -188,6 +188,7 @@ export default {
       this.dialogVisible = false;
     },
     edit(row) {
+      this.isAdd = false;
       this.opRow = row;
       this.dialogVisible = true;
       this.$nextTick(function() {
