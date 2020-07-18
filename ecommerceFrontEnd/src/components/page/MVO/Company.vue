@@ -318,6 +318,8 @@ export default {
     },
     add() {
       this.brandname = "";
+      this.count = 0;
+      this.fileList = [];
       this.dialogVisible = true;
       //通过改变filelist展示图片
     },
@@ -325,6 +327,7 @@ export default {
     change(index, row) {
       this.brd_id = row.brdid;
       this.brandname = row.name;
+      this.fileList = [{name: 'logo', url: row.logo}]
       this.dialogVisible1 = true;
       //通过改变filelist展示图片
     },
@@ -336,10 +339,10 @@ export default {
         this.$message.warning("The brand name cannot be empty");
         return;
       }
-      // if (this.count == 0) {
-      //   this.$message.warning("Please upload the logo");
-      //   return;
-      // }
+      if (this.count == 0) {
+        this.$message.warning("Please upload the logo");
+        return;
+      }
       this.$refs.upload.submit();
       this.$post("/brd/addBrand", {
         user_id: sessionStorage.getItem("user_id"),
