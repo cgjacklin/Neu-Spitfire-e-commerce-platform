@@ -23,10 +23,22 @@
 export default {
   data() {
     return {
-      nickname: "admin",  
+      nickname: "",  
       imgSrc: require("../../assets/user.jpg"),
       sharedState: this.$isCollapse
     };
+  },
+  mounted(){
+    this.$post("/mainPage/getUserBasicInfo", {
+        user_id: sessionStorage.getItem("user_id")
+      }).then(res => {
+        if (res.code == 200) {
+          console.log("HHHH")
+          console.log(res)
+          this.nickname = res.data.name;
+        } 
+        
+      });
   },
   methods: {
     Sidebar() {
