@@ -343,6 +343,8 @@ export default {
     },
 
     DepositPass() {
+      this.Depositing_money = ""
+      this.pay = false;
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -358,6 +360,10 @@ export default {
     },
 
     AccountPass() {
+      this.passwordForm={
+        password: "",
+        checkPass: ""
+      }
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -426,6 +432,10 @@ export default {
       this.pay = true;
     },
     deposit() {
+      if(this.Depositing_money <= 0 || isNaN(this.Depositing_money)){
+        this.$message.warning("Please enter the right amount")
+        return
+      }
       if (!this.pay) {
         this.$message.warning("Please scan the code to pay");
         return;

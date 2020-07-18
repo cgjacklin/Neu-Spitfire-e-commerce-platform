@@ -336,6 +336,7 @@ export default {
     },
 
     WithdrawPass() {
+      this.Withdraw_money = ''
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -351,6 +352,10 @@ export default {
     },
 
     AccountPass() {
+      this.passwordForm={
+        password: "",
+        checkPass: ""
+      }
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -416,6 +421,11 @@ export default {
       this.dialogAccount = false;
     },
     Withdraw() {
+      
+      if(this.Withdraw_money <= 0 || isNaN(this.Withdraw_money)){
+        this.$message.warning("Please enter the right amount")
+        return
+      }
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
