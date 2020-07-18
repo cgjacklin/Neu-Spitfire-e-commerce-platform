@@ -5,6 +5,9 @@ winConfigPath: file:///E:/test/
 
 
 spring:
+  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   servlet:
     multipart:
       max-file-size: 50MB

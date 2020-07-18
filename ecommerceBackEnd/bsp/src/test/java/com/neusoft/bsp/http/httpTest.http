@@ -7,3 +7,12 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://127.0.0.1:8088/wal/getRecord/
+Content-Type: application/json
+
+{
+  "user_id": 1
+}
+
+###
