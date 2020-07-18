@@ -229,6 +229,7 @@ export default {
       gmc_report_url: "",
       tableData: [],
       table:[],
+      isAdd: false,
       addComForm: {
         name_en: "",
         description: "",
@@ -295,7 +296,43 @@ export default {
       });
     },
     handleSuccess(res) {
+      console.log("HandleSuccess")
+      console.log(res.data)
       this.remake = res.data;
+
+      if(this.isAdd){
+          this.$post("/brd/addBrand", {
+          user_id: sessionStorage.getItem("user_id"),
+          name_en: this.brandname,
+          remark: this.remake
+        }).then(res => {
+          if (res.code == 200) {
+            this.$message.success("Successfully add!");
+          } else {
+            this.$message.warning("Add failed");
+          }
+          this.getBrand();
+        });
+        this.dialogVisible = false;
+      }
+      if(!this.isAdd){
+           this.$post("/brd/updateBrand", {
+            brd_id: this.brd_id,
+            user_id: sessionStorage.getItem("user_id"),
+            name_en: this.brandname,
+            remark: this.remake
+          }).then(res => {
+            if (res.code == 200) {
+              this.$message.success("Successfully update!");
+            } else {
+              this.$message.warning("Update failed");
+            }
+            this.getBrand();
+          });
+          this.dialogVisible1 = false;
+      }
+     
+      
     },
     remove(row) {
       this.$post("/brd/deleteBrand", {
@@ -317,6 +354,7 @@ export default {
       this.fileList = [];
     },
     add() {
+      this.isAdd = true;
       this.brandname = "";
       this.count = 0;
       this.fileList = [];
@@ -325,6 +363,7 @@ export default {
     },
 
     change(index, row) {
+      this.isAdd = false;
       this.brd_id = row.brdid;
       this.brandname = row.name;
       this.fileList = [{name: 'logo', url: row.logo}]
@@ -344,19 +383,19 @@ export default {
         return;
       }
       this.$refs.upload.submit();
-      this.$post("/brd/addBrand", {
-        user_id: sessionStorage.getItem("user_id"),
-        name_en: this.brandname,
-        remark: this.remake
-      }).then(res => {
-        if (res.code == 200) {
-          this.$message.success("Successfully add!");
-        } else {
-          this.$message.warning("Add failed");
-        }
-        this.getBrand();
-      });
-      this.dialogVisible = false;
+      // this.$post("/brd/addBrand", {
+      //   user_id: sessionStorage.getItem("user_id"),
+      //   name_en: this.brandname,
+      //   remark: this.remake
+      // }).then(res => {
+      //   if (res.code == 200) {
+      //     this.$message.success("Successfully add!");
+      //   } else {
+      //     this.$message.warning("Add failed");
+      //   }
+      //   this.getBrand();
+      // });
+      // this.dialogVisible = false;
     },
     submitUpdate() {
       if (this.brandname == "") {
@@ -368,20 +407,20 @@ export default {
       //   return;
       // }
       this.$refs.upload.submit();
-      this.$post("/brd/updateBrand", {
-        brd_id: this.brd_id,
-        user_id: sessionStorage.getItem("user_id"),
-        name_en: this.brandname,
-        remark: this.remake
-      }).then(res => {
-        if (res.code == 200) {
-          this.$message.success("Successfully update!");
-        } else {
-          this.$message.warning("Update failed");
-        }
-        this.getBrand();
-      });
-      this.dialogVisible1 = false;
+      // this.$post("/brd/updateBrand", {
+      //   brd_id: this.brd_id,
+      //   user_id: sessionStorage.getItem("user_id"),
+      //   name_en: this.brandname,
+      //   remark: this.remake
+      // }).then(res => {
+      //   if (res.code == 200) {
+      //     this.$message.success("Successfully update!");
+      //   } else {
+      //     this.$message.warning("Update failed");
+      //   }
+      //   this.getBrand();
+      // });
+      // this.dialogVisible1 = false;
     },
     search() {
       this.tableData = this.table.filter(e =>
