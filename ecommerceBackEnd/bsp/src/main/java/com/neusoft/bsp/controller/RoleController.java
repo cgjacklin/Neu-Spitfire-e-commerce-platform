@@ -50,6 +50,15 @@ public class RoleController extends BaseController {
             response.code = 200;
             HashMap<String, Object> res = new HashMap<>();
             List<User> list = userService.getAll();
+            for(User userr:list){
+                if(userr.getRole_id().equals("0")){
+                    userr.setRole_id("Admin");
+                }else if(userr.getRole_id().equals("1")){
+                    userr.setRole_id("MVO");
+                }else if(userr.getRole_id().equals("2")){
+                    userr.setRole_id("BVO");
+                }
+            }
             res.put("user", list);
             response.data = res;
         }else{
