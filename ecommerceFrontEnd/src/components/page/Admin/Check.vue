@@ -22,7 +22,10 @@
     ></el-date-picker>
     <el-button type="danger" icon="el-icon-search"></el-button>
     <el-divider></el-divider>
-    <el-table :data="tableData" style="width: 100%" class="table">
+    <el-table 
+    :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+    style="width: 100%"
+    >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="transaction_audit_id" label="Transaction audit id"></el-table-column>
       <el-table-column prop="user_id" label="User id"></el-table-column>
@@ -48,6 +51,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
     <el-dialog title="Refuse" :visible.sync="dialogVisible" width="23%">
       <span>Upload the order：</span>
       <br />
@@ -97,7 +109,9 @@ export default {
       tableData: [],
       table: [],
       tableData1: [],
-      reason: ""
+      reason: "",
+      currentPage: 1, //默认页码为1
+      pagesize: 10, //默认一页显示11条
     };
   },
 
@@ -113,6 +127,14 @@ export default {
     });
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     getAudit() {
       this.tableData = [];
       this.$post("/wal/getAudit", {

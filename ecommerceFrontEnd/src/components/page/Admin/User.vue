@@ -15,7 +15,7 @@
 
     <el-divider></el-divider>
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
       style="width: 100%"
       class="table"
       @selection-change="handleSelectionChange"
@@ -34,6 +34,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10,12,14,tableData.length]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
     <br />
     <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-drawer title="drawer" :visible.sync="drawer" size="35%" :with-header="false">
@@ -139,6 +148,8 @@
 export default {
   data() {
     return {
+      currentPage: 1, //默认页码为1
+      pagesize: 10, //默认一页显示11条
       menu0: [],
       menu1: [],
       menu2: [],
@@ -173,6 +184,14 @@ export default {
     });
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     getUsers() {
       this.$post("/rle/getUsers", {
         user_id: sessionStorage.getItem("user_id")

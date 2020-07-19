@@ -20,7 +20,7 @@
     <el-button type="danger" plain icon="el-icon-plus" @click="add">Add</el-button>
     <el-divider></el-divider>
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
       style="width: 100%"
       class="table-check"
       @selection-change="handleSelectionChange"
@@ -68,6 +68,15 @@
         </template>
       </el-table-column>
     </el-table>
+     <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[6]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
     <br />
     <span>Batch：</span>
     <el-button @click="batch(msg[0])" type="danger">Push</el-button>
@@ -317,6 +326,8 @@ export default {
       fileList: [],
       fileName: "fileName",
       isAdd: false,
+      currentPage: 1, //默认页码为1
+      pagesize: 5, //默认一页显示11条
       // brand_options: [{ value: 1, label: "p" }],
       brand_options: [],
       type_options: [
@@ -403,6 +414,14 @@ export default {
       });
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     batch(msg) {
       if (this.multipleSelection == 0) {
         this.$message.warning("Please select item");

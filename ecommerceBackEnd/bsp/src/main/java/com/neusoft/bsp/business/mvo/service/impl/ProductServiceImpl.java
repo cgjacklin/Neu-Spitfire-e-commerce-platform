@@ -82,16 +82,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductVO> getProducts(User user) {
         int man_id = userService.getById(user.getUser_id()).getMan_buyer_id();
-        if(man_id==0){
+        String role_id = userService.getById(user.getUser_id()).getRole_id();
+        if(man_id==0 && !role_id.equals("0")){
             throw BusinessException.NO_MAN_ID;
         }
-        List<Brand> brands = brandService.getAllById(man_id);
-        if (brands.equals(null)||brands.size()==0){
-            throw BusinessException.NO_BRAND;
-        }
+//        List<Brand> brands = brandService.getAllById(man_id);
+//        if (brands.equals(null)||brands.size()==0){
+//            throw BusinessException.NO_BRAND;
+//        }
 
         Map<String, Object> para= new HashMap<>();
         para.put("man_id", man_id);
+        para.put("role_id", role_id);
+        System.out.println(role_id);
         List<Product> products = getAllByFilter(para);
         List<ProductVO> productVOS = new ArrayList<>();
         if(products.size()==0){

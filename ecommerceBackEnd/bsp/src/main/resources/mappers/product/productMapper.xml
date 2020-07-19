@@ -47,7 +47,10 @@
     </select>
 
     <select id="getAllByFilter" parameterType="java.util.Map" resultType="Product">
-        select * from pro_product where man_id = #{man_id}
+        select * from pro_product
+        <if test = 'role_id != 0'>
+            where man_id = #{man_id}
+        </if>
     </select>
 
     <select id="getProductOnShelf"  resultType="Product">
