@@ -24,6 +24,7 @@
       style="width: 100%"
       class="table-check"
       @selection-change="handleSelectionChange"
+      height="550"
     >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="title" label="Goods title"></el-table-column>
@@ -68,11 +69,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
      <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[6]"
+      :page-sizes="[5,10,tableData.length]"
       :page-size="pagesize"
       layout="total,sizes,prev,pager,next,jumper"
       :total="tableData.length"

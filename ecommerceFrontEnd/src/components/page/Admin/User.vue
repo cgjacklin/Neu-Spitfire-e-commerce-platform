@@ -19,6 +19,7 @@
       style="width: 100%"
       class="table"
       @selection-change="handleSelectionChange"
+      height="550"
     >
       <el-table-column type="selection" width="50"></el-table-column>
       <el-table-column prop="username" label="User name"></el-table-column>
@@ -34,11 +35,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10,12,14,tableData.length]"
+      :page-sizes="[9,12,tableData.length]"
       :page-size="pagesize"
       layout="total,sizes,prev,pager,next,jumper"
       :total="tableData.length"
@@ -149,7 +151,7 @@ export default {
   data() {
     return {
       currentPage: 1, //默认页码为1
-      pagesize: 10, //默认一页显示11条
+      pagesize: 9, //默认一页显示11条
       menu0: [],
       menu1: [],
       menu2: [],

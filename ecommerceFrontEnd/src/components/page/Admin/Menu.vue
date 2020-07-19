@@ -18,6 +18,7 @@
     :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
     style="width: 100%" 
     class="table"
+    height="600"
     >
       <el-table-column prop="menu_name" label="Menu title"></el-table-column>
       <el-table-column prop="menu_url" label="Index"></el-table-column>
@@ -34,11 +35,12 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="currentPage"
-      :page-sizes="[10]"
+      :page-sizes="[10,12,tableData.length]"
       :page-size="pagesize"
       layout="total,sizes,prev,pager,next,jumper"
       :total="tableData.length"

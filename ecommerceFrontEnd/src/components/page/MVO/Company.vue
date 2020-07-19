@@ -53,7 +53,7 @@
         <el-button type="danger" plain icon="el-icon-plus" @click="add">Add</el-button>
         <br />
         <br />
-        <el-table :data="tableData" style="width: 100%">
+        <el-table size="medium" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="301">
           <el-table-column prop="brdid" label="Brand Id"></el-table-column>
           <el-table-column prop="name" label="Brand Name"></el-table-column>
           <!-- <el-table-column prop="logo" label="Brand Logo"></el-table-column> -->
@@ -69,6 +69,16 @@
             </template>
           </el-table-column>
         </el-table>
+        <br>
+         <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[3,6,9]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
       </div>
     </div>
 
@@ -229,6 +239,8 @@ export default {
       gmc_report_url: "",
       tableData: [],
       table:[],
+      currentPage: 1, //默认页码为1
+      pagesize: 3, //默认一页显示11条
       isAdd: false,
       addComForm: {
         name_en: "",
@@ -242,6 +254,14 @@ export default {
     this.checkCompany();
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     changeCompanyInfo(){
       this.addComForm.name_en = this.name_en;
       this.addComForm.description = this.description;
