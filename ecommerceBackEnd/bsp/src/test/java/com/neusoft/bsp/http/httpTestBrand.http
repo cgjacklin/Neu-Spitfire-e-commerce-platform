@@ -1,0 +1,48 @@
+##1 getBrand success
+POST http://127.0.0.1:8088/brd/getBrand
+Content-Type: application/json
+
+{
+  "user_id": "1"
+
+}
+
+###getBrand noUser
+POST http://127.0.0.1:8088/brd/getBrand
+Content-Type: application/json
+
+{
+  "user_id": "17"
+
+}
+
+###
+###getBrand noBrand
+POST http://127.0.0.1:8088/brd/getBrand
+Content-Type: application/json
+
+{
+  "user_id": "20"
+
+}
+
+###
+###getBrand noBrand
+POST http://127.0.0.1:8088/wal/getRecord
+Content-Type: application/json
+
+{
+  "user_id": "1"
+
+}
+
+###
+POST http://127.0.0.1:8088/order/getOrders
+Content-Type: application/json
+
+{
+  "user_id": "6",
+  "sts_cd":"1"
+}
+
+###

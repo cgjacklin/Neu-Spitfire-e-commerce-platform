@@ -1,0 +1,26 @@
+### test deliver order
+POST http://127.0.0.1:8088/wal/getWallet
+Content-Type: application/json
+
+{
+  "user_id": 6
+}
+
+### test deliver order no user
+POST http://127.0.0.1:8088/wal/getWallet
+Content-Type: application/json
+
+{
+  "user_id": 666
+}
+
+
+### test deliver order no wallet
+POST http://127.0.0.1:8088/wal/getWallet
+Content-Type: application/json
+
+{
+  "user_id": 26
+}
+
+###

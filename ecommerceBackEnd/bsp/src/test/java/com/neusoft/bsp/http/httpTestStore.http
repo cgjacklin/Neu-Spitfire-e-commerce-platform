@@ -1,0 +1,16 @@
+###  test get store
+POST http://127.0.0.1:8088/str/getStoreByUserID
+Content-Type: application/json
+
+{
+  "user_id": 6
+}
+
+###  test get store no user
+POST http://127.0.0.1:8088/str/getStoreByUserID
+Content-Type: application/json
+
+{
+  "user_id": 66
+}
+

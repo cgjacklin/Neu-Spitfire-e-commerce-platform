@@ -1,19 +1,17 @@
 package com.neusoft.bsp;
 
-import com.alibaba.druid.sql.visitor.functions.Bin;
-import com.neusoft.bsp.admin.menu.po.Menu;
-import com.neusoft.bsp.admin.menu.vo.MenuWithUserID;
+import com.neusoft.bsp.admin.menu.vo.MenuDetailWithID;
+import com.neusoft.bsp.admin.menu.vo.MenuWithIDAndState;
 import com.neusoft.bsp.admin.user.po.User;
-import com.neusoft.bsp.common.base.BaseModel;
+import com.neusoft.bsp.business.po.Manufacturer;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
-import com.neusoft.bsp.controller.MenuController;
+import com.neusoft.bsp.controller.MVOInfoController;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -22,27 +20,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes =BspApplication.class)
-class MenuTest {
+ class MVOInfoTest {
     @Autowired
-    MenuController menuController;
-
+    MVOInfoController mvoInfoController;
 
     @Test
-    void testgetMenu_success() {
+    void getManufacturerByUserID_success() {
         User user =new User();
-        user.setUser_id(3);
-        BaseModelJson<List<Menu>> bmj = menuController.getAllMenuList(user);
+        user.setUser_id(1);
+        BaseModelJson<Manufacturer> bmj = mvoInfoController.getManufacturerByUserID(user);
         assertEquals(200, bmj.code);
     }
 
     @Test
-    void testgetMenu_noright() {
+    void getManufacturerByUserID_noUser() {
         User user =new User();
-        user.setUser_id(1);
+        user.setUser_id(88);
         assertThrows(BusinessException.class, () -> {
-            BaseModelJson<List<Menu>> bmj = menuController.getAllMenuList(user);
-
+            BaseModelJson<Manufacturer> bmj = mvoInfoController.getManufacturerByUserID(user);
         });
+
     }
 
 }

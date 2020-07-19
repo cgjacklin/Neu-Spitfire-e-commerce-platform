@@ -1,0 +1,37 @@
+###  test get order
+POST http://127.0.0.1:8088/order/getOrders
+Content-Type: application/json
+
+{
+  "user_id": 6,
+  "sts_cd": 1
+}
+
+
+###  test get order no order
+POST http://127.0.0.1:8088/order/getOrders
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "sts_cd": 1
+}
+###  test get order no user
+POST http://127.0.0.1:8088/order/getOrders
+Content-Type: application/json
+
+{
+  "user_id": 155,
+  "sts_cd": 1
+}
+
+### test deliver order
+POST http://127.0.0.1:8088/order/getOrders
+Content-Type: application/json
+
+{
+  "user_id": 6,
+  "or_id": 3
+}
+
+###

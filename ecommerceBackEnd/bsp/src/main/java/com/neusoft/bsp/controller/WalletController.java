@@ -303,7 +303,7 @@ public class WalletController extends BaseController {
     }
 
     @PostMapping("/getRecord")
-    BaseModelJson<Map<String, Object>> getRecord(@RequestBody  User user){
+    public BaseModelJson<Map<String, Object>> getRecord(@RequestBody  User user){
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
         int user_id = user.getUser_id();
 
@@ -319,7 +319,7 @@ public class WalletController extends BaseController {
     }
 
     @PostMapping("/getAudit")
-    BaseModelJson<Map<String, Object>> getAudit(@RequestBody User user){
+   public BaseModelJson<Map<String, Object>> getAudit(@RequestBody User user){
         BaseModelJson<Map<String, Object>> response = new BaseModelJson();
         int user_id = user.getUser_id();
         user = userService.getById(user_id);
