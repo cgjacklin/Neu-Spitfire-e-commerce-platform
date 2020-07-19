@@ -118,6 +118,13 @@ public class RoleController extends BaseController {
 //            user1.setNumber(uau.getNumber());
             user1.setPhone(uau.getPhone());
             user1.setRole_id(uau.getRole_id());
+            if(user1.getRole_id().equals("Admin")){
+                user1.setRole_id("0");
+            }else if(user1.getRole_id().equals("MVO")){
+                user1.setRole_id("1");
+            }else if(user1.getRole_id().equals("BVO")){
+                user1.setRole_id("2");
+            }
 //            user1.setMan_buyer_id(uau.getMan_buyer_id());
             int i = userService.update(user1);
                 if(i!=1){

@@ -53,7 +53,7 @@
         <el-button type="danger" plain icon="el-icon-plus" @click="add">Add</el-button>
         <br />
         <br />
-        <el-table :data="tableData" style="width: 100%">
+        <el-table size="medium" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" height="301">
           <el-table-column prop="brdid" label="Brand Id"></el-table-column>
           <el-table-column prop="name" label="Brand Name"></el-table-column>
           <!-- <el-table-column prop="logo" label="Brand Logo"></el-table-column> -->
@@ -69,6 +69,16 @@
             </template>
           </el-table-column>
         </el-table>
+        <br>
+         <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[3,6,9]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
       </div>
     </div>
 
@@ -229,6 +239,9 @@ export default {
       gmc_report_url: "",
       tableData: [],
       table:[],
+      currentPage: 1, //默认页码为1
+      pagesize: 3, //默认一页显示11条
+      isAdd: false,
       addComForm: {
         name_en: "",
         description: "",
@@ -241,6 +254,14 @@ export default {
     this.checkCompany();
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     changeCompanyInfo(){
       this.addComForm.name_en = this.name_en;
       this.addComForm.description = this.description;
@@ -295,7 +316,43 @@ export default {
       });
     },
     handleSuccess(res) {
+      console.log("HandleSuccess")
+      console.log(res.data)
       this.remake = res.data;
+
+      if(this.isAdd){
+          this.$post("/brd/addBrand", {
+          user_id: sessionStorage.getItem("user_id"),
+          name_en: this.brandname,
+          remark: this.remake
+        }).then(res => {
+          if (res.code == 200) {
+            this.$message.success("Successfully add!");
+          } else {
+            this.$message.warning("Add failed");
+          }
+          this.getBrand();
+        });
+        this.dialogVisible = false;
+      }
+      if(!this.isAdd){
+           this.$post("/brd/updateBrand", {
+            brd_id: this.brd_id,
+            user_id: sessionStorage.getItem("user_id"),
+            name_en: this.brandname,
+            remark: this.remake
+          }).then(res => {
+            if (res.code == 200) {
+              this.$message.success("Successfully update!");
+            } else {
+              this.$message.warning("Update failed");
+            }
+            this.getBrand();
+          });
+          this.dialogVisible1 = false;
+      }
+     
+      
     },
     remove(row) {
       this.$post("/brd/deleteBrand", {
@@ -317,14 +374,19 @@ export default {
       this.fileList = [];
     },
     add() {
+      this.isAdd = true;
       this.brandname = "";
+      this.count = 0;
+      this.fileList = [];
       this.dialogVisible = true;
       //通过改变filelist展示图片
     },
 
     change(index, row) {
+      this.isAdd = false;
       this.brd_id = row.brdid;
       this.brandname = row.name;
+      this.fileList = [{name: 'logo', url: row.logo}]
       this.dialogVisible1 = true;
       //通过改变filelist展示图片
     },
@@ -336,24 +398,24 @@ export default {
         this.$message.warning("The brand name cannot be empty");
         return;
       }
-      // if (this.count == 0) {
-      //   this.$message.warning("Please upload the logo");
-      //   return;
-      // }
+      if (this.count == 0) {
+        this.$message.warning("Please upload the logo");
+        return;
+      }
       this.$refs.upload.submit();
-      this.$post("/brd/addBrand", {
-        user_id: sessionStorage.getItem("user_id"),
-        name_en: this.brandname,
-        remark: this.remake
-      }).then(res => {
-        if (res.code == 200) {
-          this.$message.success("Successfully add!");
-        } else {
-          this.$message.warning("Add failed");
-        }
-        this.getBrand();
-      });
-      this.dialogVisible = false;
+      // this.$post("/brd/addBrand", {
+      //   user_id: sessionStorage.getItem("user_id"),
+      //   name_en: this.brandname,
+      //   remark: this.remake
+      // }).then(res => {
+      //   if (res.code == 200) {
+      //     this.$message.success("Successfully add!");
+      //   } else {
+      //     this.$message.warning("Add failed");
+      //   }
+      //   this.getBrand();
+      // });
+      // this.dialogVisible = false;
     },
     submitUpdate() {
       if (this.brandname == "") {
@@ -365,20 +427,20 @@ export default {
       //   return;
       // }
       this.$refs.upload.submit();
-      this.$post("/brd/updateBrand", {
-        brd_id: this.brd_id,
-        user_id: sessionStorage.getItem("user_id"),
-        name_en: this.brandname,
-        remark: this.remake
-      }).then(res => {
-        if (res.code == 200) {
-          this.$message.success("Successfully update!");
-        } else {
-          this.$message.warning("Update failed");
-        }
-        this.getBrand();
-      });
-      this.dialogVisible1 = false;
+      // this.$post("/brd/updateBrand", {
+      //   brd_id: this.brd_id,
+      //   user_id: sessionStorage.getItem("user_id"),
+      //   name_en: this.brandname,
+      //   remark: this.remake
+      // }).then(res => {
+      //   if (res.code == 200) {
+      //     this.$message.success("Successfully update!");
+      //   } else {
+      //     this.$message.warning("Update failed");
+      //   }
+      //   this.getBrand();
+      // });
+      // this.dialogVisible1 = false;
     },
     search() {
       this.tableData = this.table.filter(e =>

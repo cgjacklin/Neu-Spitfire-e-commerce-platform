@@ -110,8 +110,12 @@
         </div>
         <br />
         <el-tabs v-model="activeName" class="tab">
-          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazon_description}}</el-tab-pane>
-          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebay_description}}</el-tab-pane>
+          <el-tab-pane label="Amazon description" name="first">
+            <article v-html="compileMarkDown(chooseItem.amazon_description)" ></article> 
+          </el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">
+            <article v-html="compileMarkDown(chooseItem.ebay_description)" ></article>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>
@@ -119,6 +123,8 @@
 </template>
 
 <script>
+import showdown from 'showdown'
+var converter = new showdown.Converter();
 export default {
   data() {
     return {
@@ -149,7 +155,8 @@ export default {
     };
   },
   mounted() {
-    this.$post("/str/getStoreByUserID", {
+    if(sessionStorage.getItem("user_id") != 3){
+      this.$post("/str/getStoreByUserID", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {
       if (res.code == 504) {
@@ -166,6 +173,8 @@ export default {
           .map(e => e.store_name);
       }
     });
+    }
+    
     this.$post("/product/getProductOnShelf", {
       user_id: sessionStorage.getItem("user_id")
     }).then(res => {
@@ -180,6 +189,9 @@ export default {
     });
   },
   methods: {
+    compileMarkDown(value) {
+      return converter.makeHtml(value)
+    },
     refresh() {
       this.$post("/product/getProductOnShelf", {
         user_id: sessionStorage.getItem("user_id")

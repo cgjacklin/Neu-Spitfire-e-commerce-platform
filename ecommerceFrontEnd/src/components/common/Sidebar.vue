@@ -88,11 +88,6 @@ export default {
           menu_url: "2",
           subs: [
             {
-              menu_icon: "el-icon-school",
-              menu_url: "/company",
-              menu_name: "Company info"
-            },
-            {
               menu_icon: "el-icon-goods",
               menu_url: "/goods",
               menu_name: "Goods manage"
@@ -102,11 +97,7 @@ export default {
               menu_url: "/MVO/order",
               menu_name: "Order manage"
             },
-            {
-              menu_icon: "el-icon-wallet",
-              menu_url: "/MVO/wallet",
-              menu_name: "Wallet"
-            }
+            
           ]
         },
         {
@@ -114,11 +105,7 @@ export default {
           menu_name: "BVO",
           menu_url: "3",
           subs: [
-            {
-              menu_icon: "el-icon-house",
-              menu_url: "/store",
-              menu_name: "Store manage"
-            },
+          
             {
               menu_icon: "el-icon-goods",
               menu_url: "/goodslist",
@@ -134,11 +121,7 @@ export default {
               menu_url: "/BVO/order",
               menu_name: "Order manage"
             },
-            {
-              menu_icon: "el-icon-wallet",
-              menu_url: "/BVO/wallet",
-              menu_name: "Wallet"
-            }
+            
           ]
         }
       ]

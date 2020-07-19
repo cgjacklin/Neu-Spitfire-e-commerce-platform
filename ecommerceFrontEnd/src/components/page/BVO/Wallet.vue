@@ -63,7 +63,7 @@
           :default-time="['00:00:00', '23:59:59']"
         ></el-date-picker>
 
-        <el-table :data="tableData" style="width: 100%" class="table">
+        <el-table size="medium" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%" class="table" height="220">
           <el-table-column prop="num" label="Transaction Number"></el-table-column>
           <el-table-column prop="amount" label="amount"></el-table-column>
           <el-table-column prop="money" label="money"></el-table-column>
@@ -74,6 +74,16 @@
             </template>
           </el-table-column>
         </el-table>
+        <br>
+        <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[3,6,9,tableData.length]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
       </div>
     </div>
 
@@ -233,6 +243,8 @@ export default {
       visible1: false,
       tableData: [],
       table: [],
+       currentPage: 1, //默认页码为1
+      pagesize: 3, //默认一页显示11条
       dialogVisible: false,
       dialogDeposit: false,
       dialogAccount: false,
@@ -269,6 +281,14 @@ export default {
     });
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     search() {
       let timelist = [];
       if (!this.time) {
@@ -324,14 +344,14 @@ export default {
           } else if (res.data.WalletTransactionRecord[i].status == 0) {
             st = "Failed";
           }
-          this.table.push({
+          this.table.unshift({
             num: res.data.WalletTransactionRecord[i].transaction_id,
             amount: res.data.WalletTransactionRecord[i].account_name,
             money: res.data.WalletTransactionRecord[i].transaction_money,
             time: date,
             state: st
           });
-          this.tableData.push({
+          this.tableData.unshift({
             num: res.data.WalletTransactionRecord[i].transaction_id,
             amount: res.data.WalletTransactionRecord[i].account_name,
             money: res.data.WalletTransactionRecord[i].transaction_money,
@@ -343,6 +363,8 @@ export default {
     },
 
     DepositPass() {
+      this.Depositing_money = ""
+      this.pay = false;
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -358,6 +380,10 @@ export default {
     },
 
     AccountPass() {
+      this.passwordForm={
+        password: "",
+        checkPass: ""
+      }
       var pass;
       this.$post("/wal/getPassword", {
         user_id: sessionStorage.getItem("user_id")
@@ -426,6 +452,10 @@ export default {
       this.pay = true;
     },
     deposit() {
+      if(this.Depositing_money <= 0 || isNaN(this.Depositing_money)){
+        this.$message.warning("Please enter the right amount")
+        return
+      }
       if (!this.pay) {
         this.$message.warning("Please scan the code to pay");
         return;

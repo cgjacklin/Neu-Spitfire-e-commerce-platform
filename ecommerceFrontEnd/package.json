@@ -22,6 +22,7 @@
     "lodash": "^4.17.15",
     "mavon-editor": "^2.9.0",
     "module": "^1.2.5",
+    "showdown": "^1.9.1",
     "v-charts": "^1.19.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"

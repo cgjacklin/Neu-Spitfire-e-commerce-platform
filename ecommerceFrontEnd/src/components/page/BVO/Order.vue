@@ -222,8 +222,12 @@
         </div>
         <br />
         <el-tabs v-model="activeNameDetail" class="tab">
-          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazon_description}}</el-tab-pane>
-          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebay_description}}</el-tab-pane>
+          <el-tab-pane label="Amazon description" name="first">
+            <article v-html="compileMarkDown(chooseItem.amazon_description)" ></article> 
+          </el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">
+            <article v-html="compileMarkDown(chooseItem.ebay_description)" ></article>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>
@@ -232,6 +236,8 @@
 </template>
 
 <script>
+import showdown from 'showdown'
+var converter = new showdown.Converter();
 export default {
   data() {
     return {
@@ -281,6 +287,9 @@ export default {
     });
   },
   methods: {
+    compileMarkDown(value) {
+      return converter.makeHtml(value)
+    },
     showDetail(row){
         
         this.$post("/product/getProduct", {
@@ -358,6 +367,10 @@ export default {
       });
     },
     pay(row, index) {
+      if(sessionStorage.getItem("user_id") == 3){
+        this.$message.warning("Admin can not operate")
+        return
+      }
       this.drawer = true;
       this.opRow = row;
       this.payForm.qty = row.qty;

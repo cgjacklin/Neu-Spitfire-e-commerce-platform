@@ -112,8 +112,12 @@
         </div>
         <br />
         <el-tabs v-model="activeName" class="tab">
-          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazondescription}}</el-tab-pane>
-          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebaydescription}}</el-tab-pane>
+          <el-tab-pane label="Amazon description" name="first">
+            <article v-html="compileMarkDown(chooseItem.amazondescription)" ></article> 
+          </el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">
+            <article v-html="compileMarkDown(chooseItem.ebaydescription)" ></article>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>
@@ -121,6 +125,8 @@
 </template>
 
 <script>
+import showdown from 'showdown'
+var converter = new showdown.Converter();
 export default {
   data() {
     return {
@@ -168,6 +174,9 @@ export default {
     this.loadData();
   },
   methods: {
+    compileMarkDown(value) {
+      return converter.makeHtml(value)
+    },
     loadData() {
       this.$post("/wit/getWishlist", {
         user_id: sessionStorage.getItem("user_id")

@@ -14,8 +14,12 @@
     <el-button type="danger" icon="el-icon-plus" @click="dialog = true; isAdd=true">Add</el-button>
 
     <el-divider></el-divider>
-    <el-table :data="tableData" style="width: 100%" class="table">
-      <el-table-column type="selection" width="50"></el-table-column>
+    <el-table 
+    :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+    style="width: 100%" 
+    class="table"
+    height="600"
+    >
       <el-table-column prop="menu_name" label="Menu title"></el-table-column>
       <el-table-column prop="menu_url" label="Index"></el-table-column>
       <el-table-column prop="menu_icon" label="icon"></el-table-column>
@@ -31,6 +35,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[10,12,tableData.length]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
 
     <el-dialog title="Menu info" :visible.sync="dialog" width="30%">
       <el-form :model="menuForm" ref="menuForm" label-width="130px">
@@ -71,6 +85,8 @@ export default {
   data() {
     return {
       title: "",
+      currentPage: 1, //默认页码为1
+      pagesize: 10, //默认一页显示11条
       dialog: false,
       tableData: [],
       table: [],
@@ -89,6 +105,14 @@ export default {
     });
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     search() {
       this.tableData = this.table.filter(e => e.menu_name.match(this.title));
     },

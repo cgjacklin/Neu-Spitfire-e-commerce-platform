@@ -32,7 +32,11 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
+              <el-link
+                icon="el-icon-goods"
+                type="info"
+                @click="showDetail(scope.row)"
+              >{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -53,7 +57,11 @@
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
+              <el-link
+                icon="el-icon-goods"
+                type="info"
+                @click="showDetail(scope.row)"
+              >{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -75,7 +83,11 @@
           <el-table-column type="selection" width="50"></el-table-column>
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
+              <el-link
+                icon="el-icon-goods"
+                type="info"
+                @click="showDetail(scope.row)"
+              >{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -108,7 +120,11 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
+              <el-link
+                icon="el-icon-goods"
+                type="info"
+                @click="showDetail(scope.row)"
+              >{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -135,7 +151,11 @@
         <el-table :data="tableData" style="width: 100%" class="table">
           <el-table-column prop="title" label="Title">
             <template slot-scope="scope">
-              <el-link icon="el-icon-goods" type="info" @click="showDetail(scope.row)">{{scope.row.title}}</el-link>
+              <el-link
+                icon="el-icon-goods"
+                type="info"
+                @click="showDetail(scope.row)"
+              >{{scope.row.title}}</el-link>
             </template>
           </el-table-column>
           <el-table-column prop="sales_price" label="Price"></el-table-column>
@@ -161,8 +181,12 @@
         </div>
         <br />
         <el-tabs v-model="activeNameDetail" class="tab">
-          <el-tab-pane label="Amazon description" name="first">{{chooseItem.amazon_description}}</el-tab-pane>
-          <el-tab-pane label="ebay description" name="second">{{chooseItem.ebay_description}}</el-tab-pane>
+          <el-tab-pane label="Amazon description" name="first">
+            <article v-html="compileMarkDown(chooseItem.amazon_description)" ></article> 
+          </el-tab-pane>
+          <el-tab-pane label="ebay description" name="second">
+            <article v-html="compileMarkDown(chooseItem.ebay_description)" ></article>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </el-drawer>
@@ -192,6 +216,8 @@
 </template>
 
 <script>
+import showdown from 'showdown'
+var converter = new showdown.Converter();
 export default {
   data() {
     return {
@@ -204,7 +230,7 @@ export default {
       itemDrawer: false,
       activeNameDetail: "first",
       activeName: "first",
-      chooseItem: '',
+      chooseItem: "",
       sts_cd: "",
       opRow: "",
       opIndex: "",
@@ -234,39 +260,38 @@ export default {
     });
   },
   methods: {
-    showDetail(row){
-        
-        this.$post("/product/getProduct", {
-          pro_id : row.pro_id
-        }).then(res=>{
-          if(res.code==200){
-            this.chooseItem = res.data;
-            this.itemDrawer = true;
-          }
-          else{
-            this.$message.warning(res.message)
-          }
-          
-        })
-        
+     compileMarkDown(value) {
+      return converter.makeHtml(value)
+    },
+    showDetail(row) {
+      this.$post("/product/getProduct", {
+        pro_id: row.pro_id
+      }).then(res => {
+        if (res.code == 200) {
+          this.chooseItem = res.data;
+          this.itemDrawer = true;
+        } else {
+          this.$message.warning(res.message);
+        }
+      });
     },
     a() {
       console.log("a");
       alert("a");
     },
     cancelSelected() {
-      if(this.selections.length==0){
-        this.$message.warning("Please select item")
-        return
+      if (this.selections.length == 0) {
+        this.$message.warning("Please select item");
+        return;
       }
       this.dialogVisible = true;
       this.multi = true;
     },
     shipSelected() {
       // console.log(this.selections)
-      if(this.selections.length==0){
-        this.$message.warning("Please select item")
-        return
+      if (this.selections.length == 0) {
+        this.$message.warning("Please select item");
+        return;
       }
       this.dialogVisible = true;
       this.multi = true;
@@ -291,7 +316,11 @@ export default {
           this.tableData.splice(index, 1);
           return;
         }
-        this.$message.warning(res.message);
+        if (res.code == 504) {
+          this.$message.warning(res.message);
+          return;
+        }
+        this.$message.warning("Admin can not operate.");
       });
     },
 

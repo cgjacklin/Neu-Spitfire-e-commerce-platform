@@ -15,13 +15,13 @@
 
     <el-divider></el-divider>
     <el-table
-      :data="tableData"
+      :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
       style="width: 100%"
       class="table"
       @selection-change="handleSelectionChange"
+      height="550"
     >
       <el-table-column type="selection" width="50"></el-table-column>
-      <el-table-column prop="user_id" label="User id"></el-table-column>
       <el-table-column prop="username" label="User name"></el-table-column>
       <el-table-column prop="name" label="Nick name"></el-table-column>
       <el-table-column prop="role_id" label="Role"></el-table-column>
@@ -35,6 +35,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[9,12,tableData.length]"
+      :page-size="pagesize"
+      layout="total,sizes,prev,pager,next,jumper"
+      :total="tableData.length"
+    ></el-pagination>
     <br />
     <el-button size="medium" type="danger" icon="el-icon-delete" @click="removeMore">Batch</el-button>
     <el-drawer title="drawer" :visible.sync="drawer" size="35%" :with-header="false">
@@ -140,6 +150,8 @@
 export default {
   data() {
     return {
+      currentPage: 1, //默认页码为1
+      pagesize: 9, //默认一页显示11条
       menu0: [],
       menu1: [],
       menu2: [],
@@ -152,6 +164,7 @@ export default {
       table: [],
       multipleSelection: [],
       userForm: {
+        user_id: "",
         username: "",
         name: "",
         password: "",
@@ -173,6 +186,14 @@ export default {
     });
   },
   methods: {
+    handleSizeChange(size) {
+      //一页显示多少条
+      this.pagesize = size;
+    },
+    handleCurrentChange(currentPage) {
+      //页码更改方法
+      this.currentPage = currentPage;
+    },
     getUsers() {
       this.$post("/rle/getUsers", {
         user_id: sessionStorage.getItem("user_id")
@@ -188,6 +209,10 @@ export default {
       });
     },
     permissions(row) {    //权限管理获取状态列表
+      if(row.user_id == 3){
+        this.$message.warning("Can't edit the admin account");
+        return
+      }
       this.$post("/menuList/getAllMenusWithState", {
         user_id: row.user_id
       }).then(res => {
@@ -245,22 +270,47 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (this.isAdd) {
-            this.$message.warning(
-              "The system only supports adding users from the registration page"
-            );
+            let tmp;
+            if(this.userForm.role_id=="Admin"){
+              tmp = "0"
+              return;
+            }
+            if(this.userForm.role_id=="MVO"){
+              tmp = "1";
+            }
+            if(this.userForm.role_id=="BVO"){
+              tmp = "2";
+            }
+            this.$post("/user/register", {
+            username: this.userForm.username,
+            password:this.userForm.password,
+            name:this.userForm.name,
+            phone:this.userForm.phone,
+            email:this.userForm.email,
+            role_id:tmp
+          }).then(res => {
+            if (res.code == 504) {
+              this.$notify.error("The user name already exists");
+            }
+            if (res.code == 200) {
+              this.getUsers();
+              this.$notify.success("Registered successfully");
+            }
+          });
             this.isAdd = false;
           } else {
             this.$post("/rle/updateUser", {
               admin_id: sessionStorage.getItem("user_id"),
-              user_id: this.userForm.userid,
+              user_id: this.userForm.user_id,
               username: this.userForm.username,
               password: this.userForm.password,
-              name: this.userForm.nickname,
+              name: this.userForm.name,
               email: this.userForm.email,
               phone: this.userForm.phone,
-              role_id: this.userForm.role
+              role_id: this.userForm.role_id
             }).then(res => {
               if (res.code == 200) {
+                this.getUsers();
                 this.$message.success("Successfully update!");
               } else {
                 this.$message.warning("Update failed");
@@ -283,8 +333,10 @@ export default {
       this.drawer = true;
     },
     edit(row) {
-      this.userForm = row;
-      if (this.userForm.role == "Admin") {
+      this.isAdd = false;
+      this.userForm = JSON.parse(JSON.stringify(row));
+      console.log(row);
+      if (this.userForm.role_id == "Admin") {
         this.$message.warning("Can't edit the admin account");
         return;
       }
