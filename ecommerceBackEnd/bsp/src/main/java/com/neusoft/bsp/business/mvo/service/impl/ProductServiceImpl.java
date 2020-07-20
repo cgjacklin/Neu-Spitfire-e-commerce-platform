@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     PackageInfoService packageInfoService;
     @Autowired
     WishlistMapper wishlistMapper;
-    @Value("${winPath}")
+    @Value("${filePath}")
     String realPath;
 
     @Override
@@ -127,8 +127,8 @@ public class ProductServiceImpl implements ProductService {
 
 //        String realPath = new String("ecommerceBackEnd/bsp/src/main/resources/static/upload");
         //存放上传文件的文件夹
-//        File file = new File(realPath);
-        File file = new File("/image/");
+        File file = new File(realPath);
+//        File file = new File("/image/");
         System.out.println("-----------存放上传文件的文件夹【"+ file +"】-----------");
         System.out.println("-----------输出文件夹绝对路径 -- 这里的绝对路径是相当于当前项目的路径而不是“容器”路径【"+ file.getAbsolutePath() +"】-----------");
         if(!file.isDirectory()){

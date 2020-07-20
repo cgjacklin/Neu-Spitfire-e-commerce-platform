@@ -1,7 +1,6 @@
 server:
   port: 8088
-winPath: E:/test/
-winConfigPath: file:///E:/test/
+filePath: /image/
 
 
 spring:
