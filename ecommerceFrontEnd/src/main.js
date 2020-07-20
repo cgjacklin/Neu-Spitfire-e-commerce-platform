@@ -39,3 +39,17 @@ new Vue({
     }
   }
 })
+
+
+
+// Vue.http.interceptors.push((request, next) => {
+//   // 请求发送前的处理逻辑
+//   request.headers.set('Authorization', "Bearer " + sessionStorage.getItem("jwt"))
+//   console.log(sessionStorage.getItem("jwt"))
+//   next((response) => {
+//     // 请求发送后的处理逻辑
+//     // 根据请求的状态，response参数会返回给successCallback或errorCallback
+//     return response
+//   })
+// })
+
