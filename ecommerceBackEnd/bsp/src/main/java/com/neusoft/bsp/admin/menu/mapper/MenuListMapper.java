@@ -9,15 +9,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@CacheConfig(cacheNames="menuListCache")
+//@CacheConfig(cacheNames="menuListCache")
 @Repository
 public interface MenuListMapper extends BaseMapper<Integer, MenuList> {
-    @Cacheable()
+//    @Cacheable()
     MenuList checkByUserAndMenuID(int user_id, int menu_id);
 
-    @Cacheable()
+//    @Cacheable()
     List<MenuList> getListsByID(int user_id);
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+//    @CacheEvict(allEntries = true, beforeInvocation = true)
     int deleteByTwoID(int user_id, int menu_id);
 }

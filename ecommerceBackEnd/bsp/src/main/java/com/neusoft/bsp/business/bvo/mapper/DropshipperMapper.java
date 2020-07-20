@@ -5,7 +5,7 @@ import com.neusoft.bsp.common.base.BaseMapper;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Repository;
 
-@CacheConfig(cacheNames="dropshipperCache")
+//@CacheConfig(cacheNames="dropshipperCache")
 @Repository
 public interface DropshipperMapper extends BaseMapper<Integer,Dropshipper> {
 

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@CacheConfig(cacheNames="walletAccountFundCache")
+//@CacheConfig(cacheNames="walletAccountFundCache")
 @Repository
 public interface WalletAccountFundMapper  extends BaseMapper<Integer, WalletAccountFund> {
-    @Cacheable()
+//    @Cacheable()
     List<WalletAccountFund> getAllById(Integer buyer_id);
 }

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@CacheConfig(cacheNames="menuCache")
+//@CacheConfig(cacheNames="menuCache")
 @Repository
 public interface MenuMapper extends BaseMapper<Integer, Menu> {
-    @CachePut()
+//    @CachePut()
     List<Menu> getAll();
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@CacheConfig(cacheNames="wishlistCache")
+//@CacheConfig(cacheNames="wishlistCache")
 @Repository
 public interface WishlistMapper extends BaseMapper<Integer, Wishlist> {
-    @Cacheable()
+//    @Cacheable()
     List<Wishlist> getAllById(Integer dsr_id);
 }

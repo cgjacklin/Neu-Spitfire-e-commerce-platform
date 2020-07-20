@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@CacheConfig(cacheNames="storeCache")
+//@CacheConfig(cacheNames="storeCache")
 @Repository
 public interface StoreMapper extends BaseMapper<Integer, Store> {
-    @Cacheable()
+//    @Cacheable()
     List<Store> getAllByDsrId(int dsr_id);
 }

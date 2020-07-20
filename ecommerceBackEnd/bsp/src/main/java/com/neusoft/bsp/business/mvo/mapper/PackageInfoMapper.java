@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
-@CacheConfig(cacheNames="packageInfoCache")
+//@CacheConfig(cacheNames="packageInfoCache")
 @Repository
 public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
     /**
@@ -21,7 +21,7 @@ public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
      *
      * @mbg.generated
      */
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+//    @CacheEvict(allEntries = true, beforeInvocation = true)
     int deleteByPrimaryKey(Integer pckId);
 
     /**
@@ -30,7 +30,7 @@ public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
      *
      * @mbg.generated
      */
-    @CachePut()
+//    @CachePut()
     int insert(PackageInfo record);
 
     /**
@@ -39,7 +39,7 @@ public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
      *
      * @mbg.generated
      */
-    @CachePut()
+//    @CachePut()
     int insertSelective(PackageInfo record);
 
     /**
@@ -48,7 +48,7 @@ public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
      *
      * @mbg.generated
      */
-    @Cacheable()
+//    @Cacheable()
     PackageInfo selectByPrimaryKey(Integer pckId);
 
     /**
@@ -57,7 +57,7 @@ public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
      *
      * @mbg.generated
      */
-    @CachePut()
+//    @CachePut()
     int updateByPrimaryKeySelective(PackageInfo record);
 
     /**
@@ -66,9 +66,9 @@ public interface PackageInfoMapper extends BaseMapper<Integer, PackageInfo>{
      *
      * @mbg.generated
      */
-    @CachePut()
+//    @CachePut()
     int updateByPrimaryKey(PackageInfo record);
 
-    @Cacheable()
+//    @Cacheable()
     PackageInfo getByProduct(int product_id);
 }
