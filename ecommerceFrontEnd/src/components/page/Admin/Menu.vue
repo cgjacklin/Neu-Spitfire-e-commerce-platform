@@ -192,6 +192,7 @@ export default {
       this.dialog = true;
     },
     remove(index, rows) {
+      index = index + this.pagesize*(this.currentPage-1);
       rows.splice(index, 1);
       this.$message.success("Delete success");
     }

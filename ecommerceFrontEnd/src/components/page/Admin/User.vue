@@ -354,6 +354,7 @@ export default {
           this.$message.warning("Delete failed");
         }
       });
+      
     },
     removeMore() {
       if (this.multipleSelection.length == 0) {
