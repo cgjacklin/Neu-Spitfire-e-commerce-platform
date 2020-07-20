@@ -343,6 +343,10 @@ export default {
       this.drawer = true;
     },
     remove(row) {
+       if (this.userForm.role == "Admin") {
+        this.$message.warning("Can't remove the admin account");
+        return;
+      }
       this.$post("/rle/deletedUser", {
         user_id: sessionStorage.getItem("user_id"),
         delete_id: row.user_id

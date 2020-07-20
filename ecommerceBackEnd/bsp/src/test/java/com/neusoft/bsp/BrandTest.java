@@ -45,15 +45,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         });
     }
 
-    @Test
-    void deleteBrand_success() {
-        User user=new User();
-        user.setUser_id(1);
-        Brand brand=new Brand();
-        brand.setBrd_id(2);
-        BaseModel bmj = brandController.deleteBrand(brand);
-        assertEquals(200, bmj.code);
-    }
+//    @Test
+//    void deleteBrand_success() {
+//        User user=new User();
+//        user.setUser_id(1);
+//        Brand brand=new Brand();
+//        brand.setBrd_id(2);
+//        BaseModel bmj = brandController.deleteBrand(brand);
+//        assertEquals(200, bmj.code);
+//    }
     @Test
     void deleteBrand_noBrand() {
         Brand brand=new Brand();

@@ -15,6 +15,7 @@ import com.neusoft.bsp.common.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -93,5 +94,25 @@ public class OrderController extends BaseController {
         return response;
     }
 
+    @PostMapping("/addOrder")
+    public BaseModel addOrder(@RequestBody Order order){
+        BaseModel response = new BaseModel();
+        Timestamp datetime = new Timestamp(System.currentTimeMillis());
+        order.setOrder_created_time(datetime);
+        int i = orderService.insert(order);
+        if(i!=1){
+            throw BusinessException.INSERT_FAIL;
+        }else{
+            response.code = 200;
+        }
+        return response;
+    }
 
+    @PostMapping("/getTimestamp")
+    public BaseModel getTimestamp(@RequestBody Order order){
+        BaseModel response = new BaseModel();
+        Timestamp datetime = new Timestamp(System.currentTimeMillis());
+        response.message=datetime.toString();
+        return response;
+    }
 }
