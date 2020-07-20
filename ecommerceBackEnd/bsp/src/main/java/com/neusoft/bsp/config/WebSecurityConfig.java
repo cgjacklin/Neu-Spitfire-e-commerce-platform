@@ -50,7 +50,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/checkUsername").permitAll()
                 .antMatchers("api/user/login").permitAll()
                 .antMatchers("api/user/register").permitAll()
-                .antMatchers("product/uploadPicture").permitAll()
+                .antMatchers("/product/uploadPicture").permitAll()
+                .antMatchers("/image/**").permitAll()
 
                 // 允许对于网站静态资源的无授权访问
                 .antMatchers(

@@ -7,6 +7,7 @@ public class MenuList implements BaseEntity<Integer> {
     int user_id;
     int menu_id;
 
+    public MenuList(){}
     public MenuList(int user_id, int menu_id) {
         this.user_id = user_id;
         this.menu_id = menu_id;

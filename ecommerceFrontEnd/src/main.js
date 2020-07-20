@@ -27,6 +27,12 @@ Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false
 // Vue.prototype.$axios = axios;
 /* eslint-disable no-new */
+import {setCookie,getCookie,delCookie} from'./components/cookies.js'   //引用
+//定义全局变量
+Vue.prototype.$setCookie = setCookie;
+Vue.prototype.$getCookie = getCookie;
+Vue.prototype.$delCookie = delCookie;
+
 new Vue({
   el: '#app',
   router,
@@ -35,7 +41,7 @@ new Vue({
   render: h => h(App),
   data: function(){
     return {
-      user_id: ''
+      user_id: '',
     }
   }
 })

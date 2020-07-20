@@ -64,7 +64,7 @@ public class UserController extends BaseController {
 //        res.put("jwt", "");
         res.put("user_id", returnUser.getUser_id()+"");
         response.data = res;
-        System.out.println(response.toString());
+//        System.out.println(response.toString());
 
         return response;
 

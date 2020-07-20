@@ -11,6 +11,7 @@ public class Menu implements BaseEntity<Integer> {
     String menu_icon;
     String menu_type;
 
+    public Menu(){}
     public Menu(int menu_id, String menu_name) {
         this.menu_id = menu_id;
         this.menu_name = menu_name;

@@ -20,6 +20,8 @@ public class Manufacturer implements BaseEntity<Integer> {
     String remark;
     String sts_cd;
 
+    public Manufacturer(){}
+
     public Manufacturer(int man_id,  String name_en,  String gmc_report_type, String gmc_report_url, String description) {
         this.man_id = man_id;
         this.name_en = name_en;

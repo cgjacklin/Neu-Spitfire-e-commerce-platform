@@ -10,6 +10,7 @@ import com.neusoft.bsp.admin.menu.vo.MenuListItem;
 import com.neusoft.bsp.admin.menu.vo.MenuWithIDAndState;
 import com.neusoft.bsp.admin.user.po.User;
 import com.neusoft.bsp.admin.user.service.UserService;
+import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
@@ -26,7 +27,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/menuList")
-public class MenuListController {
+public class MenuListController extends BaseController {
 
     @Autowired
     UserService userService;
