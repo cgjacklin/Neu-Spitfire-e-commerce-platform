@@ -6,12 +6,12 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Repository;
 
-@CacheConfig(cacheNames="manufacturerCache")
+//@CacheConfig(cacheNames="manufacturerCache")
 @Repository
 public interface ManufacturerMapper extends BaseMapper<Integer, Manufacturer> {
-    @CachePut()
+//    @CachePut()
     int updateUserWithLastManu(int user_id);
 
-    @CachePut
+//    @CachePut
     int updateUserWithManuID(int man_id);
 }

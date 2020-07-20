@@ -1,6 +1,7 @@
 
 .DS_Store
 ecommerceFrontEnd/node_modules
+ecommerceFrontEnd/dist
 
 ### IntelliJ IDEA ###
 .idea

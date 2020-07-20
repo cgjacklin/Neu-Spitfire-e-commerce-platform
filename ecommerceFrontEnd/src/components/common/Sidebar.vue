@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-container" :class="{'collapse-width': sharedState.state.isCollapse}">
-    <div class="logo" :class="{'collapse-logo': sharedState.state.isCollapse}">LOGO</div>
+    <div class="logo" :class="{'collapse-logo': sharedState.state.isCollapse}">Spitfire</div>
 
     <el-menu
       :default-active="$route.path"

@@ -5,6 +5,7 @@ import com.neusoft.bsp.common.base.BaseController;
 import com.neusoft.bsp.common.base.BaseModel;
 import com.neusoft.bsp.common.base.BaseModelJson;
 import com.neusoft.bsp.common.exception.BusinessException;
+import com.neusoft.bsp.common.security.service.AuthService;
 import com.neusoft.bsp.common.validationGroup.DeleteGroup;
 import com.neusoft.bsp.common.validationGroup.UpdateGroup;
 import com.neusoft.bsp.admin.user.po.User;
@@ -25,8 +26,8 @@ public class UserController extends BaseController {
     @Autowired
     UserService userService;
 
-//    @Autowired
-//    AuthService authService;
+    @Autowired
+    AuthService authService;
 
     @PostMapping("/register")
     public BaseModel register(@RequestBody User user) {
@@ -59,10 +60,11 @@ public class UserController extends BaseController {
         BaseModelJson<Map<String, String>> response = new BaseModelJson();
         response.setSuccess();
         HashMap<String, String> res = new HashMap<>();
-//            res.put("jwt", authService.login(user));
-        res.put("jwt", "");
+        res.put("jwt", authService.login(user));
+//        res.put("jwt", "");
         res.put("user_id", returnUser.getUser_id()+"");
         response.data = res;
+//        System.out.println(response.toString());
 
         return response;
 

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@CacheConfig(cacheNames="brandCache")
+//@CacheConfig(cacheNames="brandCache")
 @Repository
 public interface BrandMapper extends BaseMapper<Integer, Brand> {
-    @Cacheable()
+//    @Cacheable()
     List<Brand> getAllById(Integer man_id);
 
 }

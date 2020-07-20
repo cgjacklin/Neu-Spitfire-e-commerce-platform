@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
-@CacheConfig(cacheNames="walletAccountCache")
+//@CacheConfig(cacheNames="walletAccountCache")
 @Repository
 public interface WalletAccountMapper extends BaseMapper<Integer, WalletAccount> {
 

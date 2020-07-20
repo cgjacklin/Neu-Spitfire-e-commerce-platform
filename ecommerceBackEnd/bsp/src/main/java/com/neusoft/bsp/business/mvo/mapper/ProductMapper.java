@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
-@CacheConfig(cacheNames="productCache")
+//@CacheConfig(cacheNames="productCache")
 @Repository
 public interface ProductMapper extends BaseMapper<Integer, Product> {
-    @CachePut()
+//    @CachePut()
     int updateSts(Product product);
 
-    @Cacheable()
+//    @Cacheable()
     List<Product> getProductOnShelf();
 }

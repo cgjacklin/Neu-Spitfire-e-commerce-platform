@@ -8,24 +8,24 @@ import org.springframework.cache.annotation.Cacheable;
 import java.util.List;
 import java.util.Map;
 
-@CacheConfig(cacheNames="baseCache")
+//@CacheConfig(cacheNames="baseCache")
 public interface BaseMapper<S,T> {
-    @CachePut()
+//    @CachePut()
     int insert(T t);
 
-    @CachePut()
+//    @CachePut()
     int update(T t);
 
-    @CacheEvict(allEntries = true, beforeInvocation = true)
+//    @CacheEvict(allEntries = true, beforeInvocation = true)
     int delete(S pk);
 
-    @Cacheable()
+//    @Cacheable()
     T getById(S pk);
 
-    @Cacheable()
+//    @Cacheable()
     List<T> getAll();
 
-    @Cacheable()
+//    @Cacheable()
     List<T> getAllByFilter(Map<String,Object> map);
 
 }

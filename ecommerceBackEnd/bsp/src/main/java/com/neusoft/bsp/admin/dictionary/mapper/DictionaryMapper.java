@@ -5,7 +5,7 @@ import com.neusoft.bsp.common.base.BaseMapper;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Repository;
 
-@CacheConfig(cacheNames="dictionaryCache")
+//@CacheConfig(cacheNames="dictionaryCache")
 @Repository
 public interface DictionaryMapper extends BaseMapper<Integer, Dictionary> {
 

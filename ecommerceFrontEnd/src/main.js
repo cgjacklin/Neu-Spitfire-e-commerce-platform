@@ -27,6 +27,12 @@ Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false
 // Vue.prototype.$axios = axios;
 /* eslint-disable no-new */
+import {setCookie,getCookie,delCookie} from'./components/cookies.js'   //引用
+//定义全局变量
+Vue.prototype.$setCookie = setCookie;
+Vue.prototype.$getCookie = getCookie;
+Vue.prototype.$delCookie = delCookie;
+
 new Vue({
   el: '#app',
   router,
@@ -35,7 +41,21 @@ new Vue({
   render: h => h(App),
   data: function(){
     return {
-      user_id: ''
+      user_id: '',
     }
   }
 })
+
+
+
+// Vue.http.interceptors.push((request, next) => {
+//   // 请求发送前的处理逻辑
+//   request.headers.set('Authorization', "Bearer " + sessionStorage.getItem("jwt"))
+//   console.log(sessionStorage.getItem("jwt"))
+//   next((response) => {
+//     // 请求发送后的处理逻辑
+//     // 根据请求的状态，response参数会返回给successCallback或errorCallback
+//     return response
+//   })
+// })
+

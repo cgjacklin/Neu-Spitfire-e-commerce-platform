@@ -82,6 +82,11 @@ export default {
     };
   },
   mounted() {
+    
+    console.log("user_id")
+    console.log(sessionStorage.getItem("user_id"))
+    console.log("jwt")
+    console.log(sessionStorage.getItem("jwt"))
     this.$post("/mainPage/getInfo", {
         user_id:sessionStorage.getItem("user_id")
       }).then(res => {

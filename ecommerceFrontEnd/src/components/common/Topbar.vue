@@ -33,8 +33,8 @@ export default {
         user_id: sessionStorage.getItem("user_id")
       }).then(res => {
         if (res.code == 200) {
-          console.log("HHHH")
-          console.log(res)
+          // console.log("HHHH")
+          // console.log(res)
           this.nickname = res.data.name;
         } 
         

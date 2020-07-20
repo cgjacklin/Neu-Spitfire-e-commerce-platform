@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
-@CacheConfig(cacheNames="userCache")
+//@CacheConfig(cacheNames="userCache")
 @Repository
 public interface UserMapper extends BaseMapper<Integer, User> {
-    @Cacheable()
+//    @Cacheable()
     public User getByUsername(String username);
-    @Cacheable()
+//    @Cacheable()
     User getBuyerOrSeller(Map<String, Object> map);
-    @Cacheable()
+//    @Cacheable()
     int updateBasicInfo(User user);
 }

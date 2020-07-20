@@ -1,6 +1,10 @@
 server:
   port: 8088
-filePath: /image/
+# 自定义文件上传路径
+# Linux
+filePath: /root/photo
+
+
 
 
 spring:

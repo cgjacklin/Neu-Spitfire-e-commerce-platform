@@ -12,7 +12,7 @@ import java.util.TimeZone;
 @MapperScan("com.neusoft.bsp.*.*.mapper")
 @SpringBootApplication
 @EnableSwagger2
-//@EnableCaching
+@EnableCaching
 public class BspApplication {
 
     @PostConstruct

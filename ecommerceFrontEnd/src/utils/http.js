@@ -2,8 +2,9 @@ import axios from 'axios';
 import QS from 'qs'
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='http://localhost:8088/';
+axios.defaults.baseURL ='http://39.99.161.110:8088/';
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+// axios.defaults.headers.post['Authorization'] = "Bearer " + sessionStorage.getItem("jwt");
 
 /**
  * 封装get方法
@@ -37,7 +38,10 @@ export function get(url,params){
  export function post(url,data){
    return new Promise((resolve,reject) => {
     var pr = JSON.stringify(data) 
-    axios.post(url,pr)
+    axios.post(url,pr, 
+      {headers: {
+        'Authorization': "Bearer " + sessionStorage.getItem("jwt")
+      }})
           .then(response => {
             resolve(response.data);
           },err => {
