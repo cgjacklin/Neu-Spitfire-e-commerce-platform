@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "Product",
+    "usingComponents": {
+     "i-button": "../../dist/button/index"
+   }
+
+}

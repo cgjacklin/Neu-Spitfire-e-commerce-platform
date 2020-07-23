@@ -1,0 +1,53 @@
+<view class="addr-body">
+    <form class = "form" bindsubmit="formSubmit" bindreset="formReset">
+        <view class="top-sec">
+            <view class="input-wrapper">
+                <view class="input-title">Consignee</view>
+                <input bindinput = "setName" name="input" placeholder="Please input the name" value = "{{address.recipient}}" placeholder-style = "color: #888888; "/>
+            </view>
+            <view class="input-wrapper">
+                <view class="input-title">Phone</view>
+                <input bindinput = "setPhone"  name="input" placeholder="Phone number" value = "{{address.telephone}}" placeholder-style = "color: #888888; " />
+            </view>
+            <view class="input-wrapper">
+                <view class="input-title">Area</view><!--
+                --><view class = "area-wrapper">
+                <view wx:if = "{{!address.area}}" class = "not-set" bindtap = "setArea">Not set></view>
+                <view wx:if = "{{address.area}}" class = "set" bindtap = "setArea"> {{address.province}} {{address.city}} {{address.area}}</view>
+            </view>
+            </view>
+            <view class="input-wrapper">
+                <view class="input-title">Detail </view>
+                <input bindinput = "setDetail" class = "input-long" name="input"  value = "{{address.address}}"  placeholder="Detailed address" placeholder-style = "width: 100%;color: #888888; " />
+            </view>
+        </view>
+        <view class="bottom-sec">
+            <view class="input-wrapper">
+                <view  class = "check-box {{address.isDefault == '1'? 'active': ''}}" value="radio1" bindtap = "setDefault">set default</view>
+            </view>
+        </view>
+        <view class="add-address">
+            <button class = "address-btn" formType="submit" bindtap = "saveAddr">Save</button>
+        </view>
+    </form>
+    <view wx:if = "{{isShow}}" class = "set-area-wrapper">
+        <view class="area-mask" catchtap = "hideMask"></view>
+        <view class = "white-bg">
+            <view class = "top-option">
+                <view class="ok" catchtap = "confirm">sure</view>
+                <view class="cancel" catchtap = "hideMask">cancel</view>
+            </view>
+            <picker-view indicator-style="height: 40px;" style="width: 100%; height: 200px;background: white;opacity: 1" bindchange="bindChange">
+                <picker-view-column>
+                    <view wx:for="{{province}}" style="line-height: 40px; text-align: center">{{item}}</view>
+                </picker-view-column>
+                <picker-view-column>
+                    <view wx:for="{{city}}" style="line-height: 40px; text-align: center">{{item}}</view>
+                </picker-view-column>
+                <picker-view-column>
+                    <view wx:for="{{area}}" style="line-height: 40px; text-align: center">{{item}}</view>
+                </picker-view-column>
+            </picker-view>
+        </view>
+    </view>
+</view>

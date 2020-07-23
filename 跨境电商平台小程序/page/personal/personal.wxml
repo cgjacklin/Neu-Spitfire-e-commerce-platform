@@ -1,0 +1,39 @@
+<view class="personal">
+
+    <view class="userinfo" bindtap="jumpLogin" >
+        <image class="userinfo-avatar" src="../../image/default-head.png" background-size="cover"></image>
+    </view>
+
+    <view class="info_list">
+        <block wx:for="{{userListInfo}}"  wx:key="key">
+            <view data-url="{{item.url}}" hover-class="navigator-hover" class = "navigator" bindtap="jumpUrl">
+                <view class="weui_cell">
+                    <view class="weui_cell_bd">
+                        <view class="weui_cell_bd_p"> {{item.text}} </view>
+                        <view class="right-arrow">
+                            <image src="../../image/arrowright.png" class="arrow" width="355" height="150"/>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </block>
+        <van-collapse accordion value="{{ activeNames }}" bind:change="onChange">
+          <van-collapse-item title="Nickname" name="1">
+    {{Nickname}}
+  </van-collapse-item>
+  <van-collapse-item title="Phone" name="2">
+    {{Phone}}
+  </van-collapse-item>
+  <van-collapse-item title="Email" name="3">
+    {{Email}}
+  </van-collapse-item>
+</van-collapse>
+    </view>
+
+    <button wx:if="{{hasLogin}}" class="logout" bindtap="exitLogin">退出登录</button>
+        
+
+
+</view>
+
+

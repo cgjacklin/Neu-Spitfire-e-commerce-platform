@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "Detail",
+  "usingComponents": {
+    "i-tag": "../../dist/tag/index",
+    "van-goods-action": "../../dist-vant/goods-action/index",
+    "van-goods-action-icon": "../../dist-vant/goods-action-icon/index",
+    "van-goods-action-button": "../../dist-vant/goods-action-button/index"
+}
+}
