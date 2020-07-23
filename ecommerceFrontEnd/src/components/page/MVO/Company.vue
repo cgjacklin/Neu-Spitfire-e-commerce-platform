@@ -133,7 +133,7 @@
       <el-upload
         ref="upload"
         drag
-        action="http://localhost:8088/product/uploadPicture"
+        action="http://39.99.161.110:8088/product/uploadPicture"
         :name="fileName"
         :file-list="fileList"
         :on-success="handleSuccess"

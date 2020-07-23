@@ -48,14 +48,21 @@ new Vue({
 
 
 
-// Vue.http.interceptors.push((request, next) => {
-//   // 请求发送前的处理逻辑
-//   request.headers.set('Authorization', "Bearer " + sessionStorage.getItem("jwt"))
-//   console.log(sessionStorage.getItem("jwt"))
-//   next((response) => {
-//     // 请求发送后的处理逻辑
-//     // 根据请求的状态，response参数会返回给successCallback或errorCallback
-//     return response
-//   })
-// })
-
+router.beforeEach(function (to, from, next) {
+  if (to.path=="/main") {
+    //从cookie中获取用户信息，判断是否已登录
+    // if (auth.getAdminInfo().userUuid) {
+    if (sessionStorage.getItem("isLogin")) {
+      next(); //表示已经登录
+    } else {
+      //未登录
+      //next可以传递一个路由对象作为参数 表示需要跳转到的页面
+      next({
+      path: '/login'
+    });
+    }
+  } else {
+    //表示不需要登录
+    next(); //继续往后走
+  }
+});

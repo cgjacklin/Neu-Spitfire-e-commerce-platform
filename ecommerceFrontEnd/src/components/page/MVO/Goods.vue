@@ -509,13 +509,6 @@ export default {
       console.log(this.count);
     },
     uploadPicture(file) {
-      // let fd = new FormData();//通过form数据格式来传
-      // fd.append("fileName", file);
-      // this.$post("/product/uploadPicture", fd,{
-      // }).then(res=>{
-      //   this.addGoodsForm.remark = res.data;
-      //   console.log(res.data);
-      // })
     },
     handleSuccess(res) {
       console.log("handlesuccess");
@@ -707,6 +700,7 @@ export default {
       console.log(this.addGoodsForm);
     },
     edit(row) {
+      this.isAdd = false;
       this.drawer = true;
       this.$nextTick(function() {
         this.addGoodsForm = JSON.parse(JSON.stringify(row));
