@@ -356,6 +356,7 @@ export default {
           sessionStorage.setItem("user_id", res.data.user_id);
           sessionStorage.setItem("jwt", res.data.jwt);
           sessionStorage.setItem("isLogin", true);
+          sessionStorage.setItem("role_id", res.data.role_id);
           console.log(sessionStorage.getItem("user_id"));
           this.$message.success("Login Successfull");
           this.$router.push("/main");

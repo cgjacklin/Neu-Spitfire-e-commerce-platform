@@ -52,6 +52,9 @@ export default {
     handleCommand(command) {
       console.log(command);
       this.$router.push(`/${command}`);
+      if(command=="login"){
+        sessionStorage.clear()
+      }
     }
   }
 };

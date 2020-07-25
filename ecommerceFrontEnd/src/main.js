@@ -49,20 +49,38 @@ new Vue({
 
 
 router.beforeEach(function (to, from, next) {
-  if (to.path=="/main") {
+  // if (to.path=="/main") {
     //从cookie中获取用户信息，判断是否已登录
     // if (auth.getAdminInfo().userUuid) {
-    if (sessionStorage.getItem("isLogin")) {
-      next(); //表示已经登录
-    } else {
-      //未登录
-      //next可以传递一个路由对象作为参数 表示需要跳转到的页面
+    if (!sessionStorage.getItem("isLogin")) {
       next({
-      path: '/login'
-    });
+        path: '/login'
+      });
+      
+    } else {
+      var a = to.path.split("/");
+      var d = sessionStorage.getItem("role_id");
+      // next(); //表示已经登录
+      //未登录
+      // next可以传递一个路由对象作为参数 表示需要跳转到的页面
+      if((a[1]=="MVO"||a[1]=="BVO")&&d!="0"){
+        if(a[1]=="MVO"&&d=="1" || a[1]=="BVO"&&d=="2"){
+          next(); //表示已经登录
+        }
+        else{
+          next({
+            path: '/login'
+          });
+        }
+      }
+      else{
+        next(); //表示已经登录
+      }
+      
+      
     }
-  } else {
-    //表示不需要登录
-    next(); //继续往后走
-  }
+  // } else {
+  //   //表示不需要登录
+  //   next(); //继续往后走
+  // }
 });

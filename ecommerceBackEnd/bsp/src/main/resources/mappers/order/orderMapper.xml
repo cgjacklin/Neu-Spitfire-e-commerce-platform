@@ -55,9 +55,6 @@
             <when test='role_id == 2'>
                 AND dsr_id = #{man_buyer_id}
             </when>
-<!--            <otherwise>-->
-<!--                AND featured = 1-->
-<!--            </otherwise>-->
         </choose>
     </select>
 
