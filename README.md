@@ -1,12 +1,12 @@
-# Neusoft-Spitfire-e-commerce-platform
+# Neusoft-Spitfire-E-Commerce-Platform 
 > Neusoft practical training project "Cross-border e-commerce retail platform".
 > Now the whole project is open source.
 
 ![](./image/project_picture.png)
 
 ## Demo
-###### [Spitfire web system](http://39.98.124.34/)
-###### WeChat module is not online now.
+- [Spitfire web system](http://39.98.124.34/)
+- WeChat module is not online now.
 
 ## Introduction
 Spitfire E-Commerce platform is cross-platform borrow and sell system. Users can access the system via both website and Wechat mini program.
