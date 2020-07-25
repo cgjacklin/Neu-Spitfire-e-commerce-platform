@@ -1,0 +1,43 @@
+<view class="sec-kill">
+    <view class="header">
+        <view class="header-wrapper" style="width: {{length *300}}rpx">
+            <!-- <view class="single" wx:for="{{product}}" wx:for-index="index" wx:key="key" data-index="{{index}}" bindtap="switchTab">
+                <text class="text-detail {{curNav == index ? 'active' : ''}}">{{item.title}}</text>
+            </view> -->
+        </view>
+    </view>
+    <view class="main-container">
+        <block wx:if="{{List == null}}">
+            <view class="wait-more">No data</view>
+        </block>
+        <block wx:if="{{List != null}}">
+            <view class="top-slider">
+                <swiper class="slider-sec" indicator-dots="{{indicatorDots}}"
+                        autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+                    <block wx:for="{{Listimage}}" wx:key="key">
+                        <swiper-item>
+                            <image src="{{item.remark}}" class="slide-image" width="355" height="150"
+                                   bindtap="goBanner"/>
+                        </swiper-item>
+                    </block>
+                </swiper>
+            </view>
+            <view class="list-detail" wx:for="{{List}}" wx:key="key" wx:for-item="item"
+                  data-value="{{item}}" bindtap="getDetail">
+                <view class="list-sec">
+                    <view class="left-sec">
+                        <image class="sec-img" src="{{item.remark}}" background-size="cover"></image>
+                    </view>
+                    <view class="right-sec">
+                        <view class="title">{{item.title}}</view>
+                        <view class="description">{{item.name_en}}</view>
+                        <view class="pirce-wrapper">
+                            <view class="inline-block now">￥{{item.retail_price}}</view>
+                        </view>
+                    </view>
+                </view>
+                <view class="inline-block go-buy">Buy now</view>
+            </view>
+        </block>
+    </view>
+</view>

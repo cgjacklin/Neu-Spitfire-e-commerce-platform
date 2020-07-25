@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "page/Product/Product",
+    "page/Product/goodsDetail",
+    "page/Contacts/contacts",
+    "page/personal/personal",
+    "page/personal/address",
+    "page/personal/editAddr"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "Platform",
+    "navigationBarBackgroundColor": "#0099ff",
+    "backgroundColor": "#fbf9fe"
+  },
+  "tabBar": {
+    "color": "#7f8389",
+    "selectedColor": "#2fa7e0",
+    "borderStyle": "white",
+    "backgroundColor": "#f2f2f2",
+    "list": [
+      {
+        "selectedIconPath": "image/1.png",
+        "iconPath": "image/1.png",
+        "pagePath": "page/Product/Product",
+        "text": "Product"
+      },
+      {
+        "selectedIconPath": "image/2.png",
+        "iconPath": "image/2.png",
+        "pagePath": "page/Contacts/contacts",
+        "text": "Contacts"
+      },
+      {
+        "selectedIconPath": "image/3.png",
+        "iconPath": "image/3.png",
+        "pagePath": "page/personal/personal",
+        "text": "Personal"
+      }
+    ]
+  },
+  "debug": true,
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "Personal Info",
+  "usingComponents": {
+    "van-collapse": "../../dist-vant/collapse/index",
+    "van-collapse-item": "../../dist-vant/collapse-item/index"
+  }
+}
