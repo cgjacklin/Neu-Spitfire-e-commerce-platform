@@ -3,6 +3,9 @@
 
 ![](./image/project_picture.png)
 
+## Website demo
+http://39.98.124.34/
+
 ## Introduction
 Spitfire E-Commerce platform is cross-platform borrow and sell system. Users can access the system via both website and Wechat mini program.
 
