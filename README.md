@@ -20,10 +20,10 @@ Spitfire E-Commerce platform is cross-platform borrow and sell system. Users can
 
 #### Frontend Architecture
 <!-- ![](./image/frontend.jpg) -->
-<img src="./image/frontend.jpg" height="300">
+<img src="./image/frontend.jpg" height="600">
 
 #### Backend Architecture
-<img src="./image/backend.png" height="260">
+<img src="./image/backend.png" height="460">
 
 ## Technique Stack
 
