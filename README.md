@@ -11,6 +11,19 @@
 ## Introduction
 Spitfire E-Commerce platform is cross-platform borrow and sell system. Users can access the system via both website and Wechat mini program.
 
+## Project Structure
+#### Function Modules
+![](./image/modules.png)
+
+#### Business Flow Chart
+![](./image/business_flow.png)
+
+#### Frontend Architecture
+![](./image/frontend.jpg)
+
+#### Backend Architecture
+![](./image/backend.png)
+
 ## Technique Stack
 
 #### Backend
@@ -42,3 +55,49 @@ Spitfire E-Commerce platform is cross-platform borrow and sell system. Users can
 |-----|-----|
 |Vue.js|Popular frontend framework|
 |Element-ui|Popular frontend framework|
+
+## Project Display
+#### Login
+![](./image/login.png)
+
+#### Register
+![](./image/register.png)
+
+#### Main Page
+![](./image/main_page.png)
+
+#### Wallet
+![](./image/wallet.png)
+
+#### Order Management
+![](./image/order_management.png)
+
+#### Brand-Seller Goods Management
+![](./image/mvo_goods_management.png)
+
+#### Brand-Seller Company Management
+![](./image/mvo_company.png)
+
+#### Borrow-Seller Goods Management
+![](./image/bvo_goods.png)
+
+#### Borrow-Seller Wishlist Management
+![](./image/bvo_wishlist.png)
+
+#### Borrow-Seller Store Management
+![](./image/bvo_store.png)
+
+#### Admin Menu Management
+![](./image/admin_menu_management.png)
+
+#### Admin User Management
+![](./image/admin_user_management.png)
+
+#### Admin Parameter Management
+![](./image/parameter_management.png)
+
+#### Admin Dictionary Management
+![](./image/data_management.png)
+
+#### Admin Fund Audit Management
+![](./image/admin_fund.png)
