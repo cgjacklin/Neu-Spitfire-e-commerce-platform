@@ -2,7 +2,7 @@
 > Neusoft practical training project "Cross-border e-commerce retail platform".
 > Now the whole project is open source.
 
-![ap1XnS.png](https://s1.ax1x.com/2020/07/26/ap1XnS.png)
+![DFpQ6.png](https://wx2.sbimg.cn/2020/07/26/DFpQ6.png)
 
 ## Demo
 - [Spitfire web system](http://39.98.124.34/)
@@ -13,10 +13,10 @@ Spitfire E-Commerce platform is cross-platform borrow and sell system. Users can
 
 ## Project Structure
 #### Function Modules
-![ap3phn.png](https://s1.ax1x.com/2020/07/26/ap3phn.png)
+![DFkzO.png](https://wx1.sbimg.cn/2020/07/26/DFkzO.png)
 
 #### Business Flow Chart
-![ap3Cpq.png](https://s1.ax1x.com/2020/07/26/ap3Cpq.png)
+![DF0Oe.png](https://wx2.sbimg.cn/2020/07/26/DF0Oe.png)
 
 #### Frontend Architecture
 <!-- ![](./image/frontend.jpg) -->
